@@ -1,3 +1,15 @@
+export const env=(alias)=>{
+    const config = import.meta.env;
+
+    switch(alias){
+        case 'API_URL':
+            config['API_URL'] = config['BASE_URL']+'api';
+            break;
+    }
+
+    return config[alias];
+}
+
 export const langId = ()=>{
     //if(!localStorage.getItem('langId')) localStorage.setItem('langId', '1');
     return localStorage.getItem('langId')?? '1';

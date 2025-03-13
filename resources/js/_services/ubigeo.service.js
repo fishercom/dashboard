@@ -1,4 +1,4 @@
-import { config, authHeader, handleResponse } from '../_helpers';
+import { env, authHeader, handleResponse } from '../_helpers';
 
 export const ubigeoService = {
     getDepartments,
@@ -11,7 +11,7 @@ function getDepartments() {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
     }
-    return fetch(`${config.API_URL}/ubigeo/departments`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/ubigeo/departments`, requestOptions).then(handleResponse)
 }
 
 function getProvinces(department_id) {
@@ -21,7 +21,7 @@ function getProvinces(department_id) {
         body: JSON.stringify({department_id: department_id})
     }
 
-    return fetch(`${config.API_URL}/ubigeo/provinces`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/ubigeo/provinces`, requestOptions).then(handleResponse)
 }
 
 function getDistricts(province_id) {
@@ -31,5 +31,5 @@ function getDistricts(province_id) {
         body: JSON.stringify({province_id: province_id})
     }
 
-    return fetch(`${config.API_URL}/ubigeo/districts`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/ubigeo/districts`, requestOptions).then(handleResponse)
 }

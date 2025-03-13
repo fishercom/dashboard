@@ -89,8 +89,7 @@ export const LoginLayer =(props)=>{
             <a href="#" className="olvidaste" onClick={handleShowPassword} >¿Olvidaste tu contraseña?</a>
 
 			<div className="btn_azul btn_inicio_sesion">
-				<a href="#" onClick={handleSubmit} className="full"></a>
-				Iniciar sesión
+				<a href="#" onClick={handleSubmit}>Iniciar sesión</a>
 			</div>
 			<div className="clear"></div>
 		</div>

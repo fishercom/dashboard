@@ -1,4 +1,4 @@
-import { config, authHeader, handleResponse } from '../_helpers';
+import { env, authHeader, handleResponse } from '../_helpers';
 
 export const parameterService = {
     getList,
@@ -11,7 +11,7 @@ function getList() {
         headers: authHeader()
     }
 
-    return fetch(`${config.API_URL}/parameters`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/parameters`, requestOptions).then(handleResponse)
 }
 
 function getItem(id) {
@@ -20,5 +20,5 @@ function getItem(id) {
         headers: authHeader()
     }
 
-    return fetch(`${config.API_URL}/parameter/${id}`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/parameter/${id}`, requestOptions).then(handleResponse)
 }

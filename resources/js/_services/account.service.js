@@ -1,4 +1,4 @@
-import { config, handleResponse } from '../_helpers';
+import { env, handleResponse } from '../_helpers';
 
 export const accountService = {
     login,
@@ -21,7 +21,7 @@ function login(args) {
         body: JSON.stringify(args)
     }
 
-    return fetch(`${config.API_URL}/login`, requestOptions)
+    return fetch(`${env('API_URL')}/login`, requestOptions)
         .then(handleResponse)
         .then(response => {
             return loginStorage(response)
@@ -35,7 +35,7 @@ function forgot(args) {
         body: JSON.stringify(args)
     }
 
-    return fetch(`${config.API_URL}/forgot`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/forgot`, requestOptions).then(handleResponse)
 }
 
 function resetPassword(args) {
@@ -45,7 +45,7 @@ function resetPassword(args) {
         body: JSON.stringify(args)
     }
 
-    return fetch(`${config.API_URL}/reset_password`, requestOptions).then(handleResponse)
+    return fetch(`${env('API_URL')}/reset_password`, requestOptions).then(handleResponse)
 }
 
 function autologin(account){

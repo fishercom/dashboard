@@ -4,4 +4,3 @@ export * from './auth-header';
 export * from './handle-response';
 export * from './lists';
 export * from './utils';
-export * from './config';

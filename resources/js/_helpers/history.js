@@ -1,10 +1,10 @@
 import { createBrowserHistory } from 'history';
-import { config } from './config'
+import { env } from './utils'
 
-export const public_folder = config.BASE_URL
-export const history = createBrowserHistory({basename: `${config.BASE_URL}`});
+export const public_folder = env('BASE_URL')
+export const history = createBrowserHistory({basename: `${env('BASE_URL')}`});
 export const assets =(path)=>{
     return public_folder+path
 }
 
-console.log(config);
+console.log(import.meta.env);
