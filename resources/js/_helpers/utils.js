@@ -3,7 +3,7 @@ export const env=(alias)=>{
 
     switch(alias){
         case 'API_URL':
-            config['API_URL'] = config['BASE_URL']+'api';
+            config['API_URL'] = ''; //config['BASE_URL']+'api';
             break;
     }
 
