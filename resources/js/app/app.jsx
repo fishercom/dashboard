@@ -16,7 +16,7 @@ import { Politicas } from "./modules/Politicas"
 
 import { Spinner } from '../_components/Spinner';
 
-function App() {
+export const App=()=>{
   const cms = useSelector(state => state.cms)
   const alert = useSelector(state => state.alert)
   const account = useSelector((state) => state.authentication.account)
@@ -71,4 +71,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

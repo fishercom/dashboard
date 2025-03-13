@@ -15,3 +15,7 @@ export function handleResponse(response) {
         return data
     });
 }
+
+export const logout=()=>{
+
+}

@@ -1,6 +1,6 @@
 import { accountService } from '../_services'
 
-export function authHeader() {
+export const authHeader=()=>{
     // return authorization header with jwt token
     let account = JSON.parse(accountService.getAccount());
 

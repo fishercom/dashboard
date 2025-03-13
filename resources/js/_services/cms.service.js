@@ -1,5 +1,4 @@
-import config from 'config'
-import { authHeader, handleResponse, langId } from '../_helpers';
+import { config, authHeader, handleResponse, langId } from '../_helpers';
 
 export const cmsService = {
     getHome,
@@ -15,7 +14,7 @@ function getHome() {
         headers: authHeader()
     }
 
-    return fetch(`${config.apiUrl}/article/home?lang_id=${langId()}`, requestOptions).then(handleResponse)
+    return fetch(`${config().apiUrl}/article/home?lang_id=${langId()}`, requestOptions).then(handleResponse)
 }
 
 function getHeader() {
@@ -24,7 +23,7 @@ function getHeader() {
         headers: authHeader()
     }
 
-    return fetch(`${config.apiUrl}/article/header?lang_id=${langId()}`, requestOptions).then(handleResponse)
+    return fetch(`${config().apiUrl}/article/header?lang_id=${langId()}`, requestOptions).then(handleResponse)
 }
 
 function getFooter() {
@@ -33,7 +32,7 @@ function getFooter() {
         headers: authHeader()
     }
 
-    return fetch(`${config.apiUrl}/article/footer?lang_id=${langId()}`, requestOptions).then(handleResponse)
+    return fetch(`${config().apiUrl}/article/footer?lang_id=${langId()}`, requestOptions).then(handleResponse)
 }
 
 function getPages() {
@@ -42,7 +41,7 @@ function getPages() {
         headers: authHeader()
     }
 
-    return fetch(`${config.apiUrl}/article/pages`, requestOptions).then(handleResponse)
+    return fetch(`${config().apiUrl}/article/pages`, requestOptions).then(handleResponse)
 }
 
 function getPage(slug) {
@@ -51,5 +50,5 @@ function getPage(slug) {
         headers: authHeader()
     }
 
-    return fetch(`${config.apiUrl}/article/${slug}`, requestOptions).then(handleResponse)
+    return fetch(`${config().apiUrl}/article/${slug}`, requestOptions).then(handleResponse)
 }

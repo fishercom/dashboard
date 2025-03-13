@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { parameterActions, ubigeoActions, clienteActions, accountActions } from '../../../_actions'
 import { OptionNoAplica, ErrorFormAlert} from "../../../_components";
-import { assets, history, getField, checkDateField } from "../../../_helpers";
+import { config, assets, history, getField, checkDateField } from "../../../_helpers";
 import { parse, format, isValid } from 'date-fns';
 import ReCAPTCHA from "react-google-recaptcha";
-import config from 'config'
 
 import { clienteViewmodel } from '../../../_viewmodels'
 
@@ -410,7 +409,7 @@ export const Form1 = (props)=>{
                     <div className="col-md-5"></div>
                     <div className="col-md-3">
                         <div className="captcha">
-                            <ReCAPTCHA ref={recaptcha} sitekey={config.recaptchaSiteKey} />
+                            <ReCAPTCHA ref={recaptcha} sitekey={config().recaptchaSiteKey} />
                         </div>
                     </div>
                     <div className="col-md-4">

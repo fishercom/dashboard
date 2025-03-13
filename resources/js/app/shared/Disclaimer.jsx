@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { assets, history, htmlContent, getField, urlSlug } from "../../_helpers";
+import { assets, history, getField, urlSlug } from "../../_helpers";
+//import { HtmlContent } from '../../_components';
 
 export const Disclaimer =(props)=>{
 	const icon = props.type=='white'? 'ico-alerta-white.png': 'ico-alerta-naranja.png';

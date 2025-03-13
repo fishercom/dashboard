@@ -45,10 +45,6 @@ export const getExtract = (content, maxchars=500) => {
     return strip.length > maxchars ? strip.substring(0, (maxchars+5)) + '...' : strip;
 }
 
-export const htmlContent = (content, className='')=>{
-    return <div dangerouslySetInnerHTML={{__html: content}} className={className}></div>;
-}
-
 export const urlSlug = (page) =>{
     return '/' + page.slug
 }
