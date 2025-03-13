@@ -1,3 +1,1 @@
-export const config=()=>{
-    return import.meta.env;
-}
+export const config= import.meta.env;

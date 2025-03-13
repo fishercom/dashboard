@@ -409,7 +409,7 @@ export const Form1 = (props)=>{
                     <div className="col-md-5"></div>
                     <div className="col-md-3">
                         <div className="captcha">
-                            <ReCAPTCHA ref={recaptcha} sitekey={config().recaptchaSiteKey} />
+                            <ReCAPTCHA ref={recaptcha} sitekey={config.RECAPTCHA_SITEKEY} />
                         </div>
                     </div>
                     <div className="col-md-4">

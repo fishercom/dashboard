@@ -16,7 +16,7 @@ function getList() {
         headers: authHeader()
     }
 
-    return fetch(`${config().apiUrl}/cliente/list`, requestOptions).then(handleResponse)
+    return fetch(`${config.API_URL}/cliente/list`, requestOptions).then(handleResponse)
 }
 
 function getItem(id) {
@@ -25,7 +25,7 @@ function getItem(id) {
         headers: authHeader()
     }
 
-    return fetch(`${config().apiUrl}/cliente/${id}`, requestOptions).then(handleResponse)
+    return fetch(`${config.API_URL}/cliente/${id}`, requestOptions).then(handleResponse)
 }
 
 function getPersona(tipoDocumento, nroDocumento) {
@@ -34,7 +34,7 @@ function getPersona(tipoDocumento, nroDocumento) {
         headers: authHeader()
     }
 
-    return fetch(`${config().apiUrl}/cliente/persona?tipo_documento=${tipoDocumento}&nro_documento=${nroDocumento}`, requestOptions).then(handleResponse)
+    return fetch(`${config.API_URL}/cliente/persona?tipo_documento=${tipoDocumento}&nro_documento=${nroDocumento}`, requestOptions).then(handleResponse)
 }
 
 function getDetalleList() {
@@ -42,7 +42,7 @@ function getDetalleList() {
         method: 'GET',
         headers: authHeader()
     }
-    return fetch(`${config().apiUrl}/documento/list`, requestOptions).then(handleResponse)
+    return fetch(`${config.API_URL}/documento/list`, requestOptions).then(handleResponse)
 }
 
 function search(args) {
@@ -52,7 +52,7 @@ function search(args) {
     }
     const params = new URLSearchParams(args).toString();
     //console.log(params)
-    return fetch(`${config().apiUrl}/cliente/search?${params}`, requestOptions).then(handleResponse)
+    return fetch(`${config.API_URL}/cliente/search?${params}`, requestOptions).then(handleResponse)
 }
 
 function register(args) {
@@ -62,9 +62,9 @@ function register(args) {
         body: JSON.stringify(args)
     }
     if(args.cliente_id)
-        return fetch(`${config().apiUrl}/cliente/update`, requestOptions).then(handleResponse)
+        return fetch(`${config.API_URL}/cliente/update`, requestOptions).then(handleResponse)
     else
-        return fetch(`${config().apiUrl}/cliente/store`, requestOptions).then(handleResponse)
+        return fetch(`${config.API_URL}/cliente/store`, requestOptions).then(handleResponse)
 }
 
 function documentos(args) {
@@ -74,7 +74,7 @@ function documentos(args) {
         body: JSON.stringify(args)
     }
     if(args.cliente_id)
-        return fetch(`${config().apiUrl}/documento/update`, requestOptions).then(handleResponse)
+        return fetch(`${config.API_URL}/documento/update`, requestOptions).then(handleResponse)
     else
-        return fetch(`${config().apiUrl}/documento/store`, requestOptions).then(handleResponse)
+        return fetch(`${config.API_URL}/documento/store`, requestOptions).then(handleResponse)
 }
