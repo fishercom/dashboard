@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
@@ -21,21 +21,21 @@ class ProfileController extends Controller
     public function index(Request $request): Response
     {
         $list = Profile::all();
-        return Inertia::render('admin/profiles', [
+        return Inertia::render('dashboard/profiles', [
             'list' => $list,
         ]);
     }
 
     public function create()
     {
-      return Inertia::render('admin/profiles/create');
+      return Inertia::render('dashboard/profiles/create');
     }
 
     public function store(Request $request)
     {
         $profile = new Profile($request->all());
         $profile->save();
-        return redirect('admin/profiles/index');
+        return redirect('dashboard/profiles/index');
     }
 
     /**
@@ -44,7 +44,7 @@ class ProfileController extends Controller
     public function edit($id, Request $request): Response
     {
         $data = Profile::find($id);
-        return Inertia::render('admin/profiles/'.$id, [
+        return Inertia::render('dashboard/profiles/'.$id, [
             'data' => $data,
         ]);
     }
