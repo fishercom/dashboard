@@ -21,9 +21,10 @@ export default function Profiles() {
     console.log(list);
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Perfiles" />
-            <ModuleLayout title="Perfiles" description="Administrar los perfiles del sistema">
+    <AppLayout breadcrumbs={breadcrumbs}>
+        <Head title="Perfiles" />
+        <ModuleLayout title="Perfiles" description="Administrar los perfiles del sistema">
+            <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                     <div className="w-full md:w-1/2">
                         <form className="flex items-center">
@@ -223,7 +224,8 @@ export default function Profiles() {
                         </li>
                     </ul>
                 </nav>
-            </ModuleLayout>
-        </AppLayout>
+            </div>
+        </ModuleLayout>
+    </AppLayout>
     );
 }

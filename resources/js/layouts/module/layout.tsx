@@ -8,12 +8,10 @@ export default function ModuleLayout({ children, title, description }: PropsWith
     }
 
     return (
-            <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
+            <section className="p-3 sm:p-5 antialiased">
                 <Heading title={title} description={description} />
-                <div className="mx-auto max-w-lg overflow-hidden rounded-xl bg-white shadow-md md:max-w-6xl">
-                    <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                        {children}
-                    </div>
+                <div className="mx-auto overflow-hidden rounded-xl shadow-md">
+                    {children}
                 </div>
             </section>
     )
