@@ -4,7 +4,7 @@ import { FormEventHandler } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-
+import { ProfileItem } from '@/interfaces/ProfileInterfaces';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -12,15 +12,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/admin/profiles',
     },
 ];
-
-interface ProfileItem {
-    id: number,
-    name: string,
-    sa: boolean,
-    active: boolean,
-    updated_at: Date,
-    created_at: Date
-}
 
 export default function Profiles() {
 
