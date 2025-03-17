@@ -3,10 +3,10 @@ import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ProfileForm } from '@/types';
+import { Profile, ProfileForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,18 +14,17 @@ import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard / Perfiles / Crear',
+        title: 'Dashboard / Perfiles / Editar',
         href: '/admin/profiles/index',
     },
 ];
 
 export default function Create() {
 
-    const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        id: '',
-        name: '',
-        active: false,
-    });
+    const { item } = usePage<{ item: Profile }>().props;
+    const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm<Required<ProfileForm>>(item);
+
+    console.log(data);
 
     const createProfile: FormEventHandler = (e) => {
         e.preventDefault();
@@ -75,7 +74,7 @@ export default function Create() {
                     <Checkbox
                         id="active"
                         name="active"
-                        checked={data.active}
+                        checked={Boolean(data.active)}
                         onClick={() => setData('active', !data.active)}
                         tabIndex={3}
                     />

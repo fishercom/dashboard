@@ -43,9 +43,9 @@ class ProfileController extends Controller
      */
     public function edit($id, Request $request): Response
     {
-        $data = Profile::find($id);
+        $item = Profile::find($id);
         return Inertia::render('dashboard/profiles/edit', [
-            'data' => $data,
+            'item' => $item,
         ]);
     }
 
