@@ -1,10 +1,9 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-import { ProfileItem } from '@/interfaces/ProfileInterfaces';
+import { format } from 'date-fns'
+import { Profile } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Ellipsis } from 'lucide-react';
@@ -13,20 +12,20 @@ import { Icon } from '@/components/icon';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard / Perfiles',
-        href: '/admin/profiles',
+        href: '/admin/profiles/index',
     },
 ];
 
-export default function Profiles() {
+export default function Index() {
 
     //const { list } = usePage<SharedData>().props;
-    const { list } = usePage<{ list: ProfileItem[] }>().props;
+    const { list } = usePage<{ list: Profile[] }>().props;
 
     console.log(list);
 
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
-        <Head title="Perfiles" />
+        <Head/>
         <ModuleLayout title="Perfiles" description="Administrar los perfiles del sistema">
             <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -48,30 +47,9 @@ export default function Profiles() {
                             <svg className="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
-                            Add product
+                            <a href="/dashboard/profiles/create">Add product</a>
                         </button>
                         <div className="flex items-center space-x-3 w-full md:w-auto">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="p-3 border-1">
-                                        Actions
-                                        <Icon iconNode={ChevronDown} className="h-5 w-5" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56" align="end">
-                                    <DropdownMenuItem asChild>
-                                        <Link className="block w-full" href={route('profile.edit')} as="button" prefetch>
-                                            Mass Edit
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                        <Link className="block w-full" method="post" href={route('logout')} as="button">
-                                            Delete all
-                                        </Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="p-3 border-1">
@@ -117,25 +95,25 @@ export default function Profiles() {
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3 flex items-center justify-end">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="p-3">
-                                                    <Icon iconNode={Ellipsis} className="h-5 w-5" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent className="w-56" align="end">
-                                                <DropdownMenuItem asChild>
-                                                    <Link className="block w-full" href={route('profile.edit')} as="button" prefetch>
-                                                        Edit
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem asChild>
-                                                    <Link className="block w-full" method="post" href={route('logout')} as="button">
-                                                        Delete
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="p-3">
+                                                <Icon iconNode={Ellipsis} className="h-5 w-5" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-56" align="end">
+                                            <DropdownMenuItem asChild>
+                                                <Link className="block w-full" href={route('profiles.edit', item.id)} as="button" prefetch>
+                                                    Edit
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link className="block w-full" method="post" href={route('logout')} as="button">
+                                                    Delete
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </td>
                             </tr>
                             )}

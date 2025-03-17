@@ -40,3 +40,19 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Profile {
+    id: number,
+    name: string,
+    sa: boolean,
+    active: boolean,
+    //permissions : [],
+    updated_at: Date,
+    created_at: Date
+}
+
+export type ProfileForm = {
+    id: number,
+    name: string,
+    active: boolean,
+};

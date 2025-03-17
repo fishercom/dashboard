@@ -21,7 +21,7 @@ class ProfileController extends Controller
     public function index(Request $request): Response
     {
         $list = Profile::all();
-        return Inertia::render('dashboard/profiles', [
+        return Inertia::render('dashboard/profiles/index', [
             'list' => $list,
         ]);
     }
@@ -35,7 +35,7 @@ class ProfileController extends Controller
     {
         $profile = new Profile($request->all());
         $profile->save();
-        return redirect('dashboard/profiles/index');
+        return redirect('dashboard/profiles');
     }
 
     /**
@@ -44,7 +44,7 @@ class ProfileController extends Controller
     public function edit($id, Request $request): Response
     {
         $data = Profile::find($id);
-        return Inertia::render('dashboard/profiles/'.$id, [
+        return Inertia::render('dashboard/profiles/edit', [
             'data' => $data,
         ]);
     }
@@ -62,7 +62,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return to_route('profile.edit');
+        return redirect('dashboard/profiles');
     }
 
     /**
@@ -83,6 +83,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('dashboard/profiles');
     }
 }
