@@ -1,12 +1,13 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler, useRef } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Profile } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Ellipsis } from 'lucide-react';
+import { ChevronDown, Ellipsis, Check } from 'lucide-react';
 import { Icon } from '@/components/icon';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -18,10 +19,24 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Index() {
 
-    //const { list } = usePage<SharedData>().props;
     const { list } = usePage<{ list: Profile[] }>().props;
+    const { data, setData, delete : destroy, processing, errors, reset } = useForm();
 
-    console.log(list);
+    const deleteProfile = (id: number) => {
+        console.log(id);
+        destroy(`/dashboard/profiles/${id}/delete`, {
+            preserveScroll: true,
+            onBefore: () => {
+                return window.confirm('Are you sure you want to delete this post?');
+            },
+            onSuccess: () => {
+                alert('Post deleted successfully!');
+            },
+            onError: () => {
+                alert('Failed to delete the post.');
+            },
+        });
+    }
 
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -49,28 +64,6 @@ export default function Index() {
                             </svg>
                             <a href="/dashboard/profiles/create">Add product</a>
                         </button>
-                        <div className="flex items-center space-x-3 w-full md:w-auto">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="p-3 border-1">
-                                        Filter
-                                        <Icon iconNode={ChevronDown} className="h-5 w-5" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56" align="end">
-                                    <DropdownMenuItem asChild>
-                                        <Link className="block w-full" href={route('profile.edit')} as="button" prefetch>
-                                            Mass Edit
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                        <Link className="block w-full" method="post" href={route('logout')} as="button">
-                                            Delete all
-                                        </Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
@@ -81,24 +74,23 @@ export default function Index() {
                                 <th scope="col" className="px-4 py-3">Active</th>
                                 <th scope="col" className="px-4 py-3">Created Date</th>
                                 <th scope="col" className="px-4 py-3">Updated Date</th>
-                                <th scope="col" className="px-4 py-3">
-                                    <span className="sr-only">Actions</span>
-                                </th>
+                                <th scope="col" className="px-4 py-3"></th>
                             </tr>
                         </thead>
                         <tbody>
-                        {list.map((item: ProfileItem)=>{
+                        {list.map((item: Profile)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
-                                <td className="px-4 py-3">{ item.active }</td>
+                                <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3 flex items-center justify-end">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button variant="ghost" className="p-3">
-                                                <Icon iconNode={Ellipsis} className="h-5 w-5" />
+                                                Actions
+                                                <Icon iconNode={ChevronDown} className="h-5 w-5" />
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className="w-56" align="end">
@@ -108,7 +100,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" method="post" href={route('logout')} as="button">
+                                                <Link className="block w-full" href='#' onClick={()=>deleteProfile(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>

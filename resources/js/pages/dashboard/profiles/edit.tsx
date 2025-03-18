@@ -26,7 +26,7 @@ export default function Create() {
 
     console.log(data);
 
-    const createProfile: FormEventHandler = (e) => {
+    const updateProfile: FormEventHandler = (e) => {
         e.preventDefault();
 
         put('/dashboard/profiles/'+data.id, {
@@ -49,7 +49,7 @@ export default function Create() {
         <Head/>
         <ModuleLayout title="Editar Perfil" description="Administrar los perfiles del sistema">
 
-            <form onSubmit={createProfile} className="space-y-6">
+            <form onSubmit={updateProfile} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
 
