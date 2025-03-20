@@ -1,9 +1,10 @@
 import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
+import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ProfileForm } from '@/types';
@@ -49,7 +50,7 @@ export default function Create() {
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
         <ModuleLayout title="Crear Perfil" description="Administrar los perfiles del sistema">
-
+            <FormLayout>
             <form onSubmit={createProfile} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
@@ -84,7 +85,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <a href='/dashboard/profiles'>Cancelar</a>
+                    <Link href='/dashboard/profiles'>Cancelar</Link>
 
                     <Transition
                         show={recentlySuccessful}
@@ -97,7 +98,7 @@ export default function Create() {
                     </Transition>
                 </div>
             </form>
-
+            </FormLayout>
         </ModuleLayout>
     </AppLayout>
     );
