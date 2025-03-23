@@ -5,7 +5,7 @@ import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler, useRef } from 'react';
+import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Profile, ProfileForm } from '@/types';
 

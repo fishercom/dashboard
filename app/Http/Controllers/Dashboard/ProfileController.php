@@ -20,9 +20,9 @@ class ProfileController extends Controller
      */
     public function index(Request $request): Response
     {
-        $list = Profile::all();
+        $items = Profile::paginate(15);
         return Inertia::render('dashboard/profiles/index', [
-            'list' => $list,
+            'items' => $items,
         ]);
     }
 

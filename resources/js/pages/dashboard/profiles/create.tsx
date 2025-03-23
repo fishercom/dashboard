@@ -5,7 +5,7 @@ import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEventHandler, useRef } from 'react';
+import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ProfileForm } from '@/types';
 
@@ -22,11 +22,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Create() {
 
-    const { data, setData, errors, post, reset, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        id: '',
+    const item: ProfileForm = {
+        id: 0,
         name: '',
         active: false,
-    });
+    }
+    const { data, setData, errors, post, reset, processing, recentlySuccessful } = useForm<Required<ProfileForm>>(item);
 
     const createProfile: FormEventHandler = (e) => {
         e.preventDefault();
