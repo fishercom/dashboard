@@ -1,13 +1,16 @@
+import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Profile, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Check, Search, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronDown, Check, Search, Plus } from 'lucide-react';
 import { Icon } from '@/components/icon';
+import { Input } from '@headlessui/react';
+import { PaginationNav } from '@/components/ui/pagination-nav';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,8 +24,24 @@ export default function Index() {
     interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
 
     const { items } = usePage<{ items: ProfilePagination }>().props;
+    const [ query, setQuery ] = useState({s: null});
     const { delete : destroy } = useForm();
-    console.log(items);
+    //console.log(items);
+
+    useEffect(() => {
+        if(query.s!=null){
+            router.get(route('profiles.index'), query, {
+                preserveState: true,
+                replace: true,
+            });
+        }
+    }, [query]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const {value} = e.target;
+        console.log(value, 'handleSearch');
+        setQuery({s: value});
+    }
 
     const deleteProfile = (id: number) => {
         console.log(id);
@@ -50,7 +69,7 @@ export default function Index() {
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <Search/>
                                 </div>
-                                <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required={true}/>
+                                <Input type='text' value={query.s??''} onChange={handleSearch} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar" />
                             </div>
                         </form>
                     </div>
@@ -109,33 +128,7 @@ export default function Index() {
                     </table>
                 </div>
                 {items.links &&
-                <nav className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                        Pag.
-                        <span className="font-semibold text-gray-900 dark:text-white px-1">{items.current_page}</span>
-                        de
-                        <span className="font-semibold text-gray-900 dark:text-white px-1">{items.last_page}</span>
-                    </span>
-                    <ul className="inline-flex items-stretch -space-x-px">
-                        <li>
-                            <a href={items.prev_page_url} className="flex items-center justify-center h-full py-1.5 px-3 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span className="sr-only">Anterior</span>
-                                <ChevronLeft width={15}/>
-                            </a>
-                        </li>
-                        {items.links.filter(e=>e.label!='&laquo; Previous' && e.label!='Next &raquo;').map(e=>
-                        <li>
-                            <Link href={e.url} className='flex items-center justify-center text-sm py-2 px-3 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>{e.label}</Link>
-                        </li>
-                        )}
-                        <li>
-                            <a href={items.next_page_url} className="flex items-center justify-center h-full py-1.5 px-3 text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span className="sr-only">Siguiente</span>
-                                <ChevronRight width={15}/>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <PaginationNav data={items}/>
                 }
             </div>
         </ModuleLayout>

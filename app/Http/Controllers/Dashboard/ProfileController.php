@@ -20,7 +20,15 @@ class ProfileController extends Controller
      */
     public function index(Request $request): Response
     {
-        $items = Profile::paginate(15);
+        $s = $request->get('s');
+
+        $items = Profile::select()
+        ->where(function($query) use($s){
+            if(!empty($s)){
+                $query->where('name', 'LIKE', '%'.str_replace(' ', '%', $s).'%');
+            }
+        })
+        ->paginate(15);
         return Inertia::render('dashboard/profiles/index', [
             'items' => $items,
         ]);
