@@ -60,6 +60,14 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
+export interface UserForm {
+    id: number,
+    name: string,
+    email: string,
+    avatar?: string,
+    active: boolean,
+}
+
 export interface Profile {
     id: number,
     name: string,
