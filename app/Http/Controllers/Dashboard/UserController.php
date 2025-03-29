@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\UserUpdateRequest;
+use App\Models\Profile;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,6 +23,8 @@ class UserController extends Controller
     {
         $s = $request->get('s');
 
+        $profiles = Profile::all();
+
         $items = User::select()
         ->where(function($query) use($s){
             if(!empty($s)){
@@ -31,12 +34,17 @@ class UserController extends Controller
         ->paginate(15);
         return Inertia::render('dashboard/users/index', [
             'items' => $items,
+            'profiles' => $profiles,
         ]);
     }
 
     public function create()
     {
-      return Inertia::render('dashboard/users/create');
+        $profiles = Profile::all();
+
+        return Inertia::render('dashboard/users/create',[
+            'profiles' => $profiles,
+        ]);
     }
 
     public function store(Request $request)
@@ -52,8 +60,11 @@ class UserController extends Controller
     public function edit($id, Request $request): Response
     {
         $item = User::find($id);
+        $profiles = Profile::all();
+
         return Inertia::render('dashboard/users/edit', [
             'item' => $item,
+            'profiles' => $profiles,
         ]);
     }
 

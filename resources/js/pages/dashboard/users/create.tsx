@@ -4,10 +4,10 @@ import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, useForm, usePage, Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ProfileForm } from '@/types';
+import { Profile, UserForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,12 +22,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Create() {
 
-    const item: ProfileForm = {
+    const item: UserForm = {
         id: 0,
         name: '',
+        email: '',
+        password: '',
+        avatar: '',
+        profile_id: 0,
         active: false,
     }
-    const { data, setData, errors, post, reset, processing, recentlySuccessful } = useForm<Required<ProfileForm>>(item);
+    const { profiles } = usePage<{ profiles: Profile[] }>().props;
+    const { data, setData, errors, post, reset, processing, recentlySuccessful } = useForm<Required<UserForm>>(item);
 
     const createProfile: FormEventHandler = (e) => {
         e.preventDefault();
@@ -50,12 +55,11 @@ export default function Create() {
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
-        <ModuleLayout title="Crear Usuario" description="Administrar los perfiles del sistema">
+        <ModuleLayout title="Crear Usuario" description="Administrar los usuarios del sistema">
             <FormLayout>
             <form onSubmit={createProfile} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
-
                     <Input
                         id="name"
                         type="text"
@@ -68,10 +72,63 @@ export default function Create() {
                         disabled={processing}
                         placeholder="Nombre"
                     />
-
                     <InputError message={errors.name} />
                 </div>
 
+                <div className="grid gap-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        required
+                        autoFocus
+                        tabIndex={1}
+                        autoComplete="email"
+                        value={data.email}
+                        onChange={(e) => setData('email', e.target.value)}
+                        disabled={processing}
+                        placeholder="Email"
+                    />
+                    <InputError message={errors.name} />
+                </div>
+
+                <div className="grid gap-2">
+                    <Label htmlFor="password">Contraseña</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        required
+                        autoFocus
+                        tabIndex={1}
+                        autoComplete="password"
+                        value={data.password}
+                        onChange={(e) => setData('password', e.target.value)}
+                        disabled={processing}
+                        placeholder="Contraseña"
+                    />
+                    <InputError message={errors.name} />
+                </div>
+
+                <div className="grid gap-2">
+                    <Label htmlFor="profile">Perfil</Label>
+                    <select
+                        id="profile_id"
+                        name="profile_id"
+                        value={data.profile_id} //added
+                        required={true}
+                        disabled={processing}
+                        onChange={(e) => setData('profile_id', parseInt(e.target.value))}>
+                        <option></option>
+                        {profiles.map((option, index) => {
+                            return (
+                                <option key={index} value={option.id}>
+                                    {option.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <InputError message={errors.name} />
+                </div>
 
                 <div className="flex items-center space-x-3">
                     <Checkbox
