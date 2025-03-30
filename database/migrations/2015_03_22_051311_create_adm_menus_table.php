@@ -20,7 +20,7 @@ class CreateAdmMenusTable extends Migration {
 			$table->string('name');
 			$table->string('icon', 50)->nullable();
 			$table->integer('position')->unsigned();
-			$table->boolean('active')->nullable();
+			$table->boolean('visible')->nullable();
 			$table->timestamps();
 
 	        $table->foreign('parent_id')

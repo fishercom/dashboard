@@ -1,41 +1,16 @@
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { usePage } from '@inertiajs/react';
 import { NavGroup } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, FlaskConical, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavGroup[] = [
-    {
-        title: 'Platform',
-        items: [
-            {
-                title: 'Dashboard',
-                url: '/dashboard',
-                icon: LayoutGrid,
-            },
-        ]
-    },
-    {
-        title: 'Administrador',
-        items: [
-            {
-                title: 'Perfiles',
-                url: '/dashboard/profiles',
-                icon: FlaskConical,
-            },
-            {
-                title: 'Usuarios',
-                url: '/dashboard/users',
-                icon: Users,
-            },
-        ]
-    }
-
-];
-
 export function AppSidebar() {
+
+    const { adm_menu } = usePage<{ adm_menu: NavGroup}>().props
+    //console.log(adm_menu);
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -51,7 +26,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={adm_menu} />
             </SidebarContent>
 
             <SidebarFooter>

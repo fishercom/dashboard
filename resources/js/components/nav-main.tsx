@@ -1,13 +1,14 @@
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { NavGroup } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { DynamicIcon } from 'lucide-react/dynamic';
 
 export function NavMain({ items = [] }: { items: NavGroup[] }) {
     const page = usePage();
     return (
         <SidebarGroup className="px-2 py-0">
         {items.map((menu) => (
-            <>
+            <div key={menu.title}>
             <SidebarGroupLabel>{menu.title}</SidebarGroupLabel>
             {menu.items &&
             <SidebarMenu>
@@ -15,7 +16,7 @@ export function NavMain({ items = [] }: { items: NavGroup[] }) {
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={item.url === page.url}>
                             <Link href={item.url} prefetch>
-                                {item.icon && <item.icon />}
+                                {item.icon && <DynamicIcon name={item.icon} />}
                                 <span>{item.title}</span>
                             </Link>
                         </SidebarMenuButton>
@@ -23,7 +24,7 @@ export function NavMain({ items = [] }: { items: NavGroup[] }) {
                 ))}
             </SidebarMenu>
             }
-            </>
+            </div>
         ))}
         </SidebarGroup>
     );

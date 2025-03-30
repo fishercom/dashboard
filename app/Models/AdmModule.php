@@ -11,7 +11,7 @@ class AdmModule extends Model {
 	 * @var array
 	 */
 	protected $table = 'adm_modules';
-	protected $fillable = ['name', 'active'];
+	protected $fillable = ['name', 'title', 'url', 'icon', 'visible'];
 
     public function events()
     {

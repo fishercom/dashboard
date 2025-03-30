@@ -6,6 +6,8 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
+use App\Models\AdmMenu;
+use App\Models\AdmModule;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,6 +41,22 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $groups = AdmMenu::select()
+        ->where('visible', true)
+        ->orderBy('position', 'asc')
+        ->get();
+
+        $adm_menu = [];
+        foreach($groups as $group){
+            $modules = $group->modules;
+
+            $items = [];
+            foreach($modules as $module){
+                $items[] = ['title'=>$module->name, 'url'=>$module->url, 'icon'=>$module->icon];
+            }
+            $adm_menu[] = ['title' => $group->name, 'items'=>$items];
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -49,7 +67,8 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
-            ]
+            ],
+            'adm_menu' => $adm_menu
         ];
     }
 }

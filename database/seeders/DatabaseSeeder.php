@@ -67,40 +67,33 @@ class DatabaseSeeder extends Seeder
 
 
 		// Seeding menus
-		$menu_home = \App\Models\AdmMenu::create(['name' => 'Inicio', 'position'=>'0', 'active'=>false]);
-		$menu_conf = \App\Models\AdmMenu::create(['name' => 'Configuración', 'icon' => 'fa-gear', 'position'=>'1', 'active'=>true]);
-		$menu_info = \App\Models\AdmMenu::create(['name' => 'Información general', 'icon' => 'fa-info-circle', 'position'=>'2', 'active'=>true]);
-		$menu_webs = \App\Models\AdmMenu::create(['name' => 'Website Principal', 'icon' => 'fa-sitemap', 'position'=>'3', 'active'=>false]);
-
-		$menu_back = \App\Models\AdmMenu::create(['parent_id'=>$menu_conf->id, 'name' => 'Administrador', 'icon' => 'fa-dashboard', 'position'=>'1', 'active'=>true]);
-		$menu_web = \App\Models\AdmMenu::create(['parent_id'=>$menu_conf->id, 'name' => 'Website', 'icon' => 'fa-sitemap', 'position'=>'2', 'active'=>false]);
-		$menu_cms = \App\Models\AdmMenu::create(['parent_id'=>$menu_conf->id, 'name' => 'CMS', 'icon' => 'fa-edit', 'position'=>'3', 'active'=>false]);
-		$menu_forms = \App\Models\AdmMenu::create(['parent_id'=>$menu_info->id, 'name' => 'Formularios', 'icon' => 'fa-list-alt', 'position'=>'2', 'active'=>false]);
-		$menu_modules = \App\Models\AdmMenu::create(['parent_id'=>$menu_info->id, 'name' => 'Módulos del Sistema', 'icon' => 'fa-cogs', 'position'=>'1', 'active'=>true]);
-		$module_contenido = \App\Models\AdmMenu::create(['parent_id'=>$menu_webs->id, 'name' => 'Contenido Web', 'icon' => 'fa-globe', 'position'=>'1', 'active'=>false]);
+		$menu_home = \App\Models\AdmMenu::create(['name' => 'Inicio', 'position'=>'0', 'visible'=>false]);
+		$menu_admin = \App\Models\AdmMenu::create(['name' => 'Administración', 'position'=>'1', 'visible'=>true]);
+		$menu_web = \App\Models\AdmMenu::create(['name' => 'Website', 'position'=>'2', 'visible'=>true]);
+		$menu_cms = \App\Models\AdmMenu::create(['name' => 'CMS', 'position'=>'3', 'visible'=>true]);
+		$menu_forms = \App\Models\AdmMenu::create(['name' => 'Formularios', 'position'=>'4', 'visible'=>true]);
+		$menu_modules = \App\Models\AdmMenu::create(['name' => 'Módulos del Sistema', 'position'=>'5', 'visible'=>true]);
+		$module_contenido = \App\Models\AdmMenu::create(['name' => 'Contenido Web', 'position'=>'6', 'visible'=>true]);
 
 
 		// Seeding adm_modules
-		$module_inicio = \App\Models\AdmModule::create(['menu_id' => $menu_home->id, 'name' => 'Dashboard', 'controller' => 'home', 'position'=>'0', 'active'=>true]);
-		$module_acceso = \App\Models\AdmModule::create(['menu_id' => $menu_home->id, 'name' => 'Acceso al Sistema', 'controller' => 'login', 'position'=>'0', 'active'=>true]);
-		$module_usradm = \App\Models\AdmModule::create(['menu_id' => $menu_back->id, 'name' => 'Usuarios del Sistema', 'title' => 'usuario', 'controller' => 'user', 'icon'=>'fa-user', 'position'=>'1', 'active'=>true]);
-		$module_perfil = \App\Models\AdmModule::create(['menu_id' => $menu_back->id, 'name' => 'Perfiles', 'title' => 'perfil', 'controller' => 'profile', 'icon'=>'fa-male', 'position'=>'2', 'active'=>true]);
-		$module_reglog = \App\Models\AdmModule::create(['menu_id' => $menu_back->id, 'name' => 'Registro de Logs', 'title' => 'log', 'controller' => 'log', 'icon'=>'fa-book', 'position'=>'3', 'active'=>true]);
-		$module_idioma = \App\Models\AdmModule::create(['menu_id' => $menu_web->id, 'name' => 'Idiomas', 'title' => 'idioma', 'controller' => 'lang', 'icon'=>'fa-flag', 'position'=>'2', 'active'=>true]);
-		$module_transl= \App\Models\AdmModule::create(['menu_id' => $menu_web->id, 'name' => 'Traducciones', 'title' => 'traducción', 'controller' => 'translate', 'icon'=>'fa-list', 'position'=>'4', 'active'=>true]);
-		$module_mensaje= \App\Models\AdmModule::create(['menu_id' => $menu_forms->id, 'name' => 'Mensajes recibidos', 'title' => 'mensaje', 'controller' => 'register', 'icon'=>'fa-inbox', 'position'=>'1', 'active'=>true]);
-		$module_cuenta = \App\Models\AdmModule::create(['menu_id' => $menu_forms->id, 'name' => 'Cuentas de correo', 'title' => 'cuenta', 'controller' => 'notify', 'icon'=>'fa-at', 'position'=>'2', 'active'=>true]);
+		$module_inicio = \App\Models\AdmModule::create(['menu_id' => $menu_home->id, 'name' => 'Dashboard', 'url' => '/dashboard/home', 'icon'=>'layout-dashboard', 'position'=>'0', 'visible'=>true]);
+		$module_acceso = \App\Models\AdmModule::create(['menu_id' => $menu_home->id, 'name' => 'Acceso', 'url' => '/dashboard/login', 'position'=>'0', 'visible'=>false]);
+		$module_usradm = \App\Models\AdmModule::create(['menu_id' => $menu_admin->id, 'name' => 'Usuarios', 'title' => 'usuario', 'url' => '/dashboard/users', 'icon'=>'users', 'position'=>'1', 'visible'=>true]);
+		$module_perfil = \App\Models\AdmModule::create(['menu_id' => $menu_admin->id, 'name' => 'Perfiles', 'title' => 'perfil', 'url' => '/dashboard/profiles', 'icon'=>'flask-conical', 'position'=>'2', 'visible'=>true]);
+		$module_reglog = \App\Models\AdmModule::create(['menu_id' => $menu_admin->id, 'name' => 'Registro de Logs', 'title' => 'log', 'url' => '/dashboard/logs', 'icon'=>'book', 'position'=>'3', 'visible'=>true]);
+		$module_idioma = \App\Models\AdmModule::create(['menu_id' => $menu_web->id, 'name' => 'Idiomas', 'title' => 'idioma', 'url' => '/dashboard/langs', 'icon'=>'flag', 'position'=>'2', 'visible'=>true]);
+		$module_transl= \App\Models\AdmModule::create(['menu_id' => $menu_web->id, 'name' => 'Traducciones', 'title' => 'traducción', 'url' => '/dashboard/translates', 'icon'=>'list', 'position'=>'4', 'visible'=>true]);
+		$module_mensaje= \App\Models\AdmModule::create(['menu_id' => $menu_forms->id, 'name' => 'Mensajes recibidos', 'title' => 'mensaje', 'url' => '/dashboard/registers', 'icon'=>'inbox', 'position'=>'1', 'visible'=>true]);
+		$module_cuenta = \App\Models\AdmModule::create(['menu_id' => $menu_forms->id, 'name' => 'Cuentas de correo', 'title' => 'cuenta', 'url' => '/dashboard/notifies', 'icon'=>'mail', 'position'=>'2', 'visible'=>true]);
 
-		$module_config = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Configuración', 'title' => 'configuración', 'controller' => 'config', 'icon'=>'fa-cog', 'position'=>'1', 'active'=>true]);
-		$module_site = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Sites', 'title' => 'site', 'controller' => 'site', 'icon'=>'fa-globe', 'position'=>'2', 'active'=>true]);
-		$module_schema = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Esquemas', 'title' => 'esquema', 'controller' => 'schema', 'icon'=>'fa-random', 'position'=>'3', 'active'=>true]);
-		$module_directory = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Directorio de Archivos', 'title' => 'directorio', 'controller' => 'directory', 'icon'=>'fa-folder-open', 'position'=>'4', 'active'=>true]);
+		$module_config = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Configuración', 'title' => 'configuración', 'url' => '/dashboard/configs', 'icon'=>'cog', 'position'=>'1', 'visible'=>true]);
+		$module_site = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Sites', 'title' => 'site', 'url' => '/dashboard/sites', 'icon'=>'globe', 'position'=>'2', 'visible'=>true]);
+		$module_schema = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Esquemas', 'title' => 'esquema', 'url' => '/dashboard/schemas', 'icon'=>'shuffle', 'position'=>'3', 'visible'=>true]);
+		$module_directory = \App\Models\AdmModule::create(['menu_id' => $menu_cms->id, 'name' => 'Directorio de Archivos', 'title' => 'directorio', 'url' => '/dashboard/directories', 'icon'=>'folder-open', 'position'=>'4', 'visible'=>true]);
 
-		$module_parameter = \App\Models\AdmModule::create(['menu_id' => $menu_modules->id, 'name' => 'Parámetros', 'title' => 'parámetro', 'controller' => 'parameter', 'icon'=>'fa-cog', 'position'=>'1', 'active'=>true]);
-		$module_perfilagente = \App\Models\AdmModule::create(['menu_id' => $menu_modules->id, 'name' => 'Perfiles de Agente', 'title' => 'perfil', 'controller' => 'perfilagente', 'icon'=>'fa-male', 'position'=>'1', 'active'=>true]);
-		$module_certificacion = \App\Models\AdmModule::create(['menu_id' => $menu_modules->id, 'name' => 'Certificaciones', 'title' => 'certificación', 'controller' => 'certificacion', 'icon'=>'fa-certificate', 'position'=>'1', 'active'=>true]);
-		$module_agentes = \App\Models\AdmModule::create(['menu_id' => $menu_modules->id, 'name' => 'Agentes', 'title' => 'agente', 'controller' => 'agente', 'icon'=>'fa-graduation-cap', 'position'=>'1', 'active'=>true]);
-		$module_article = \App\Models\AdmModule::create(['menu_id' => $module_contenido->id, 'name' => 'Páginas', 'title' => 'contenido', 'controller' => 'article', 'icon'=>'fa-file', 'position'=>'1', 'active'=>true]);
+		$module_parameter = \App\Models\AdmModule::create(['menu_id' => $menu_modules->id, 'name' => 'Parámetros', 'title' => 'parámetro', 'url' => '/dashboard/parameters', 'icon'=>'cog', 'position'=>'1', 'visible'=>true]);
+		$module_article = \App\Models\AdmModule::create(['menu_id' => $module_contenido->id, 'name' => 'Páginas', 'title' => 'contenido', 'url' => '/dashboard/articles', 'icon'=>'file', 'position'=>'1', 'visible'=>true]);
 
 		// Seeding adm_actions
 		$action_lista = \App\Models\AdmAction::create(['name' => 'Listar (solo lectura)', 'alias'=>'listar', 'write_log'=>'0']);
@@ -138,13 +131,6 @@ class DatabaseSeeder extends Seeder
 
 		\App\Models\AdmEvent::create(['module_id' => $module_parameter->id, 'action_id' => $action_lista->id]);
 		\App\Models\AdmEvent::create(['module_id' => $module_parameter->id, 'action_id' => $action_admin->id]);
-
-		\App\Models\AdmEvent::create(['module_id' => $module_perfilagente->id, 'action_id' => $action_lista->id]);
-		\App\Models\AdmEvent::create(['module_id' => $module_perfilagente->id, 'action_id' => $action_admin->id]);
-		\App\Models\AdmEvent::create(['module_id' => $module_certificacion->id, 'action_id' => $action_lista->id]);
-		\App\Models\AdmEvent::create(['module_id' => $module_certificacion->id, 'action_id' => $action_admin->id]);
-		\App\Models\AdmEvent::create(['module_id' => $module_agentes->id, 'action_id' => $action_lista->id]);
-		\App\Models\AdmEvent::create(['module_id' => $module_agentes->id, 'action_id' => $action_admin->id]);
 
         \App\Models\AdmEvent::create(['module_id' => $module_article->id, 'action_id' => $action_lista->id]);
 		\App\Models\AdmEvent::create(['module_id' => $module_article->id, 'action_id' => $action_admin->id]);
