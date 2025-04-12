@@ -24,17 +24,15 @@ export default function Index() {
     interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
 
     const { items } = usePage<{ items: ProfilePagination }>().props;
-    const [ query, setQuery ] = useState({s: null});
+    const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
 
     useEffect(() => {
-        if(query.s!=null){
-            router.get(route('users.index'), query, {
-                preserveState: true,
-                replace: true,
-            });
-        }
+        router.get(route('users.index'), query, {
+            preserveState: true,
+            replace: true,
+        });
     }, [query]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
