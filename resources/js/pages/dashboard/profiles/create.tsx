@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Transition } from '@headlessui/react';
 import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -27,7 +26,7 @@ export default function Create() {
         name: '',
         active: false,
     }
-    const { data, setData, errors, post, reset, processing, recentlySuccessful } = useForm<Required<ProfileForm>>(item);
+    const { data, setData, errors, post, reset, processing } = useForm<Required<ProfileForm>>(item);
 
     const createProfile: FormEventHandler = (e) => {
         e.preventDefault();
@@ -66,7 +65,6 @@ export default function Create() {
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         disabled={processing}
-                        placeholder="Nombre"
                     />
 
                     <InputError message={errors.name} />
@@ -87,16 +85,6 @@ export default function Create() {
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
                     <Link href='/dashboard/profiles'>Cancelar</Link>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-neutral-600">Datos guardados con éxito!</p>
-                    </Transition>
                 </div>
             </form>
             </FormLayout>

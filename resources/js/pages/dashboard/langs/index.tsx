@@ -4,7 +4,7 @@ import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Profile, Pagination } from '@/types';
+import { Lang, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search, Plus } from 'lucide-react';
@@ -14,23 +14,23 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard / Perfiles',
-        href: '/admin/profiles/index',
+        title: 'Dashboard / Idiomas',
+        href: '/admin/langs/index',
     },
 ];
 
 export default function Index() {
 
-    interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
+    interface LangPagination extends Omit<Pagination, 'data'> {data: Lang[]};
 
-    const { items } = usePage<{ items: ProfilePagination }>().props;
+    const { items } = usePage<{ items: LangPagination }>().props;
     const [ query, setQuery ] = useState({s: null});
     const { delete : destroy } = useForm();
     //console.log(items);
 
     useEffect(() => {
         if(query.s!=null){
-            router.get(route('profiles.index'), query, {
+            router.get(route('langs.index'), query, {
                 preserveState: true,
                 replace: true,
             });
@@ -43,9 +43,9 @@ export default function Index() {
         setQuery({s: value});
     }
 
-    const deleteProfile = (id: number) => {
+    const deleteLang = (id: number) => {
         console.log(id);
-        destroy(route('profiles.destroy', id), {
+        destroy(route('langs.destroy', id), {
             preserveScroll: true,
             onBefore: () => {
                 return window.confirm('Esta seguro que desea eliminar este registro?');
@@ -59,7 +59,7 @@ export default function Index() {
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
-        <ModuleLayout title="Perfiles" description="Administrar los perfiles del sistema">
+        <ModuleLayout title="Idiomas" description="Administrar los idiomas del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
@@ -76,7 +76,7 @@ export default function Index() {
                     <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <button type="button" className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
                             <Plus/>
-                            <Link href='/dashboard/profiles/create'>Agrgar Perfil</Link>
+                            <Link href='/dashboard/langs/create'>Agrgar Idioma</Link>
                         </button>
                     </div>
                 </div>
@@ -92,7 +92,7 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: Profile)=>{
+                        {items.data.map((item: Lang)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
@@ -109,12 +109,12 @@ export default function Index() {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className="w-56" align="end">
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href={route('profiles.edit', item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href={route('langs.edit', item.id)} as="button" prefetch>
                                                     Edit
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteProfile(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteLang(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>
