@@ -64,12 +64,11 @@ export default function Index() {
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
                         <form className="flex items-center">
-                            <label htmlFor="simple-search" className="sr-only">Search</label>
                             <div className="relative w-full">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
                                     <Search/>
                                 </div>
-                                <Input type='text' value={query.s??''} onChange={handleSearch} className="border border-gray-300 text-sm rounded-md block w-full pl-10 p-2" placeholder="Buscar" />
+                                <Input type='text' autoFocus value={query.s??''} onChange={handleSearch} className="focus-within:outline-2 focus-within:outline-gray-300 border border-gray-300 text-sm rounded-md block w-full pl-10 p-2" placeholder="Buscar" />
                             </div>
                         </form>
                     </div>
