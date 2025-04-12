@@ -32,7 +32,7 @@ export default function Create() {
     const createLang: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post('/dashboard/langs', {
+        post('/admin/langs', {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -95,7 +95,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <Link href='/dashboard/langs'>Cancelar</Link>
+                    <Link href='/admin/langs'>Cancelar</Link>
                 </div>
             </form>
             </FormLayout>

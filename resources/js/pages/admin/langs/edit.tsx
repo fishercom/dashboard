@@ -3,10 +3,10 @@ import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ProfileForm } from '@/types';
+import { Lang, LangForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,24 +14,22 @@ import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard / Perfiles / Crear',
-        href: '/admin/profiles/index',
+        title: 'Dashboard / Idiomas / Editar',
+        href: '/admin/langs/index',
     },
 ];
 
 export default function Create() {
 
-    const item: ProfileForm = {
-        id: 0,
-        name: '',
-        active: false,
-    }
-    const { data, setData, errors, post, reset, processing } = useForm<Required<ProfileForm>>(item);
+    const { item } = usePage<{ item: Lang }>().props;
+    const { data, setData, errors, put, reset, processing } = useForm<Required<LangForm>>(item);
 
-    const createProfile: FormEventHandler = (e) => {
+    console.log(data);
+
+    const updateLang: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post('/dashboard/profiles', {
+        put('/admin/langs/'+data.id, {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -49,12 +47,11 @@ export default function Create() {
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
-        <ModuleLayout title="Crear Perfil" description="Administrar los perfiles del sistema">
+        <ModuleLayout title="Editar Idioma" description="Administrar los idiomas del sistema">
             <FormLayout>
-            <form onSubmit={createProfile} className="space-y-6">
+            <form onSubmit={updateLang} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
-
                     <Input
                         id="name"
                         type="text"
@@ -66,16 +63,29 @@ export default function Create() {
                         onChange={(e) => setData('name', e.target.value)}
                         disabled={processing}
                     />
-
                     <InputError message={errors.name} />
                 </div>
 
+                <div className="grid gap-2">
+                    <Label htmlFor="iso">ISO</Label>
+                    <Input
+                        id="iso"
+                        type="text"
+                        required
+                        autoFocus
+                        autoComplete="iso"
+                        value={data.iso}
+                        onChange={(e) => setData('iso', e.target.value)}
+                        disabled={processing}
+                    />
+                    <InputError message={errors.name} />
+                </div>
 
                 <div className="flex items-center space-x-3">
                     <Checkbox
                         id="active"
                         name="active"
-                        checked={data.active}
+                        checked={Boolean(data.active)}
                         onClick={() => setData('active', !data.active)}
                         tabIndex={3}
                     />
@@ -84,7 +94,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <Link href='/dashboard/profiles'>Cancelar</Link>
+                    <Link href='/admin/langs'>Cancelar</Link>
                 </div>
             </form>
             </FormLayout>

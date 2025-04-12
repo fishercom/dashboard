@@ -4,35 +4,37 @@ import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Log, Pagination } from '@/types';
+import { Lang, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Search } from 'lucide-react';
+import { ChevronDown, Check, Search, Plus } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard / Logs',
-        href: '/admin/logs/index',
+        title: 'Dashboard / Traducciones',
+        href: '/admin/translates/index',
     },
 ];
 
 export default function Index() {
 
-    interface LogPagination extends Omit<Pagination, 'data'> {data: Log[]};
+    interface LangPagination extends Omit<Pagination, 'data'> {data: Lang[]};
 
-    const { items } = usePage<{ items: LogPagination }>().props;
+    const { items } = usePage<{ items: LangPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
 
     useEffect(() => {
-        router.get(route('logs.index'), query, {
-            preserveState: true,
-            replace: true,
-        });
+        if(query.s){
+            router.get(route('translates.index'), query, {
+                preserveState: true,
+                replace: true,
+            });
+        }
     }, [query]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -41,9 +43,9 @@ export default function Index() {
         setQuery({s: value});
     }
 
-    const deleteLog = (id: number) => {
+    const deleteLang = (id: number) => {
         console.log(id);
-        destroy(route('logs.destroy', id), {
+        destroy(route('translates.destroy', id), {
             preserveScroll: true,
             onBefore: () => {
                 return window.confirm('Esta seguro que desea eliminar este registro?');
@@ -57,10 +59,10 @@ export default function Index() {
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
-        <ModuleLayout title="Logs" description="Revisar los logs del sistema">
+        <ModuleLayout title="Traducciones" description="Administrar las traducciones del site">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
-                    <div className="w-full md:w-3/4">
+                    <div className="w-full">
                         <form className="flex items-center">
                             <div className="relative w-full">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
@@ -70,24 +72,24 @@ export default function Index() {
                             </div>
                         </form>
                     </div>
-                    <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-4 py-3 rounded-l-md">Comment</th>
+                                <th scope="col" className="px-4 py-3 rounded-l-md">Name</th>
+                                <th scope="col" className="px-4 py-3">Active</th>
                                 <th scope="col" className="px-4 py-3">Created Date</th>
                                 <th scope="col" className="px-4 py-3">Updated Date</th>
                                 <th scope="col" className="px-4 py-3 rounded-r-md"></th>
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: Log)=>{
+                        {items.data.map((item: Lang)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
-                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.comment }</th>
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
+                                <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3 flex items-center justify-end">
@@ -100,12 +102,12 @@ export default function Index() {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className="w-56" align="end">
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href={route('logs.edit', item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href={route('translates.edit', item.id)} as="button" prefetch>
                                                     Edit
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteLog(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteLang(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>

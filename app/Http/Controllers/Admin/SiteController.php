@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\AdmLogUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
-use App\Models\AdmLog;
+use App\Models\CmsSite;
 
-class LogController extends Controller
+class SiteController extends Controller
 {
     /**
      * Show the user's log settings page.
@@ -22,14 +21,14 @@ class LogController extends Controller
     {
         $s = $request->get('s');
 
-        $items = AdmLog::select()
+        $items = CmsSite::select()
         ->where(function($query) use($s){
             if(!empty($s)){
                 $query->where('name', 'LIKE', '%'.str_replace(' ', '%', $s).'%');
             }
         })
         ->paginate(15);
-        return Inertia::render('dashboard/logs/index', [
+        return Inertia::render('admin/sites/index', [
             'items' => $items,
         ]);
     }
@@ -39,8 +38,8 @@ class LogController extends Controller
      */
     public function edit($id, Request $request): Response
     {
-        $item = AdmLog::find($id);
-        return Inertia::render('dashboard/logs/edit', [
+        $item = CmsSite::find($id);
+        return Inertia::render('admin/sites/edit', [
             'item' => $item,
         ]);
     }
@@ -50,11 +49,11 @@ class LogController extends Controller
      */
     public function update($id, Request $request): RedirectResponse
     {
-        $item = AdmLog::find($id);
+        $item = CmsSite::find($id);
 		$item->fill($request->all());
 		$item->save();
 
-        return redirect('dashboard/logs');
+        return redirect('admin/sites');
     }
 
     /**
@@ -62,9 +61,9 @@ class LogController extends Controller
      */
     public function destroy($id, Request $request): RedirectResponse
     {
-        $item = AdmLog::find($id);
+        $item = CmsSite::find($id);
 		$item->delete();
 
-        return redirect('dashboard/logs');
+        return redirect('admin/sites');
     }
 }

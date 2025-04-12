@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class HomeController extends Controller
             }
         })
         ->get();
-        return Inertia::render('dashboard/profiles/index', [
+        return Inertia::render('admin/profiles/index', [
             'items' => $items,
         ]);
     }

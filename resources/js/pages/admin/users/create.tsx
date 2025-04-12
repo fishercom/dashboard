@@ -36,7 +36,7 @@ export default function Create() {
     const createProfile: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post('/dashboard/users', {
+        post('/admin/users', {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -139,7 +139,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <Link href='/dashboard/users'>Cancelar</Link>
+                    <Link href='/admin/users'>Cancelar</Link>
                 </div>
             </form>
             </FormLayout>

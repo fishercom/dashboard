@@ -7,7 +7,7 @@ export default function FormLayout({ children }: PropsWithChildren) {
     }
 
     return (
-        <div className="relative shadow-md sm:rounded-lg overflow-hidden">
+        <div className="relative overflow-hidden">
             <div className="overflow-x-auto items-center justify-between space-y-3 md:space-y-0 md:space-x-4">
                 {children}
             </div>

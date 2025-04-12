@@ -117,3 +117,35 @@ export interface LogForm {
     user_id: number,
     comment: string,
 }
+
+export interface Config {
+    id: number,
+    event_id: number,
+    user_id: number,
+    alias: string,
+    updated_at: Date,
+    created_at: Date
+}
+
+export interface ConfigForm {
+    id: number,
+    event_id: number,
+    user_id: number,
+    alias: string,
+}
+
+export interface Site {
+    id: number,
+    event_id: number,
+    user_id: number,
+    name: string,
+    updated_at: Date,
+    created_at: Date
+}
+
+export interface SiteForm {
+    id: number,
+    event_id: number,
+    user_id: number,
+    name: string,
+}

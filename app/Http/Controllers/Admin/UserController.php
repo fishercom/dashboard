@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\UserUpdateRequest;
-use App\Models\Profile;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +11,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 use App\Models\User;
+use App\Models\Profile;
 
 class UserController extends Controller
 {
@@ -32,7 +31,7 @@ class UserController extends Controller
             }
         })
         ->paginate(15);
-        return Inertia::render('dashboard/users/index', [
+        return Inertia::render('admin/users/index', [
             'items' => $items,
             'profiles' => $profiles,
         ]);
@@ -42,7 +41,7 @@ class UserController extends Controller
     {
         $profiles = Profile::all();
 
-        return Inertia::render('dashboard/users/create',[
+        return Inertia::render('admin/users/create',[
             'profiles' => $profiles,
         ]);
     }
@@ -51,7 +50,7 @@ class UserController extends Controller
     {
         $User = new User($request->all());
         $User->save();
-        return redirect('dashboard/users');
+        return redirect('admin/users');
     }
 
     /**
@@ -62,7 +61,7 @@ class UserController extends Controller
         $item = User::find($id);
         $profiles = Profile::all();
 
-        return Inertia::render('dashboard/users/edit', [
+        return Inertia::render('admin/users/edit', [
             'item' => $item,
             'profiles' => $profiles,
         ]);
@@ -77,7 +76,7 @@ class UserController extends Controller
 		$item->fill($request->all());
 		$item->save();
 
-        return redirect('dashboard/users');
+        return redirect('admin/users');
     }
 
     /**
@@ -88,6 +87,6 @@ class UserController extends Controller
         $item = User::find($id);
 		$item->delete();
 
-        return redirect('dashboard/users');
+        return redirect('admin/users');
     }
 }

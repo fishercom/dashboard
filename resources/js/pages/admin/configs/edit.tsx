@@ -14,8 +14,8 @@ import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard / Idiomas / Editar',
-        href: '/admin/langs/index',
+        title: 'Dashboard / Configuración / Editar',
+        href: '/admin/configs/index',
     },
 ];
 
@@ -29,7 +29,7 @@ export default function Create() {
     const updateLang: FormEventHandler = (e) => {
         e.preventDefault();
 
-        put('/dashboard/langs/'+data.id, {
+        put('/admin/configs/'+data.id, {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -47,7 +47,7 @@ export default function Create() {
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
-        <ModuleLayout title="Editar Idioma" description="Administrar los idiomas del sistema">
+        <ModuleLayout title="Editar Configuración" description="Revisar la configuración del sistema">
             <FormLayout>
             <form onSubmit={updateLang} className="space-y-6">
                 <div className="grid gap-2">
@@ -94,7 +94,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <Link href='/dashboard/langs'>Cancelar</Link>
+                    <Link href='/admin/configs'>Cancelar</Link>
                 </div>
             </form>
             </FormLayout>

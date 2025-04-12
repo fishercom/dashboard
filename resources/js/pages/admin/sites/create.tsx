@@ -3,10 +3,10 @@ import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Lang, LangForm } from '@/types';
+import { LangForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,22 +14,25 @@ import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard / Idiomas / Editar',
-        href: '/admin/langs/index',
+        title: 'Dashboard / Sitios Web / Crear',
+        href: '/admin/sites/index',
     },
 ];
 
 export default function Create() {
 
-    const { item } = usePage<{ item: Lang }>().props;
-    const { data, setData, errors, put, reset, processing } = useForm<Required<LangForm>>(item);
+    const item: LangForm = {
+        id: 0,
+        name: '',
+        iso: '',
+        active: false,
+    }
+    const { data, setData, errors, post, reset, processing } = useForm<Required<LangForm>>(item);
 
-    console.log(data);
-
-    const updateLang: FormEventHandler = (e) => {
+    const createLang: FormEventHandler = (e) => {
         e.preventDefault();
 
-        put('/dashboard/langs/'+data.id, {
+        post('/admin/sites', {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -47,9 +50,9 @@ export default function Create() {
     return (
     <AppLayout breadcrumbs={breadcrumbs}>
         <Head/>
-        <ModuleLayout title="Editar Idioma" description="Administrar los idiomas del sistema">
+        <ModuleLayout title="Crear Sitios Web" description="Administrar los sitios web del sistema">
             <FormLayout>
-            <form onSubmit={updateLang} className="space-y-6">
+            <form onSubmit={createLang} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
                     <Input
@@ -57,7 +60,6 @@ export default function Create() {
                         type="text"
                         required
                         autoFocus
-                        tabIndex={1}
                         autoComplete="name"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
@@ -72,7 +74,6 @@ export default function Create() {
                         id="iso"
                         type="text"
                         required
-                        autoFocus
                         autoComplete="iso"
                         value={data.iso}
                         onChange={(e) => setData('iso', e.target.value)}
@@ -85,7 +86,7 @@ export default function Create() {
                     <Checkbox
                         id="active"
                         name="active"
-                        checked={Boolean(data.active)}
+                        checked={data.active}
                         onClick={() => setData('active', !data.active)}
                         tabIndex={3}
                     />
@@ -94,7 +95,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <Link href='/dashboard/langs'>Cancelar</Link>
+                    <Link href='/admin/sites'>Cancelar</Link>
                 </div>
             </form>
             </FormLayout>
