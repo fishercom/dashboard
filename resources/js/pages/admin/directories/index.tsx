@@ -66,7 +66,7 @@ export default function Index() {
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
                                     <Search/>
                                 </div>
-                                <Input type='text' autoFocus value={query.s??''} onChange={handleSearch} className="focus-within:outline-2 focus-within:outline-gray-300 border border-gray-300 text-sm rounded-md block w-full pl-10 p-2" placeholder="Buscar" />
+                                <Input type='text' autoFocus value={query.s??''} onChange={handleSearch} className="focus-within:outline-2 focus-within:outline-gray-400 border border-gray-500 text-sm rounded-md block w-full pl-10 p-2" placeholder="Buscar" />
                             </div>
                         </form>
                     </div>
