@@ -5,33 +5,31 @@ import { type BreadcrumbItem } from '@/types';
 import { useForm, Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { LangForm } from '@/types';
+import { ProfileForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export default function Create() {
-
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Dashboard / Traducciones / Crear',
-            href: '/admin/translates/index',
+            title: 'Dashboard / Artículos / Crear',
+            href: '/admin/articles/index',
         },
     ];
 
-    const item: LangForm = {
+    const item: ProfileForm = {
         id: 0,
         name: '',
-        iso: '',
         active: false,
     }
-    const { data, setData, errors, post, reset, processing } = useForm<Required<LangForm>>(item);
+    const { data, setData, errors, post, reset, processing } = useForm<Required<ProfileForm>>(item);
 
-    const createLang: FormEventHandler = (e) => {
+    const createProfile: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post('/admin/translates', {
+        post('/admin/articles', {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -47,37 +45,27 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Traducción" description="Administrar las traducciones del site">
+        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Artículo" description="Administrar los artículos del sistema">
             <FormLayout>
-            <form onSubmit={createLang} className="space-y-6">
+            <form onSubmit={createProfile} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
+
                     <Input
                         id="name"
                         type="text"
                         required
                         autoFocus
+                        tabIndex={1}
                         autoComplete="name"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         disabled={processing}
                     />
+
                     <InputError message={errors.name} />
                 </div>
 
-                <div className="grid gap-2">
-                    <Label htmlFor="iso">ISO</Label>
-                    <Input
-                        id="iso"
-                        type="text"
-                        required
-                        autoComplete="iso"
-                        value={data.iso}
-                        onChange={(e) => setData('iso', e.target.value)}
-                        disabled={processing}
-                    />
-                    <InputError message={errors.name} />
-                </div>
 
                 <div className="flex items-center space-x-3">
                     <Checkbox
@@ -92,7 +80,7 @@ export default function Create() {
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>
-                    <Link href='/admin/translates'>Cancelar</Link>
+                    <Link href='/admin/articles'>Cancelar</Link>
                 </div>
             </form>
             </FormLayout>

@@ -1,9 +1,8 @@
 import InputError from '@/components/input-error';
-import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage, Link } from '@inertiajs/react';
+import { useForm, usePage, Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Profile, UserForm } from '@/types';
@@ -12,14 +11,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard / Usuarios / Crear',
-        href: '/admin/users/index',
-    },
-];
-
 export default function Create() {
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Dashboard / Usuarios / Crear',
+            href: '/admin/users/index',
+        },
+    ];
 
     const item: UserForm = {
         id: 0,
@@ -52,9 +51,7 @@ export default function Create() {
     };
 
     return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        <Head/>
-        <ModuleLayout title="Crear Usuario" description="Administrar los usuarios del sistema">
+        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Usuario" description="Administrar los usuarios del sistema">
             <FormLayout>
             <form onSubmit={createProfile} className="space-y-6">
                 <div className="grid gap-2">
@@ -144,6 +141,5 @@ export default function Create() {
             </form>
             </FormLayout>
         </ModuleLayout>
-    </AppLayout>
     );
 }

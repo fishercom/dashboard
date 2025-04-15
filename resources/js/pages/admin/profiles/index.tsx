@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Profile, Pagination } from '@/types';
@@ -12,13 +11,6 @@ import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard / Perfiles',
-        href: '/admin/profiles/index',
-    },
-];
-
 export default function Index() {
 
     interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
@@ -27,6 +19,13 @@ export default function Index() {
     const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Dashboard / Perfiles',
+            href: '/admin/profiles/index',
+        },
+    ];
 
     useEffect(() => {
         if(query.s){
@@ -57,9 +56,7 @@ export default function Index() {
     }
 
     return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        <Head/>
-        <ModuleLayout title="Perfiles" description="Administrar los perfiles del sistema">
+        <ModuleLayout breadcrumbs={breadcrumbs} title="Perfiles" description="Administrar los perfiles del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
@@ -132,6 +129,5 @@ export default function Index() {
                 }
             </div>
         </ModuleLayout>
-    </AppLayout>
     );
 }

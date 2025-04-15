@@ -1,9 +1,8 @@
 import InputError from '@/components/input-error';
-import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Profile, UserForm } from '@/types';
@@ -12,19 +11,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard / Usuarios / Editar',
-        href: '/admin/users/index',
-    },
-];
 
 export default function Create() {
 
     const { item, profiles } = usePage<{ item: UserForm, profiles: Profile[] }>().props;
     const { data, setData, errors, put, reset, processing } = useForm<Required<UserForm>>(item);
+    //console.log(data);
 
-    console.log(data);
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Dashboard / Usuarios / Editar',
+            href: '/admin/users/index',
+        },
+    ];
 
     const updateUser: FormEventHandler = (e) => {
         e.preventDefault();
@@ -45,9 +44,7 @@ export default function Create() {
     };
 
     return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        <Head/>
-        <ModuleLayout title="Editar Usuario" description="Administrar los usuarios del sistema">
+        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Usuario" description="Administrar los usuarios del sistema">
             <FormLayout>
             <form onSubmit={updateUser} className="space-y-6">
                 <div className="grid gap-2">
@@ -123,6 +120,5 @@ export default function Create() {
             </form>
             </FormLayout>
         </ModuleLayout>
-    </AppLayout>
     );
 }

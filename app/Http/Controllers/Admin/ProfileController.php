@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 use App\Models\Profile;
+use App\Models\AdmPermission;
 
 class ProfileController extends Controller
 {

@@ -10,63 +10,63 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
-use App\Models\CmsLang;
-use App\Models\CmsTranslate;
+use App\Models\CmsSchema;
+use App\Models\CmsSchemaGroup;
 
-class TranslateController extends Controller
+class SchemaController extends Controller
 {
     /**
-     * Show the user's Translate settings page.
+     * Show the user's profile settings page.
      */
     public function index(Request $request): Response
     {
         $s = $request->get('s');
 
-        $items = CmsTranslate::select()
+        $items = CmsSchema::select()
         ->where(function($query) use($s){
             if(!empty($s)){
                 $query->where('name', 'LIKE', '%'.str_replace(' ', '%', $s).'%');
             }
         })
         ->paginate(15);
-        return Inertia::render('admin/translates/index', [
+        return Inertia::render('admin/schemas/index', [
             'items' => $items,
         ]);
     }
 
     public function create()
     {
-      return Inertia::render('admin/translates/create');
+      return Inertia::render('admin/schemas/create');
     }
 
     public function store(Request $request)
     {
-        $Translate = new CmsTranslate($request->all());
-        $Translate->save();
-        return redirect('admin/translates');
+        $profile = new CmsSchema($request->all());
+        $profile->save();
+        return redirect('admin/schemas');
     }
 
     /**
-     * Show the user's Translate settings page.
+     * Show the user's profile settings page.
      */
     public function edit($id, Request $request): Response
     {
-        $item = CmsTranslate::find($id);
-        return Inertia::render('admin/translates/edit', [
+        $item = CmsSchema::find($id);
+        return Inertia::render('admin/schemas/edit', [
             'item' => $item,
         ]);
     }
 
     /**
-     * Update the user's Translate settings.
+     * Update the user's profile settings.
      */
     public function update($id, Request $request): RedirectResponse
     {
-        $item = CmsTranslate::find($id);
+        $item = CmsSchema::find($id);
 		$item->fill($request->all());
 		$item->save();
 
-        return redirect('admin/translates');
+        return redirect('admin/schemas');
     }
 
     /**
@@ -74,9 +74,9 @@ class TranslateController extends Controller
      */
     public function destroy($id, Request $request): RedirectResponse
     {
-        $item = CmsTranslate::find($id);
+        $item = CmsSchema::find($id);
 		$item->delete();
 
-        return redirect('admin/translates');
+        return redirect('admin/schemas');
     }
 }

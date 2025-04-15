@@ -1,9 +1,8 @@
 import InputError from '@/components/input-error';
-import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Lang, LangForm } from '@/types';
@@ -12,19 +11,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard / Sitios Web / Editar',
-        href: '/admin/sites/index',
-    },
-];
-
 export default function Create() {
 
     const { item } = usePage<{ item: Lang }>().props;
     const { data, setData, errors, put, reset, processing } = useForm<Required<LangForm>>(item);
+    //console.log(data);
 
-    console.log(data);
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Dashboard / Sitios Web / Editar',
+            href: '/admin/sites/index',
+        },
+    ];
 
     const updateLang: FormEventHandler = (e) => {
         e.preventDefault();
@@ -45,9 +43,7 @@ export default function Create() {
     };
 
     return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        <Head/>
-        <ModuleLayout title="Editar Sitios Web" description="Administrar los sitios web del sistema">
+        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Sitios Web" description="Administrar los sitios web del sistema">
             <FormLayout>
             <form onSubmit={updateLang} className="space-y-6">
                 <div className="grid gap-2">
@@ -99,6 +95,5 @@ export default function Create() {
             </form>
             </FormLayout>
         </ModuleLayout>
-    </AppLayout>
     );
 }

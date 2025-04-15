@@ -1,9 +1,8 @@
 import InputError from '@/components/input-error';
-import AppLayout from '@/layouts/app-layout';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { useForm, Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LangForm } from '@/types';
@@ -12,14 +11,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard / Sitios Web / Crear',
-        href: '/admin/sites/index',
-    },
-];
-
 export default function Create() {
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Dashboard / Sitios Web / Crear',
+            href: '/admin/sites/index',
+        },
+    ];
 
     const item: LangForm = {
         id: 0,
@@ -48,9 +47,7 @@ export default function Create() {
     };
 
     return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        <Head/>
-        <ModuleLayout title="Crear Sitios Web" description="Administrar los sitios web del sistema">
+        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Sitios Web" description="Administrar los sitios web del sistema">
             <FormLayout>
             <form onSubmit={createLang} className="space-y-6">
                 <div className="grid gap-2">
@@ -100,6 +97,5 @@ export default function Create() {
             </form>
             </FormLayout>
         </ModuleLayout>
-    </AppLayout>
     );
 }
