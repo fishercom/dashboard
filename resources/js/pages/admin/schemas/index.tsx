@@ -3,7 +3,7 @@ import { type BreadcrumbItem} from '@/types';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Profile, Pagination } from '@/types';
+import { Schema, SchemaGroup, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search, Plus } from 'lucide-react';
@@ -13,9 +13,9 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
+    interface SchemaPagination extends Omit<Pagination, 'data'> {data: Schema[]};
 
-    const { items } = usePage<{ items: ProfilePagination }>().props;
+    const { items, groups, group_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], group_id: number }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
@@ -41,7 +41,7 @@ export default function Index() {
         setQuery({s: value});
     }
 
-    const deleteProfile = (id: number) => {
+    const deleteSchema = (id: number) => {
         console.log(id);
         destroy(route('schemas.destroy', id), {
             preserveScroll: true,
@@ -59,13 +59,33 @@ export default function Index() {
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
-                        <form className="flex items-center">
+                        <form className="flex items-center space-y-3 md:space-y-0 md:space-x-4">
                             <label htmlFor="simple-search" className="sr-only">Search</label>
                             <div className="relative w-full">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
                                     <Search/>
                                 </div>
                                 <Input type='text' autoFocus value={query.s??''} onChange={handleSearch} className="focus-within:outline-2 focus-within:outline-gray-400 border border-gray-500 text-sm rounded-md block w-full pl-10 p-2" placeholder="Buscar" />
+                            </div>
+                            <label htmlFor="simple-search" className="sr-only">Group</label>
+                            <div className="focus-within:outline-2 focus-within:outline-gray-400 border border-gray-500 text-sm rounded-md block">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="p-3">
+                                            {group_id && groups.length>0? groups.filter(e=>e.id==group_id)[0].name: 'Group'}
+                                            <Icon iconNode={ChevronDown} className="h-5 w-5" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56" align="end">
+                                        {groups.map(e=>
+                                        <DropdownMenuItem key={e.id} asChild>
+                                            <Link className="block w-full" href={route('schemas.index', {'group_id': e.id})} as="button" prefetch>
+                                                {e.name}
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        )}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
                         </form>
                     </div>
@@ -88,7 +108,7 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: Profile)=>{
+                        {items.data.map((item: Schema)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
@@ -110,7 +130,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteProfile(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteSchema(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>

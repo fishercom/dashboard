@@ -149,3 +149,27 @@ export interface SiteForm {
     user_id: number,
     name: string,
 }
+
+export interface SchemaGroup {
+    id: number,
+    name: string,
+    layout: boolean,
+    default: boolean,
+    active: boolean,
+    updated_at: Date,
+    created_at: Date
+}
+
+export interface Schema {
+    id: number,
+    name: string,
+    active: boolean,
+    updated_at: Date,
+    created_at: Date
+}
+
+export type SchemaForm = {
+    id: number,
+    name: string,
+    active: boolean,
+}
