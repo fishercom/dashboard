@@ -20,6 +20,7 @@ class SchemaController extends Controller
     public function __construct(Request $request)
     {
         $this->group_id = $request->get('group_id');
+        $this->parent_id = $request->get('parent_id');
         if(!$this->group_id){
             $group = CmsSchemaGroup::select()
             ->where('active', true)
@@ -29,6 +30,7 @@ class SchemaController extends Controller
         }
 
         Inertia::share('group_id', $this->group_id);
+        Inertia::share('parent_id', $this->parent_id);
     }
 
     /**
@@ -38,7 +40,7 @@ class SchemaController extends Controller
     {
         $s = $request->get('s');
         $group_id = $this->group_id;
-        $parent_id = $request->get('parent_id');
+        $parent_id = $this->parent_id;
 
         $groups = CmsSchemaGroup::select()
         ->where('active', true)
@@ -46,15 +48,13 @@ class SchemaController extends Controller
         ->get();
 
         $items = CmsSchema::select()
-        ->where(function($query) use($s, $parent_id){
+        ->where(function($query) use($s){
             if(!empty($s)){
                 $query->where('name', 'LIKE', '%'.str_replace(' ', '%', $s).'%');
             }
-            if($parent_id){
-                $query->where('parent_id', $parent_id);
-            }
         })
         ->where('group_id', $group_id)
+        ->where('parent_id', $parent_id)
         ->paginate(15);
 
         $parent = CmsSchema::find($parent_id);
@@ -68,14 +68,24 @@ class SchemaController extends Controller
 
     public function create()
     {
-      return Inertia::render('admin/schemas/create');
+      $args = [
+        'group_id' => $this->group_id,
+        'parent_id' => $this->parent_id
+      ];
+      return Inertia::render('admin/schemas/create', [
+        'item' => $args,
+      ]);
     }
 
     public function store(Request $request)
     {
         $profile = new CmsSchema($request->all());
         $profile->save();
-        return redirect('admin/schemas');
+        $args = [
+            'group_id' => $this->group_id,
+            'parent_id' => $this->parent_id
+        ];
+        return redirect()->route('schemas.index', $args);
     }
 
     /**
@@ -98,7 +108,11 @@ class SchemaController extends Controller
 		$item->fill($request->all());
 		$item->save();
 
-        return redirect('admin/schemas');
+        $args = [
+            'group_id' => $this->group_id,
+            'parent_id' => $this->parent_id
+        ];
+        return redirect()->route('schemas.index', $args);
     }
 
     /**

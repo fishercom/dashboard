@@ -15,7 +15,7 @@ export default function Index() {
 
     interface SchemaPagination extends Omit<Pagination, 'data'> {data: Schema[]};
 
-    const { items, groups, parent, group_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], parent: Schema, group_id: number }>().props;
+    const { items, groups, parent, group_id, parent_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], parent: Schema, group_id: number, parent_id: number }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
@@ -92,7 +92,7 @@ export default function Index() {
                     <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <button type="button" className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
                             <Plus/>
-                            <Link href='/admin/schemas/create'>Agrgar Esquema</Link>
+                            <Link href={route('schemas.create', {parent_id: parent_id, group_id: group_id})}>Agrgar Esquema</Link>
                         </button>
                     </div>
                 </div>

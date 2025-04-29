@@ -165,6 +165,10 @@ export interface Schema {
     parent_id: number,
     group_id: number,
     name: string,
+    admin_view: string,
+    front_view: string,
+    iterations: number,
+    is_page: boolean,
     active: boolean,
     updated_at: Date,
     created_at: Date
@@ -172,6 +176,12 @@ export interface Schema {
 
 export type SchemaForm = {
     id: number,
+    parent_id: number,
+    group_id: number,
     name: string,
+    admin_view: string,
+    front_view: string,
+    iterations: number,
+    is_page: boolean,
     active: boolean,
 }
