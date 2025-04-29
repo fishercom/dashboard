@@ -162,6 +162,8 @@ export interface SchemaGroup {
 
 export interface Schema {
     id: number,
+    parent_id: number,
+    group_id: number,
     name: string,
     active: boolean,
     updated_at: Date,

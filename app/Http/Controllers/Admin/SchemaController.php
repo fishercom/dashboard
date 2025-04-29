@@ -38,6 +38,7 @@ class SchemaController extends Controller
     {
         $s = $request->get('s');
         $group_id = $this->group_id;
+        $parent_id = $request->get('parent_id');
 
         $groups = CmsSchemaGroup::select()
         ->where('active', true)
@@ -45,17 +46,23 @@ class SchemaController extends Controller
         ->get();
 
         $items = CmsSchema::select()
-        ->where(function($query) use($s){
+        ->where(function($query) use($s, $parent_id){
             if(!empty($s)){
                 $query->where('name', 'LIKE', '%'.str_replace(' ', '%', $s).'%');
+            }
+            if($parent_id){
+                $query->where('parent_id', $parent_id);
             }
         })
         ->where('group_id', $group_id)
         ->paginate(15);
 
+        $parent = CmsSchema::find($parent_id);
+
         return Inertia::render('admin/schemas/index', [
             'items' => $items,
-            'groups' => $groups
+            'groups' => $groups,
+            'parent' => $parent
         ]);
     }
 

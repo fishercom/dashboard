@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { Schema, SchemaGroup, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Check, Search, Plus } from 'lucide-react';
+import { ChevronDown, Check, Search, Plus, ChevronLeft } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
@@ -15,7 +15,7 @@ export default function Index() {
 
     interface SchemaPagination extends Omit<Pagination, 'data'> {data: Schema[]};
 
-    const { items, groups, group_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], group_id: number }>().props;
+    const { items, groups, parent, group_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], parent: Schema, group_id: number }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
@@ -111,7 +111,9 @@ export default function Index() {
                         {items.data.map((item: Schema)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
-                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <a href={route('schemas.index', {parent_id: item.id, group_id: item.group_id})}>{ item.name }</a>
+                                </th>
                                 <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
@@ -145,6 +147,9 @@ export default function Index() {
                 </div>
                 {items.links &&
                 <PaginationNav data={items}/>
+                }
+                {parent &&
+                <a href={route('schemas.index', {parent_id: parent.parent_id, group_id: group_id})} className='flex'><ChevronLeft/>Regresar</a>
                 }
             </div>
         </ModuleLayout>
