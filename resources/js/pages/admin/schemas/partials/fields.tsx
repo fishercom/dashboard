@@ -2,7 +2,7 @@ import InputError from '@/components/input-error';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Schema, SchemaForm } from '@/types';
+import { Schema, SchemaForm, CustomField } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,9 @@ export default function SchemaFields() {
     const form = useForm<Required<SchemaForm>>(item);
     const {data, setData, errors, processing} = form;
     //console.log(data);
+
+    const fields: [] = data.fields;
+    //console.log(fields);
 
     const createSchema: FormEventHandler = (e) => {
         e.preventDefault();

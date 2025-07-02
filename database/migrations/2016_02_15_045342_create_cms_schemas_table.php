@@ -21,6 +21,7 @@ class CreateCmsSchemasTable extends Migration {
 			$table->string('name');
 			$table->string('admin_view', 50);
 			$table->string('front_view', 50);
+			$table->json('fields');
 			$table->integer('iterations')->unsigned()->nullable();
 			$table->boolean('is_page')->nullable();
 			$table->integer('position')->unsigned()->nullable();

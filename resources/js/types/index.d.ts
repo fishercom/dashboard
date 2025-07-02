@@ -48,6 +48,13 @@ export interface Pagination {
     total: number
 }
 
+export interface CustomField {
+    key: string;
+    name: string;
+    type: string;
+    options?: [];
+}
+
 export interface User {
     id: number;
     name: string;
@@ -167,6 +174,7 @@ export interface Schema {
     name: string,
     admin_view: string,
     front_view: string,
+    fields: [],
     iterations: number,
     is_page: boolean,
     active: boolean,
@@ -181,6 +189,7 @@ export type SchemaForm = {
     name: string,
     admin_view: string,
     front_view: string,
+    fields: [],
     iterations: number,
     is_page: boolean,
     active: boolean,
