@@ -49,7 +49,7 @@ export interface Pagination {
 }
 
 export interface CustomField {
-    name: string;
+    key: string;
     label: string;
     type: string;
     value?: string | number | boolean | null;

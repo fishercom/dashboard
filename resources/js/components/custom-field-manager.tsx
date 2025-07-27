@@ -12,12 +12,12 @@ interface CustomFieldManagerProps {
 }
 
 export default function CustomFieldManager({ fields, setFields }: CustomFieldManagerProps) {
-    const [newField, setNewField] = useState<CustomField>({ name: '', label: '', type: '' });
+    const [newField, setNewField] = useState<CustomField>({ label: '', key: '', type: '' });
 
     const addField = () => {
-        if (newField.name && newField.label && newField.type) {
+        if (newField.label && newField.key && newField.type) {
             setFields([...fields, { ...newField, fields: newField.type === 'repeater' ? [] : undefined }]);
-            setNewField({ name: '', label: '', type: '' });
+            setNewField({ label: '', key: '', type: '' });
         }
     };
 
@@ -55,9 +55,9 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                             />
                             <Input
                                 className="flex-1"
-                                value={field.name}
-                                onChange={(e) => updateField(index, { ...field, name: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
-                                placeholder="Nombre"
+                                value={field.key}
+                                onChange={(e) => updateField(index, { ...field, key: e.target.value.replace(/[^a-zA-Z0-9-_]/g, '') })}
+                                placeholder="Key"
                             />
                             <Select onValueChange={(value) => updateField(index, { ...field, type: value })} value={field.type}>
                                 <SelectTrigger className="flex-1">
@@ -96,13 +96,13 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                     className="flex-1"
                     value={newField.label}
                     onChange={(e) => setNewField({ ...newField, label: e.target.value })}
-                    placeholder="Nueva Etiqueta"
+                    placeholder="Etiqueta"
                 />
                 <Input
                     className="flex-1"
-                    value={newField.name}
-                    onChange={(e) => setNewField({ ...newField, name: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
-                    placeholder="Nuevo Nombre"
+                    value={newField.key}
+                    onChange={(e) => setNewField({ ...newField, key: e.target.value.replace(/[^a-zA-Z0-9-_]/g, '') })}
+                    placeholder="Key"
                 />
                 <Select onValueChange={(value) => setNewField({ ...newField, type: value })} value={newField.type}>
                     <SelectTrigger className="flex-1">
