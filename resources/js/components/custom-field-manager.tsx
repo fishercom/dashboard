@@ -16,7 +16,7 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
 
     const addField = () => {
         if (newField.label && newField.key && newField.type) {
-            setFields([...fields, { ...newField, fields: newField.type === 'repeater' ? [] : undefined }]);
+            setFields([...fields, { ...newField, fields: (newField.type === 'repeater' || newField.type === 'container') ? [] : undefined }]);
             setNewField({ label: '', key: '', type: '' });
         }
     };
@@ -71,7 +71,10 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                                     <SelectItem value="textarea">Area de Texto</SelectItem>
                                     <SelectItem value="image">Imagen</SelectItem>
                                     <SelectItem value="document">Documento</SelectItem>
+                                    <SelectItem value="html_editor">Editor HTML</SelectItem>
+                                    <SelectItem value="embed">Embed</SelectItem>
                                     <SelectItem value="repeater">Repeater</SelectItem>
+                                    <SelectItem value="container">Contenedor</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Button variant="destructive" type="button" onClick={() => removeField(index)} size="icon">
@@ -79,7 +82,7 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                                 <span className="sr-only">Eliminar</span>
                             </Button>
                         </div>
-                        {field.type === 'repeater' && (
+                        {field.type === 'repeater' || field.type === 'container' && (
                             <div className="ml-4 border-l pl-4">
                                 <CustomFieldManager
                                     fields={field.fields || []}
@@ -106,7 +109,7 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                 />
                 <Select onValueChange={(value) => setNewField({ ...newField, type: value })} value={newField.type}>
                     <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Nuevo Tipo" />
+                        <SelectValue placeholder="Tipo" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="text">Texto</SelectItem>
@@ -116,7 +119,10 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                         <SelectItem value="textarea">Area de Texto</SelectItem>
                         <SelectItem value="image">Imagen</SelectItem>
                         <SelectItem value="document">Documento</SelectItem>
+                        <SelectItem value="html_editor">Editor HTML</SelectItem>
+                        <SelectItem value="embed">Embed</SelectItem>
                         <SelectItem value="repeater">Repeater</SelectItem>
+                        <SelectItem value="container">Contenedor</SelectItem>
                     </SelectContent>
                 </Select>
                 <Button type="button" onClick={addField} size="icon">
