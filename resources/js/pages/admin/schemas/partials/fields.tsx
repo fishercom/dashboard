@@ -2,11 +2,12 @@ import InputError from '@/components/input-error';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Schema, SchemaForm, CustomField } from '@/types';
+import { Schema, SchemaForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import CustomFieldManager from '@/components/custom-field-manager';
 
 export default function SchemaFields() {
 
@@ -73,33 +74,10 @@ export default function SchemaFields() {
                 <InputError message={errors.name} />
             </div>
 
-            <div className="grid gap-2">
-                <Label htmlFor="admin_view">Admin View</Label>
-                <Input
-                    id="admin_view"
-                    type="text"
-                    required
-                    autoComplete="admin_view"
-                    value={data.admin_view}
-                    onChange={(e) => setData('admin_view', e.target.value)}
-                    disabled={processing}
-                />
-                <InputError message={errors.admin_view} />
-            </div>
-
-            <div className="grid gap-2">
-                <Label htmlFor="front_view">Front View</Label>
-                <Input
-                    id="front_view"
-                    type="text"
-                    required
-                    autoComplete="front_view"
-                    value={data.front_view}
-                    onChange={(e) => setData('front_view', e.target.value)}
-                    disabled={processing}
-                />
-                <InputError message={errors.front_view} />
-            </div>
+            <CustomFieldManager
+                fields={data.fields || []}
+                setFields={(newFields) => setData('fields', newFields)}
+            />
 
             <div className="grid gap-2">
                 <Label htmlFor="iterations">Iteraciones</Label>
@@ -112,16 +90,6 @@ export default function SchemaFields() {
                     disabled={processing}
                 />
                 <InputError message={errors.iterations} />
-            </div>
-
-            <div className="flex items-center space-x-3">
-                <Checkbox
-                    id="is_page"
-                    name="is_page"
-                    checked={Boolean(data.is_page)}
-                    onClick={() => setData('is_page', !data.is_page)}
-                />
-                <Label htmlFor="is_page">Es Página</Label>
             </div>
 
             <div className="flex items-center space-x-3">

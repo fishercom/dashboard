@@ -62,7 +62,7 @@ class CmsArticle extends Model {
     public function page_schemas()
     {
         return $this->hasMany('App\Models\CmsSchema', 'id', 'schema_id')
-            ->where('is_page', '1')
+            ->where('type', 'PAGE')
             ->where('active', '1')
             ->orderBy('position');
     }
@@ -78,7 +78,7 @@ class CmsArticle extends Model {
     {
         return $this->hasMany('App\Models\CmsArticle', 'parent_id', 'id')
 			->whereIn('schema_id', \App\Models\CmsSchema::select('id')
-				->where('is_page', '1')->get()->toArray()
+				->where('type', 'PAGE')->get()->toArray()
 				)
             ->where('active', '1')
         	->orderBy('position');

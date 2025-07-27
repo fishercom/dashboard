@@ -131,11 +131,13 @@ export default function Index() {
                                                     Edit
                                                 </Link>
                                             </DropdownMenuItem>
+                                            {item.type=='PAGE' &&
                                             <DropdownMenuItem asChild>
                                                 <Link className="block w-full" href='#' onClick={()=>deleteSchema(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>
+                                            }
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </td>

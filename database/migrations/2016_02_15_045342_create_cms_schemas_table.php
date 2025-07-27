@@ -19,11 +19,9 @@ class CreateCmsSchemasTable extends Migration {
 			$table->integer('parent_id')->unsigned()->nullable();
 			$table->integer('group_id')->unsigned();
 			$table->string('name');
-			$table->string('admin_view', 50);
-			$table->string('front_view', 50);
 			$table->json('fields');
 			$table->integer('iterations')->unsigned()->nullable();
-			$table->boolean('is_page')->nullable();
+			$table->enum('type', ['PAGE', 'HOME', 'OPTIONS'])->nullable()->default('PAGE');
 			$table->integer('position')->unsigned()->nullable();
 			$table->boolean('active')->nullable();
 			$table->timestamps();

@@ -136,11 +136,8 @@ class DatabaseSeeder extends Seeder
 		\App\Models\AdmEvent::create(['module_id' => $module_article->id, 'action_id' => $action_admin->id]);
 
 		//Seeding cms_schema
-		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Home Page', 'admin_view'=>'contenedor', 'front_view'=>'home_page', 'iterations'=>1, 'is_page'=>1, 'active'=>1]);
-		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Menu Principal', 'admin_view'=>'contenedor', 'front_view'=>'menu_principal', 'iterations'=>1, 'active'=>1]);
-		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Menu Header', 'admin_view'=>'contenedor', 'front_view'=>'menu_header', 'iterations'=>1, 'active'=>1]);
-		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Menu Footer', 'admin_view'=>'contenedor', 'front_view'=>'menu_footer', 'iterations'=>1, 'active'=>1]);
-		\App\Models\CmsSchema::create(['parent_id'=>1, 'group_id' => $schg_default->id, 'name' => 'Animacion Principal', 'admin_view'=>'contenedor', 'front_view'=>'animacion_home', 'iterations'=>1, 'active'=>1]);
+		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Home Page', 'iterations'=>1, 'type'=>'HOME', 'active'=>1]);
+		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Options Page', 'iterations'=>1, 'type'=>'OPTIONS', 'active'=>1]);
 
     }
 }
