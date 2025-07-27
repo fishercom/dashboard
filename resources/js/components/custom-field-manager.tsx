@@ -3,6 +3,7 @@ import { CustomField } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import CustomFieldManager from './custom-field-manager';
 
 interface CustomFieldManagerProps {
     fields: CustomField[];
@@ -14,7 +15,7 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
 
     const addField = () => {
         if (newField.key && newField.name && newField.type) {
-            setFields([...fields, newField]);
+            setFields([...fields, { ...newField, fields: newField.type === 'repeater' ? [] : undefined }]);
             setNewField({ key: '', name: '', type: '' });
         }
     };
@@ -22,6 +23,13 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
     const updateField = (index: number, updatedField: CustomField) => {
         const updatedFields = fields.map((field, i) =>
             i === index ? updatedField : field
+        );
+        setFields(updatedFields);
+    };
+
+    const updateRepeaterFields = (index: number, newRepeaterFields: CustomField[]) => {
+        const updatedFields = fields.map((field, i) =>
+            i === index ? { ...field, fields: newRepeaterFields } : field
         );
         setFields(updatedFields);
     };
@@ -36,34 +44,47 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
             <h3 className="text-lg font-medium">Campos Personalizados</h3>
             <div className="space-y-2">
                 {fields.map((field, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                        <Input
-                            className="flex-1"
-                            value={field.key}
-                            onChange={(e) => updateField(index, { ...field, key: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
-                            placeholder="Key"
-                        />
-                        <Input
-                            className="flex-1"
-                            value={field.name}
-                            onChange={(e) => updateField(index, { ...field, name: e.target.value })}
-                            placeholder="Nombre"
-                        />
-                        <Select onValueChange={(value) => updateField(index, { ...field, type: value })} value={field.type}>
-                            <SelectTrigger className="flex-1">
-                                <SelectValue placeholder="Tipo" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="text">Texto</SelectItem>
-                                <SelectItem value="number">Numero</SelectItem>
-                                <SelectItem value="date">Fecha</SelectItem>
-                                <SelectItem value="url">Enlace</SelectItem>
-                                <SelectItem value="textarea">Area de Texto</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Button variant="destructive" type="button" onClick={() => removeField(index)}>
-                            Eliminar
-                        </Button>
+                    <div key={index} className="space-y-2 rounded-md border p-4">
+                        <div className="flex items-center space-x-2">
+                            <Input
+                                className="flex-1"
+                                value={field.key}
+                                onChange={(e) => updateField(index, { ...field, key: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
+                                placeholder="Key"
+                            />
+                            <Input
+                                className="flex-1"
+                                value={field.name}
+                                onChange={(e) => updateField(index, { ...field, name: e.target.value })}
+                                placeholder="Nombre"
+                            />
+                            <Select onValueChange={(value) => updateField(index, { ...field, type: value })} value={field.type}>
+                                <SelectTrigger className="flex-1">
+                                    <SelectValue placeholder="Tipo" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="text">Texto</SelectItem>
+                                    <SelectItem value="number">Numero</SelectItem>
+                                    <SelectItem value="date">Fecha</SelectItem>
+                                    <SelectItem value="url">Enlace</SelectItem>
+                                    <SelectItem value="textarea">Area de Texto</SelectItem>
+                                    <SelectItem value="image">Imagen</SelectItem>
+                                    <SelectItem value="document">Documento</SelectItem>
+                                    <SelectItem value="repeater">Repeater</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Button variant="destructive" type="button" onClick={() => removeField(index)}>
+                                Eliminar
+                            </Button>
+                        </div>
+                        {field.type === 'repeater' && (
+                            <div className="ml-4 border-l pl-4">
+                                <CustomFieldManager
+                                    fields={field.fields || []}
+                                    setFields={(newRepeaterFields) => updateRepeaterFields(index, newRepeaterFields)}
+                                />
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
@@ -91,6 +112,9 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                         <SelectItem value="date">Fecha</SelectItem>
                         <SelectItem value="url">Enlace</SelectItem>
                         <SelectItem value="textarea">Area de Texto</SelectItem>
+                        <SelectItem value="image">Imagen</SelectItem>
+                        <SelectItem value="document">Documento</SelectItem>
+                        <SelectItem value="repeater">Repeater</SelectItem>
                     </SelectContent>
                 </Select>
                 <Button type="button" onClick={addField}>Agregar Campo</Button>

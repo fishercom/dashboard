@@ -52,7 +52,8 @@ export interface CustomField {
     key: string;
     name: string;
     type: string;
-    options?: [];
+    value?: string | number | boolean | null;
+    fields?: CustomField[];
 }
 
 export interface User {
