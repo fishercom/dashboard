@@ -82,7 +82,7 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                                 <span className="sr-only">Eliminar</span>
                             </Button>
                         </div>
-                        {field.type === 'repeater' || field.type === 'container' && (
+                        {(field.type === 'repeater' || field.type === 'container') && field.fields && (
                             <div className="ml-4 border-l pl-4">
                                 <CustomFieldManager
                                     fields={field.fields || []}
