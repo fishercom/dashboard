@@ -3,6 +3,7 @@ import { CustomField } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus, Trash } from 'lucide-react';
 
 
 interface CustomFieldManagerProps {
@@ -73,8 +74,9 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                                     <SelectItem value="repeater">Repeater</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <Button variant="destructive" type="button" onClick={() => removeField(index)}>
-                                Eliminar
+                            <Button variant="destructive" type="button" onClick={() => removeField(index)} size="icon">
+                                <Trash className="h-4 w-4" />
+                                <span className="sr-only">Eliminar</span>
                             </Button>
                         </div>
                         {field.type === 'repeater' && (
@@ -117,7 +119,10 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                         <SelectItem value="repeater">Repeater</SelectItem>
                     </SelectContent>
                 </Select>
-                <Button type="button" onClick={addField}>Agregar Campo</Button>
+                <Button type="button" onClick={addField} size="icon">
+                    <Plus className="h-4 w-4" />
+                    <span className="sr-only">Agregar Campo</span>
+                </Button>
             </div>
         </div>
     );
