@@ -16,9 +16,6 @@ export default function SchemaFields() {
     const {data, setData, errors, processing} = form;
     //console.log(data);
 
-    const fields: [] = data.fields;
-    //console.log(fields);
-
     const createSchema: FormEventHandler = (e) => {
         e.preventDefault();
         const { post, reset } = form;
