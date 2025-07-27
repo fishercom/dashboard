@@ -49,8 +49,8 @@ export interface Pagination {
 }
 
 export interface CustomField {
-    key: string;
     name: string;
+    label: string;
     type: string;
     value?: string | number | boolean | null;
     fields?: CustomField[];

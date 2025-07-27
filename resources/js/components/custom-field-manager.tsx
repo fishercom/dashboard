@@ -12,12 +12,12 @@ interface CustomFieldManagerProps {
 }
 
 export default function CustomFieldManager({ fields, setFields }: CustomFieldManagerProps) {
-    const [newField, setNewField] = useState<CustomField>({ key: '', name: '', type: '' });
+    const [newField, setNewField] = useState<CustomField>({ name: '', label: '', type: '' });
 
     const addField = () => {
-        if (newField.key && newField.name && newField.type) {
+        if (newField.name && newField.label && newField.type) {
             setFields([...fields, { ...newField, fields: newField.type === 'repeater' ? [] : undefined }]);
-            setNewField({ key: '', name: '', type: '' });
+            setNewField({ name: '', label: '', type: '' });
         }
     };
 
@@ -49,14 +49,14 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
                         <div className="flex items-center space-x-2">
                             <Input
                                 className="flex-1"
-                                value={field.key}
-                                onChange={(e) => updateField(index, { ...field, key: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
-                                placeholder="Key"
+                                value={field.label}
+                                onChange={(e) => updateField(index, { ...field, label: e.target.value })}
+                                placeholder="Etiqueta"
                             />
                             <Input
                                 className="flex-1"
                                 value={field.name}
-                                onChange={(e) => updateField(index, { ...field, name: e.target.value })}
+                                onChange={(e) => updateField(index, { ...field, name: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
                                 placeholder="Nombre"
                             />
                             <Select onValueChange={(value) => updateField(index, { ...field, type: value })} value={field.type}>
@@ -94,14 +94,14 @@ export default function CustomFieldManager({ fields, setFields }: CustomFieldMan
             <div className="flex items-center space-x-2">
                 <Input
                     className="flex-1"
-                    value={newField.key}
-                    onChange={(e) => setNewField({ ...newField, key: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
-                    placeholder="Nueva Key"
+                    value={newField.label}
+                    onChange={(e) => setNewField({ ...newField, label: e.target.value })}
+                    placeholder="Nueva Etiqueta"
                 />
                 <Input
                     className="flex-1"
                     value={newField.name}
-                    onChange={(e) => setNewField({ ...newField, name: e.target.value })}
+                    onChange={(e) => setNewField({ ...newField, name: e.target.value.replace(/[^a-zA-Z0-9]/g, '') })}
                     placeholder="Nuevo Nombre"
                 />
                 <Select onValueChange={(value) => setNewField({ ...newField, type: value })} value={newField.type}>
