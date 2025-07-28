@@ -136,8 +136,8 @@ class DatabaseSeeder extends Seeder
 		\App\Models\AdmEvent::create(['module_id' => $module_article->id, 'action_id' => $action_admin->id]);
 
 		//Seeding cms_schema
-		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Home Page', 'iterations'=>1, 'type'=>'HOME', 'active'=>1]);
-		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Options Page', 'iterations'=>1, 'type'=>'OPTIONS', 'active'=>1]);
+		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Home Page', 'fields' => [], 'iterations'=>1, 'type'=>'HOME', 'active'=>1]);
+		\App\Models\CmsSchema::create(['group_id' => $schg_default->id, 'name' => 'Options Page', 'fields' => [], 'iterations'=>1, 'type'=>'OPTIONS', 'active'=>1]);
 
     }
 }
