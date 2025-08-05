@@ -17,7 +17,6 @@ class CreateCmsArticlesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('parent_id')->unsigned()->nullable();
-			$table->integer('site_id')->unsigned();
 			$table->integer('schema_id')->unsigned();
 			$table->integer('lang_id')->unsigned();
 			$table->string('title');

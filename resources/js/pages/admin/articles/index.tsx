@@ -3,7 +3,7 @@ import { type BreadcrumbItem} from '@/types';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Profile, Pagination } from '@/types';
+import { Article, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search, Plus } from 'lucide-react';
@@ -13,9 +13,9 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
+    interface ArticlePagination extends Omit<Pagination, 'data'> {data: Article[]};
 
-    const { items } = usePage<{ items: ProfilePagination }>().props;
+    const { items } = usePage<{ items: ArticlePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const { delete : destroy } = useForm();
     //console.log(items);
@@ -42,7 +42,7 @@ export default function Index() {
         setQuery({s: value});
     }
 
-    const deleteProfile = (id: number) => {
+    const deleteArticle = (id: number) => {
         console.log(id);
         destroy(route('articles.destroy', id), {
             preserveScroll: true,
@@ -89,10 +89,10 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: Profile)=>{
+                        {items.data.map((item: Article)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
-                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.title }</th>
                                 <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
@@ -111,7 +111,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteProfile(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteArticle(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>
