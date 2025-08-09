@@ -2,8 +2,16 @@ services:
   - type: web
     name: dashboard
     runtime: php
-    buildCommand: ./deploy-render.sh
-    startCommand: ./start-render.sh
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader --no-interaction
+      npm ci
+      npm run build
+    startCommand: |
+      php artisan migrate --force
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+      php artisan serve --host=0.0.0.0 --port=$PORT
     envVars:
       - key: APP_ENV
         value: production
