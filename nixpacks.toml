@@ -1,0 +1,8 @@
+# nixpacks.toml
+providers = ["php", "node"]
+
+[phases.build]
+cmds = ["npm ci", "npm run build", "composer install --no-dev --optimize-autoloader --no-interaction"]
+
+[start]
+cmd = "php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT"
