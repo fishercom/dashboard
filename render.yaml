@@ -3,10 +3,10 @@ services:
     name: dashboard
     runtime: php
     buildCommand: |
-      composer install --no-dev --optimize-autoloader --no-interaction
       npm ci
       npm run build
     startCommand: |
+      composer install --no-dev --optimize-autoloader --no-interaction
       php artisan migrate --force
       php artisan config:cache
       php artisan route:cache
