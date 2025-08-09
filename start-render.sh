@@ -4,7 +4,7 @@ echo "🚀 Starting Laravel application..."
 
 # Install PHP dependencies (Composer is available at runtime)
 echo "📦 Installing PHP dependencies..."
-php composer.phar install --no-dev --optimize-autoloader --no-interaction
+composer install --no-dev --optimize-autoloader --no-interaction
 
 # Run migrations
 echo "🗃️ Running migrations..."
