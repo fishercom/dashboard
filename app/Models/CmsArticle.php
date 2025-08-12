@@ -15,7 +15,7 @@ class CmsArticle extends Model {
     use \Rutorika\Sortable\SortableTrait;
 
 	protected $table = 'cms_articles';
-    protected $fillable = ['schema_id', 'parent_id', 'lang_id', 'title', 'subtitle', 'subtitle2', 'resumen', 'description', 'description2', 'description3', 'date', 'ref_type', 'ref_id', 'ref_url', 'ref_target', 'metadata', 'in_home', 'hide_menu', 'slug', 'active'];
+    protected $fillable = ['schema_id', 'parent_id', 'lang_id', 'title', 'metadata', 'slug', 'active'];
     protected static $sortableField = 'position';
     protected static $sortableGroupField = 'parent_id';
     protected $casts = [

@@ -15,7 +15,7 @@ use App\Models\CmsSchemaGroup;
 
 class SchemaController extends Controller
 {
-    protected $group_id;
+    protected $group_id, $parent_id;
 
     public function __construct(Request $request)
     {

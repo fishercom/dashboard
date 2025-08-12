@@ -11,8 +11,20 @@ import CustomFieldManager from '@/components/custom-field-manager';
 
 export default function SchemaFields() {
 
+    type SchemaFormData = Required<Omit<SchemaForm, 'fields'>> & { fields: any };
+
     const { item } = usePage<{ item: Schema }>().props;
-    const form = useForm<Required<SchemaForm>>(item);
+    const initial: SchemaFormData = {
+        id: item?.id || null,
+        parent_id: item?.parent_id || null,
+        group_id: Number(item?.group_id || 1),
+        name: String(item?.name || ''),
+        fields: item?.fields || [],
+        iterations: Number(item?.iterations || 1),
+        type: String(item?.type || ''),
+        active: Boolean(item?.active ?? true),
+    };
+    const form = useForm<SchemaFormData>(initial);
     const {data, setData, errors, processing} = form;
     //console.log(data);
 

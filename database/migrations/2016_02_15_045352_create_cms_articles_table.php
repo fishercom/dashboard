@@ -20,20 +20,7 @@ class CreateCmsArticlesTable extends Migration {
 			$table->integer('schema_id')->unsigned();
 			$table->integer('lang_id')->unsigned();
 			$table->string('title');
-			$table->string('subtitle')->nullable();
-			$table->string('subtitle2')->nullable();
-			$table->text('resumen')->nullable();
-			$table->text('description')->nullable();
-			$table->text('description2')->nullable();
-			$table->text('description3')->nullable();
-			$table->dateTime('date')->nullable();
-			$table->tinyInteger('ref_type')->unsigned()->nullable();
-			$table->integer('ref_id')->unsigned()->nullable();
-			$table->string('ref_url')->nullable();
-			$table->string('ref_target', 15)->nullable();
 			$table->json('metadata')->nullable();
-			$table->boolean('in_home')->nullable();
-			$table->boolean('hide_menu')->nullable();
 			$table->integer('position')->unsigned()->nullable();
 			$table->string('slug', 500);
 			$table->boolean('active')->nullable();
@@ -42,11 +29,6 @@ class CreateCmsArticlesTable extends Migration {
             $table->foreign('parent_id')
                   ->references('id')
                   ->on('cms_articles')
-                  ->onDelete('cascade');
-
-            $table->foreign('site_id')
-                  ->references('id')
-                  ->on('cms_sites')
                   ->onDelete('cascade');
 
             $table->foreign('schema_id')
