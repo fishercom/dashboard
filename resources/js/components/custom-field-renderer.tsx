@@ -4,9 +4,16 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import type { CustomField } from '@/types';
 import { DayPicker } from 'react-day-picker';
+// react-day-picker base styles. If Tailwind purges them, consider importing via CSS entry.
 import 'react-day-picker/style.css';
-import { Widget as UploadcareWidget } from '@uploadcare/react-widget';
-import { Editor } from '@tinymce/tinymce-react';
+// Using the core widget to avoid React peer dependency issues
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import uploadcare from 'uploadcare-widget';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import 'uploadcare-widget/uploadcare.lang.es';
+// Eliminamos TinyMCE React por conflicto de versiones; usaremos textarea por ahora
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 interface JsonObject { [key: string]: JsonValue }
@@ -46,44 +53,45 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
       case 'textarea':
         return <textarea {...(common as any)} rows={4} />;
       case 'html_editor':
-        return (
-          <Editor
-            id={field.key}
-            apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
-            value={typeof value === 'string' ? value : ''}
-            init={{
-              height: 300,
-              menubar: false,
-              plugins: 'link lists table code image media',
-              toolbar:
-                'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media | code',
-              branding: false,
-            }}
-            onEditorChange={(content) => onChange(field.key, content)}
-          />
-        );
+        return <textarea {...(common as any)} rows={8} />;
       case 'embed':
         return <textarea {...(common as any)} rows={4} />;
       case 'image':
         return (
           <div className="space-y-2">
             <Input type="text" placeholder="URL de imagen" {...common} />
-            <UploadcareWidget
-              publicKey={import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY}
-              onChange={(fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || '')}
-              imagesOnly
-            />
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md border px-3 py-2 text-sm"
+              onClick={() => {
+                const dialog = uploadcare.openDialog(null, {
+                  publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY,
+                  imagesOnly: true,
+                });
+                dialog.done((file: any) => {
+                  file.done((fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || ''));
+                });
+              }}
+            >Seleccionar imagen</button>
           </div>
         );
       case 'document':
         return (
           <div className="space-y-2">
             <Input type="text" placeholder="URL de documento" {...common} />
-            <UploadcareWidget
-              publicKey={import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY}
-              onChange={(fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || '')}
-              inputAcceptTypes="application/*,text/*,application/pdf"
-            />
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md border px-3 py-2 text-sm"
+              onClick={() => {
+                const dialog = uploadcare.openDialog(null, {
+                  publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY,
+                  inputAcceptTypes: 'application/*,text/*,application/pdf',
+                });
+                dialog.done((file: any) => {
+                  file.done((fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || ''));
+                });
+              }}
+            >Seleccionar documento</button>
           </div>
         );
       case 'text':
