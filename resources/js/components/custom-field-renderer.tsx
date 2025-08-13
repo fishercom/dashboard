@@ -5,6 +5,10 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import type { CustomField } from '@/types';
 import { DayPicker } from 'react-day-picker';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 // react-day-picker base styles. If Tailwind purges them, consider importing via CSS entry.
 import 'react-day-picker/style.css';
 // Using the core widget to avoid React peer dependency issues
@@ -38,13 +42,28 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
         return <Input type="number" {...common} />;
       case 'date':
         return (
-          <div className="space-y-2">
-            <DayPicker
-              mode="single"
-              selected={typeof value === 'string' && value ? new Date(value) : undefined}
-              onSelect={(d) => onChange(field.key, d ? d.toISOString().slice(0, 10) : '')}
-            />
-          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !value && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {value ? format(new Date(value as string), "PPP") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <DayPicker
+                mode="single"
+                selected={typeof value === 'string' && value ? new Date(value) : undefined}
+                onSelect={(d) => onChange(field.key, d ? d.toISOString().slice(0, 10) : '')}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
         );
       case 'url':
         return <Input type="url" {...common} />;
