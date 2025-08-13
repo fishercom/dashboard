@@ -3,6 +3,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import type { CustomField } from '@/types';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/style.css';
+import { Widget as UploadcareWidget } from '@uploadcare/react-widget';
+import { Editor } from '@tinymce/tinymce-react';
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 interface JsonObject { [key: string]: JsonValue }
@@ -28,13 +32,60 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
       case 'number':
         return <Input type="number" {...common} />;
       case 'date':
-        return <Input type="date" {...common} />;
+        return (
+          <div className="space-y-2">
+            <DayPicker
+              mode="single"
+              selected={typeof value === 'string' && value ? new Date(value) : undefined}
+              onSelect={(d) => onChange(field.key, d ? d.toISOString().slice(0, 10) : '')}
+            />
+          </div>
+        );
       case 'url':
         return <Input type="url" {...common} />;
       case 'textarea':
+        return <textarea {...(common as any)} rows={4} />;
       case 'html_editor':
+        return (
+          <Editor
+            id={field.key}
+            apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+            value={typeof value === 'string' ? value : ''}
+            init={{
+              height: 300,
+              menubar: false,
+              plugins: 'link lists table code image media',
+              toolbar:
+                'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media | code',
+              branding: false,
+            }}
+            onEditorChange={(content) => onChange(field.key, content)}
+          />
+        );
       case 'embed':
-        return <textarea {...common as any} rows={4} />;
+        return <textarea {...(common as any)} rows={4} />;
+      case 'image':
+        return (
+          <div className="space-y-2">
+            <Input type="text" placeholder="URL de imagen" {...common} />
+            <UploadcareWidget
+              publicKey={import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY}
+              onChange={(fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || '')}
+              imagesOnly
+            />
+          </div>
+        );
+      case 'document':
+        return (
+          <div className="space-y-2">
+            <Input type="text" placeholder="URL de documento" {...common} />
+            <UploadcareWidget
+              publicKey={import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY}
+              onChange={(fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || '')}
+              inputAcceptTypes="application/*,text/*,application/pdf"
+            />
+          </div>
+        );
       case 'text':
       default:
         return <Input type="text" {...common} />;
