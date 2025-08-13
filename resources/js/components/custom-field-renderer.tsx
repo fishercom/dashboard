@@ -10,9 +10,6 @@ import 'react-day-picker/style.css';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import uploadcare from 'uploadcare-widget';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import 'uploadcare-widget/uploadcare.lang.es';
 // Eliminamos TinyMCE React por conflicto de versiones; usaremos textarea por ahora
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
