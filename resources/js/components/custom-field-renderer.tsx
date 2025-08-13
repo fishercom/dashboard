@@ -28,7 +28,7 @@ interface UploadcareFile {
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 type JsonObject = Record<string, JsonValue>;
-interface JsonArray extends Array<JsonValue> {}
+type JsonArray = JsonValue[];
 
 interface CustomFieldRendererProps {
   fields: CustomField[];

@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 interface JsonObject { [key: string]: JsonValue }
-interface JsonArray extends Array<JsonValue> {}
+type JsonArray = JsonValue[];
 
 //import CustomFieldManager from '@/components/custom-field-manager';
 
