@@ -17,8 +17,17 @@ import 'react-day-picker/style.css';
 import uploadcare from 'uploadcare-widget';
 // Eliminamos TinyMCE React por conflicto de versiones; usaremos textarea por ahora
 
+// Types for Uploadcare widget
+interface UploadcareFileInfo {
+  cdnUrl?: string;
+}
+
+interface UploadcareFile {
+  done: (callback: (fileInfo: UploadcareFileInfo) => void) => void;
+}
+
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
-interface JsonObject { [key: string]: JsonValue }
+type JsonObject = Record<string, JsonValue>;
 interface JsonArray extends Array<JsonValue> {}
 
 interface CustomFieldRendererProps {
@@ -68,7 +77,7 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
       case 'url':
         return <Input type="url" {...common} />;
       case 'textarea':
-        return <textarea {...(common as any)} rows={4} />;
+        return <textarea {...common} rows={4} />;
       case 'html_editor':
         return (
           <TinyMCEEditor
@@ -78,7 +87,7 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
           />
         );
       case 'embed':
-        return <textarea {...(common as any)} rows={4} />;
+        return <textarea {...common} rows={4} />;
       case 'image':
         return (
           <div className="space-y-2">
@@ -91,8 +100,8 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
                   publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY,
                   imagesOnly: true,
                 });
-                dialog.done((file: any) => {
-                  file.done((fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || ''));
+                dialog.done((file: UploadcareFile) => {
+                  file.done((fileInfo: UploadcareFileInfo) => onChange(field.key, fileInfo?.cdnUrl || ''));
                 });
               }}
             >Seleccionar imagen</button>
@@ -110,8 +119,8 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
                   publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY,
                   inputAcceptTypes: 'application/*,text/*,application/pdf',
                 });
-                dialog.done((file: any) => {
-                  file.done((fileInfo: any) => onChange(field.key, fileInfo?.cdnUrl || ''));
+                dialog.done((file: UploadcareFile) => {
+                  file.done((fileInfo: UploadcareFileInfo) => onChange(field.key, fileInfo?.cdnUrl || ''));
                 });
               }}
             >Seleccionar documento</button>

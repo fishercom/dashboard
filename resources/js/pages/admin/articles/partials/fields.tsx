@@ -8,6 +8,11 @@ import CustomFieldRenderer from '@/components/custom-field-renderer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
+interface JsonObject { [key: string]: JsonValue }
+interface JsonArray extends Array<JsonValue> {}
+
 //import CustomFieldManager from '@/components/custom-field-manager';
 
 export default function ArticleFields() {
@@ -93,10 +98,10 @@ export default function ArticleFields() {
                     <Label>Campos personalizados</Label>
                     <CustomFieldRenderer
                         fields={schema.fields}
-                        values={(data.metadata as any) || {}}
-                        onChange={(key: string, value: any) => {
-                            const next = { ...(data.metadata as any), [key]: value } as ArticleFormData['metadata'];
-                            setData('metadata', next);
+                        values={data.metadata as Record<string, JsonValue>}
+                        onChange={(key: string, value: JsonValue) => {
+                            const next = { ...data.metadata, [key]: value };
+                            setData('metadata', next as ArticleFormData['metadata']);
                         }}
                     />
                 </div>

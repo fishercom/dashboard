@@ -13,7 +13,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ id, value, onChange }) =>
       id={id}
       apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
       value={value}
-      onEditorChange={(newValue, editor) => {
+            onEditorChange={(newValue, _editor) => {
         onChange(newValue);
       }}
       init={{
