@@ -1,4 +1,5 @@
 import React from 'react';
+import TinyMCEEditor from '@/components/tinymce-editor';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -50,7 +51,13 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
       case 'textarea':
         return <textarea {...(common as any)} rows={4} />;
       case 'html_editor':
-        return <textarea {...(common as any)} rows={8} />;
+        return (
+          <TinyMCEEditor
+            id={field.key}
+            value={typeof value === 'string' ? value : ''}
+            onChange={(html) => onChange(field.key, html)}
+          />
+        );
       case 'embed':
         return <textarea {...(common as any)} rows={4} />;
       case 'image':
