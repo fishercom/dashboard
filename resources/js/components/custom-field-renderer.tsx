@@ -12,19 +12,11 @@ import { cn } from '@/lib/utils';
 // react-day-picker base styles. If Tailwind purges them, consider importing via CSS entry.
 import 'react-day-picker/style.css';
 // Using the core widget to avoid React peer dependency issues
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import uploadcare from 'uploadcare-widget';
+
 // Eliminamos TinyMCE React por conflicto de versiones; usaremos textarea por ahora
 
 // Types for Uploadcare widget
-interface UploadcareFileInfo {
-  cdnUrl?: string;
-}
 
-interface UploadcareFile {
-  done: (callback: (fileInfo: UploadcareFileInfo) => void) => void;
-}
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 type JsonObject = Record<string, JsonValue>;
@@ -95,13 +87,11 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
               type="button"
               className="inline-flex items-center rounded-md border px-3 py-2 text-sm"
               onClick={() => {
-                const dialog = uploadcare.openDialog(null, {
-                  publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY,
-                  imagesOnly: true,
-                });
-                dialog.done((file: UploadcareFile) => {
-                  file.done((fileInfo: UploadcareFileInfo) => onChange(field.key, fileInfo?.cdnUrl || ''));
-                });
+                window.open('/laravel-filemanager?type=Images', 'FileManager', 'width=900,height=600');
+                window.SetUrl = (items: any) => {
+                  const fileUrl = items.map((item: any) => item.url).join(',');
+                  onChange(field.key, fileUrl);
+                };
               }}
             >Seleccionar imagen</button>
           </div>
@@ -114,13 +104,11 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
               type="button"
               className="inline-flex items-center rounded-md border px-3 py-2 text-sm"
               onClick={() => {
-                const dialog = uploadcare.openDialog(null, {
-                  publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY,
-                  inputAcceptTypes: 'application/*,text/*,application/pdf',
-                });
-                dialog.done((file: UploadcareFile) => {
-                  file.done((fileInfo: UploadcareFileInfo) => onChange(field.key, fileInfo?.cdnUrl || ''));
-                });
+                window.open('/laravel-filemanager?type=Files', 'FileManager', 'width=900,height=600');
+                window.SetUrl = (items: any) => {
+                  const fileUrl = items.map((item: any) => item.url).join(',');
+                  onChange(field.key, fileUrl);
+                };
               }}
             >Seleccionar documento</button>
           </div>
