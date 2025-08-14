@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import type { CustomField } from '@/types';
 import { DayPicker } from 'react-day-picker';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, ImageIcon, FileTextIcon, UploadCloud, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 // react-day-picker base styles. If Tailwind purges them, consider importing via CSS entry.
@@ -16,6 +16,13 @@ import 'react-day-picker/style.css';
 // Eliminamos TinyMCE React por conflicto de versiones; usaremos textarea por ahora
 
 // Types for Uploadcare widget
+
+// Extend the Window interface to include SetUrl
+declare global {
+  interface Window {
+    SetUrl?: (items: Array<{ url: string }>) => void;
+  }
+}
 
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
@@ -82,35 +89,63 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
       case 'image':
         return (
           <div className="space-y-2">
-            <Input type="text" placeholder="URL de imagen" {...common} />
-            <button
-              type="button"
-              className="inline-flex items-center rounded-md border px-3 py-2 text-sm"
-              onClick={() => {
-                window.open('/laravel-filemanager?type=Images', 'FileManager', 'width=900,height=600');
-                window.SetUrl = (items: any) => {
-                  const fileUrl = items.map((item: any) => item.url).join(',');
-                  onChange(field.key, fileUrl);
-                };
-              }}
-            >Seleccionar imagen</button>
+            <div className="flex items-center gap-2">
+              <Input type="text" placeholder="URL de imagen" {...common} />
+              {value && typeof value === 'string' ? (
+                <button
+                  type="button"
+                  className="relative w-10 h-10 rounded-md overflow-hidden group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  onClick={() => {
+                    window.open('/laravel-filemanager?type=Images', 'FileManager', 'width=900,height=600');
+                    window.SetUrl = (items: Array<{ url: string }>) => {
+                      const fileUrl = items.map((item) => item.url).join(',');
+                      onChange(field.key, fileUrl);
+                    };
+                  }}
+                >
+                  <img src={value} alt="Preview" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <UploadCloud className="h-4 w-4 text-black" />
+                  </div>
+                </button>
+              ) : (
+                <Button
+                  type="button"
+                  className='w-10 h-10'
+                  variant="default"
+                  onClick={() => {
+                    window.open('/laravel-filemanager?type=Images', 'FileManager', 'width=900,height=600');
+                    window.SetUrl = (items: Array<{ url: string }>) => {
+                      const fileUrl = items.map((item) => item.url).join(',');
+                      onChange(field.key, fileUrl);
+                    };
+                  }}
+                >
+                  <UploadCloud className="h-5 w-5 text-black" />
+                </Button>
+              )}
+            </div>
           </div>
         );
       case 'document':
         return (
           <div className="space-y-2">
-            <Input type="text" placeholder="URL de documento" {...common} />
-            <button
-              type="button"
-              className="inline-flex items-center rounded-md border px-3 py-2 text-sm"
-              onClick={() => {
-                window.open('/laravel-filemanager?type=Files', 'FileManager', 'width=900,height=600');
-                window.SetUrl = (items: any) => {
-                  const fileUrl = items.map((item: any) => item.url).join(',');
-                  onChange(field.key, fileUrl);
-                };
-              }}
-            >Seleccionar documento</button>
+            <div className="flex items-center gap-2">
+              <Input type="text" placeholder="URL de documento" {...common} />
+              <Button
+                type="button"
+                variant="default"
+                onClick={() => {
+                  window.open('/laravel-filemanager?type=Files', 'FileManager', 'width=900,height=600');
+                  window.SetUrl = (items: Array<{ url: string }>) => {
+                    const fileUrl = items.map((item) => item.url).join(',');
+                    onChange(field.key, fileUrl);
+                  };
+                }}
+              >
+                <UploadCloud className="h-4 w-4 text-black" />
+              </Button>
+            </div>
           </div>
         );
       case 'text':
@@ -157,7 +192,9 @@ export default function CustomFieldRenderer({ fields, values, onChange }: Custom
           <div key={idx} className="space-y-2 rounded-md border p-3">
             <div className="flex justify-between items-center">
               <div className="text-xs text-muted-foreground">Item {idx + 1}</div>
-              <Button type="button" variant="destructive" size="sm" onClick={() => removeItem(idx)}>Eliminar</Button>
+              <Button type="button" variant="destructive" size="icon" onClick={() => removeItem(idx)}>
+                <X className="h-4 w-4" />
+              </Button>
             </div>
             <CustomFieldRenderer
               fields={field.fields || []}
