@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import type { CustomField } from '@/types';
 import { DayPicker } from 'react-day-picker';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, ImageIcon, FileTextIcon, UploadCloud, X } from 'lucide-react';
+import { CalendarIcon, UploadCloud, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 // react-day-picker base styles. If Tailwind purges them, consider importing via CSS entry.
@@ -25,9 +25,9 @@ declare global {
 }
 
 
+interface JsonObject { [key: string]: JsonValue }
+type JsonArray = Array<JsonValue>;
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
-type JsonObject = Record<string, JsonValue>;
-type JsonArray = JsonValue[];
 
 interface CustomFieldRendererProps {
   fields: CustomField[];
