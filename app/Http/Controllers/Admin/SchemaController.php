@@ -66,6 +66,17 @@ class SchemaController extends Controller
         ]);
     }
 
+    /**
+     * Show the user's profile settings page.
+     */
+    public function show($id, Request $request): Response
+    {
+        $item = CmsSchema::find($id);
+        return Inertia::render('admin/schemas/view', [
+            'item' => $item,
+        ]);
+    }
+
     public function create()
     {
       $args = [
@@ -124,5 +135,16 @@ class SchemaController extends Controller
 		$item->delete();
 
         return redirect('admin/schemas');
+    }
+
+    public function root()
+    {
+        $list = CmsSchema::whereNull('parent_id')->get();
+        return response()->json($list);
+    }
+
+    public function children(CmsSchema $schema)
+    {
+        return response()->json($schema->children);
     }
 }

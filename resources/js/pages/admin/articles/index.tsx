@@ -3,22 +3,23 @@ import { type BreadcrumbItem} from '@/types';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Article, Pagination } from '@/types';
+import { Article, Pagination, CmsSchema } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search, Plus } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
+import SchemaSelectorModal from './partials/SchemaSelectorModal';
 
 export default function Index() {
 
     interface ArticlePagination extends Omit<Pagination, 'data'> {data: Article[]};
 
-    const { items } = usePage<{ items: ArticlePagination }>().props;
+    const { items, parent } = usePage<{ items: ArticlePagination, parent: CmsSchema | null }>().props;
     const [ query, setQuery ] = useState({s: ''});
+    const [isModalOpen, setModalOpen] = useState(false);
     const { delete : destroy } = useForm();
-    //console.log(items);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -38,12 +39,10 @@ export default function Index() {
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {value} = e.target;
-        console.log(value, 'handleSearch');
         setQuery({s: value});
     }
 
     const deleteArticle = (id: number) => {
-        console.log(id);
         destroy(route('articles.destroy', id), {
             preserveScroll: true,
             onBefore: () => {
@@ -53,6 +52,12 @@ export default function Index() {
                 alert('Ocurrió un error al eliminar el registro.');
             },
         });
+    }
+
+    const handleCreateClick = () => {
+        // If there is no parent, or the parent has no children schemas, maybe go directly to create page
+        // For now, we always open the modal as requested.
+        setModalOpen(true);
     }
 
     return (
@@ -71,9 +76,9 @@ export default function Index() {
                         </form>
                     </div>
                     <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                        <button type="button" className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
-                            <Plus/>
-                            <Link href='/admin/articles/create'>Agrgar Artículo</Link>
+                        <button type="button" onClick={handleCreateClick} className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
+                            <Plus className="mr-2"/>
+                            Crear Artículo
                         </button>
                     </div>
                 </div>
@@ -128,6 +133,11 @@ export default function Index() {
                 <PaginationNav data={items}/>
                 }
             </div>
+            <SchemaSelectorModal 
+                isOpen={isModalOpen} 
+                onClose={() => setModalOpen(false)} 
+                parentSchemaId={parent?.id} 
+            />
         </ModuleLayout>
     );
 }

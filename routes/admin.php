@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('admin')->group(function () {
 
-    
+    Route::get('schemas/root', [SchemaController::class, 'root'])->name('schemas.root');
+    Route::get('schemas/{schema}/children', [SchemaController::class, 'children'])->name('schemas.children');
 
     Route::resource('profiles', ProfileController::class);
     Route::resource('users', UserController::class);

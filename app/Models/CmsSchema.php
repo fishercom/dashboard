@@ -28,4 +28,9 @@ class CmsSchema extends Model {
         return $this->hasOne('App\Models\CmsSchema', 'id', 'parent_id');
     }
 
+    public function children()
+    {
+        return $this->hasMany(CmsSchema::class, 'parent_id');
+    }
+
 }
