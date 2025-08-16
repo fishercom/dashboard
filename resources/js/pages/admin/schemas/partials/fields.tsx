@@ -1,6 +1,6 @@
 import InputError from '@/components/input-error';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Schema, SchemaForm, CustomField } from '@/types';
 
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CustomFieldManager from '@/components/custom-field-manager';
+import { createSchema, updateSchema } from '@/services/schemas';
 
 export default function SchemaFields() {
 
@@ -24,50 +25,39 @@ export default function SchemaFields() {
         type: String(item?.type || ''),
         active: Boolean(item?.active ?? true),
     };
-    const form = useForm<SchemaFormData>(initial);
-    const {data, setData, errors, processing} = form;
-    //console.log(data);
+    const [data, setData] = useState<SchemaFormData>(initial);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
 
-    const createSchema: FormEventHandler = (e) => {
+    const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        const { post, reset } = form;
+        setProcessing(true);
+        setErrors({});
 
-        post('/admin/schemas', {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.name) {
-                    reset('name');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
-            },
-        });
-    };
-
-    const updateSchema: FormEventHandler = (e) => {
-        e.preventDefault();
-        const { put, reset } = form;
-
-        put('/admin/schemas/'+data.id, {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.name) {
-                    reset('name');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
-            },
-        });
+        if (data.id) {
+            updateSchema(data.id, data, {
+                onSuccess: () => setProcessing(false),
+                onError: (err: Record<string, string>) => {
+                    setErrors(err);
+                    setProcessing(false);
+                },
+            });
+        } else {
+            createSchema(data, {
+                onSuccess: () => {
+                    setProcessing(false);
+                    setData(initial);
+                },
+                onError: (err: Record<string, string>) => {
+                    setErrors(err);
+                    setProcessing(false);
+                },
+            });
+        }
     };
 
     return (
-        <form onSubmit={data.id? updateSchema: createSchema} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid gap-2">
                 <Label htmlFor="name">Nombre</Label>
                 <Input
@@ -77,7 +67,7 @@ export default function SchemaFields() {
                     autoFocus
                     autoComplete="name"
                     value={data.name}
-                    onChange={(e) => setData('name', e.target.value)}
+                    onChange={(e) => setData({ ...data, name: e.target.value })}
                     disabled={processing}
                 />
                 <InputError message={errors.name} />
@@ -85,7 +75,7 @@ export default function SchemaFields() {
 
             <CustomFieldManager
                 fields={data.fields || []}
-                setFields={(newFields) => setData('fields', newFields)}
+                setFields={(newFields) => setData({ ...data, fields: newFields })}
             />
 
             <div className="grid gap-2">
@@ -95,7 +85,7 @@ export default function SchemaFields() {
                     type="numeric"
                     autoComplete="iterations"
                     value={data.iterations}
-                    onChange={(e) => setData('iterations', parseInt(e.target.value))}
+                    onChange={(e) => setData({ ...data, iterations: parseInt(e.target.value) })}
                     disabled={processing}
                 />
                 <InputError message={errors.iterations} />
@@ -106,7 +96,7 @@ export default function SchemaFields() {
                     id="active"
                     name="active"
                     checked={Boolean(data.active)}
-                    onClick={() => setData('active', !data.active)}
+                    onClick={() => setData({ ...data, active: !data.active })}
                 />
                 <Label htmlFor="active">Activo</Label>
             </div>

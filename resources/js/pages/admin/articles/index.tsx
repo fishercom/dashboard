@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+
+import { Link, usePage } from '@inertiajs/react';
+import { getArticles, deleteArticle } from '@/services/articles';
+
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Article, Pagination, CmsSchema } from '@/types';
+import { Article, Pagination, Schema } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search, Plus } from 'lucide-react';
@@ -16,10 +19,10 @@ export default function Index() {
 
     interface ArticlePagination extends Omit<Pagination, 'data'> {data: Article[]};
 
-    const { items, parent } = usePage<{ items: ArticlePagination, parent: CmsSchema | null }>().props;
+    const { items, parent } = usePage<{ items: ArticlePagination, parent: Schema | null }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const [isModalOpen, setModalOpen] = useState(false);
-    const { delete : destroy } = useForm();
+
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -30,10 +33,7 @@ export default function Index() {
 
     useEffect(() => {
         if(query.s){
-            router.get(route('articles.index'), query, {
-                preserveState: true,
-                replace: true,
-            });
+            getArticles(query);
         }
     }, [query]);
 
@@ -42,16 +42,8 @@ export default function Index() {
         setQuery({s: value});
     }
 
-    const deleteArticle = (id: number) => {
-        destroy(route('articles.destroy', id), {
-            preserveScroll: true,
-            onBefore: () => {
-                return window.confirm('Esta seguro que desea eliminar este registro?');
-            },
-            onError: () => {
-                alert('Ocurrió un error al eliminar el registro.');
-            },
-        });
+    const deleteArticleHandler = (id: number) => {
+        deleteArticle(id);
     }
 
     const handleCreateClick = () => {
@@ -116,7 +108,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteArticle(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteArticleHandler(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>
@@ -133,10 +125,10 @@ export default function Index() {
                 <PaginationNav data={items}/>
                 }
             </div>
-            <SchemaSelectorModal 
-                isOpen={isModalOpen} 
-                onClose={() => setModalOpen(false)} 
-                parentSchemaId={parent?.id} 
+            <SchemaSelectorModal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                parentSchemaId={parent?.id}
             />
         </ModuleLayout>
     );

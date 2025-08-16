@@ -3,13 +3,14 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
-import { FormEventHandler, useRef } from 'react';
+import { Head } from '@inertiajs/react';
+import { FormEventHandler, useRef, useState } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { updatePassword } from '@/services/auth';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,26 +23,44 @@ export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
-    const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
+    const [data, setData] = useState({
         current_password: '',
         password: '',
         password_confirmation: '',
     });
 
-    const updatePassword: FormEventHandler = (e) => {
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
+    const [recentlySuccessful, setRecentlySuccessful] = useState(false);
+
+    const updatePasswordHandler: FormEventHandler = (e) => {
         e.preventDefault();
 
-        put(route('password.update'), {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.password) {
-                    reset('password', 'password_confirmation');
+        setProcessing(true);
+        setErrors({});
+        setRecentlySuccessful(false);
+
+        updatePassword(data, {
+            onSuccess: () => {
+                setData({
+                    current_password: '',
+                    password: '',
+                    password_confirmation: '',
+                });
+                setProcessing(false);
+                setRecentlySuccessful(true);
+                setTimeout(() => setRecentlySuccessful(false), 2000);
+            },
+            onError: (err: Record<string, string>) => {
+                setErrors(err);
+                setProcessing(false);
+                if (err.password) {
+                    setData(prevData => ({ ...prevData, password: '', password_confirmation: '' }));
                     passwordInput.current?.focus();
                 }
 
-                if (errors.current_password) {
-                    reset('current_password');
+                if (err.current_password) {
+                    setData(prevData => ({ ...prevData, current_password: '' }));
                     currentPasswordInput.current?.focus();
                 }
             },
@@ -56,7 +75,7 @@ export default function Password() {
                 <div className="space-y-6">
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
-                    <form onSubmit={updatePassword} className="space-y-6">
+                    <form onSubmit={updatePasswordHandler} className="space-y-6">
                         <div className="grid gap-2">
                             <Label htmlFor="current_password">Current password</Label>
 
@@ -64,7 +83,7 @@ export default function Password() {
                                 id="current_password"
                                 ref={currentPasswordInput}
                                 value={data.current_password}
-                                onChange={(e) => setData('current_password', e.target.value)}
+                                onChange={(e) => setData({ ...data, current_password: e.target.value })}
                                 type="password"
                                 className="mt-1 block w-full"
                                 autoComplete="current-password"
@@ -81,7 +100,7 @@ export default function Password() {
                                 id="password"
                                 ref={passwordInput}
                                 value={data.password}
-                                onChange={(e) => setData('password', e.target.value)}
+                                onChange={(e) => setData({ ...data, password: e.target.value })}
                                 type="password"
                                 className="mt-1 block w-full"
                                 autoComplete="new-password"
@@ -97,7 +116,7 @@ export default function Password() {
                             <Input
                                 id="password_confirmation"
                                 value={data.password_confirmation}
-                                onChange={(e) => setData('password_confirmation', e.target.value)}
+                                onChange={(e) => setData({ ...data, password_confirmation: e.target.value })}
                                 type="password"
                                 className="mt-1 block w-full"
                                 autoComplete="new-password"

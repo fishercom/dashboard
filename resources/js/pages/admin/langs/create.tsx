@@ -2,7 +2,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { useForm, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LangForm } from '@/types';
@@ -26,22 +26,23 @@ export default function Create() {
         iso: '',
         active: false,
     }
-    const { data, setData, errors, post, reset, processing } = useForm<Required<LangForm>>(item);
+    const [data, setData] = useState<Required<LangForm>>(item);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
 
-    const createLang: FormEventHandler = (e) => {
+    const createLangHandler: FormEventHandler = (e) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
 
-        post('/admin/langs', {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.name) {
-                    reset('name');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
+        createLang(data, {
+            onSuccess: () => {
+                setProcessing(false);
+                setData(item);
+            },
+            onError: (err: Record<string, string>) => {
+                setErrors(err);
+                setProcessing(false);
             },
         });
     };
@@ -49,7 +50,7 @@ export default function Create() {
     return (
         <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Idioma" description="Administrar los idiomas del sistema">
             <FormLayout>
-            <form onSubmit={createLang} className="space-y-6">
+            <form onSubmit={createLangHandler} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
                     <Input

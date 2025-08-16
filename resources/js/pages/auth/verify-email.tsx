@@ -1,19 +1,23 @@
 // Components
-import { Head, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/auth-layout';
+import { sendVerificationEmail } from '@/services/auth';
 
 export default function VerifyEmail({ status }: { status?: string }) {
-    const { post, processing } = useForm({});
+    const [processing, setProcessing] = useState(false);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('verification.send'));
+        sendVerificationEmail(
+            () => setProcessing(true),
+            () => setProcessing(false)
+        );
     };
 
     return (

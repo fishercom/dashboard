@@ -1,15 +1,17 @@
+
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { useForm, Link } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Link } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { LangForm } from '@/types';
+import { SiteForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { createSite } from '@/services/sites';
 
 export default function Create() {
 
@@ -20,28 +22,29 @@ export default function Create() {
         },
     ];
 
-    const item: LangForm = {
+    const item: SiteForm = {
         id: 0,
         name: '',
         iso: '',
         active: false,
     }
-    const { data, setData, errors, post, reset, processing } = useForm<Required<LangForm>>(item);
+    const [data, setData] = useState<Required<SiteForm>>(item);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
 
-    const createLang: FormEventHandler = (e) => {
+    const createSiteHandler: FormEventHandler = (e) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
 
-        post('/admin/sites', {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.name) {
-                    reset('name');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
+        createSite(data, {
+            onSuccess: () => {
+                setProcessing(false);
+                setData(item);
+            },
+            onError: (err: Record<string, string>) => {
+                setErrors(err);
+                setProcessing(false);
             },
         });
     };
@@ -49,7 +52,7 @@ export default function Create() {
     return (
         <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Sitios Web" description="Administrar los sitios web del sistema">
             <FormLayout>
-            <form onSubmit={createLang} className="space-y-6">
+            <form onSubmit={createSiteHandler} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
                     <Input
@@ -59,7 +62,7 @@ export default function Create() {
                         autoFocus
                         autoComplete="name"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData({ ...data, name: e.target.value })}
                         disabled={processing}
                     />
                     <InputError message={errors.name} />
@@ -71,9 +74,10 @@ export default function Create() {
                         id="iso"
                         type="text"
                         required
+                        autoFocus
                         autoComplete="iso"
                         value={data.iso}
-                        onChange={(e) => setData('iso', e.target.value)}
+                        onChange={(e) => setData({ ...data, iso: e.target.value })}
                         disabled={processing}
                     />
                     <InputError message={errors.name} />
@@ -84,7 +88,7 @@ export default function Create() {
                         id="active"
                         name="active"
                         checked={data.active}
-                        onClick={() => setData('active', !data.active)}
+                        onClick={() => setData({ ...data, active: !data.active })}
                         tabIndex={3}
                     />
                     <Label htmlFor="active">Activo</Label>
@@ -99,3 +103,4 @@ export default function Create() {
         </ModuleLayout>
     );
 }
+

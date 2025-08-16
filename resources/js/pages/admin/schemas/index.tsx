@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+
+import { Link, router, usePage } from '@inertiajs/react';
+import { deleteSchema } from '@/services/schemas';
+
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Schema, SchemaGroup, Pagination } from '@/types';
@@ -17,7 +20,7 @@ export default function Index() {
 
     const { items, groups, parent, group_id, parent_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], parent: Schema, group_id: number, parent_id: number }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    const { delete : destroy } = useForm();
+    
     //console.log(items);
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -37,21 +40,11 @@ export default function Index() {
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {value} = e.target;
-        console.log(value, 'handleSearch');
         setQuery({s: value});
     }
 
-    const deleteSchema = (id: number) => {
-        console.log(id);
-        destroy(route('schemas.destroy', id), {
-            preserveScroll: true,
-            onBefore: () => {
-                return window.confirm('Esta seguro que desea eliminar este registro?');
-            },
-            onError: () => {
-                alert('Ocurrió un error al eliminar el registro.');
-            },
-        });
+    const deleteSchemaHandler = (id: number) => {
+        deleteSchema(id);
     }
 
     return (
@@ -133,7 +126,7 @@ export default function Index() {
                                             </DropdownMenuItem>
                                             {item.type=='PAGE' &&
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteSchema(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteSchemaHandler(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>

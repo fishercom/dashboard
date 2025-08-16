@@ -1,6 +1,7 @@
 
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { getSchemas } from '@/services/schemas';
 
 interface Schema {
   id: number;
@@ -20,20 +21,15 @@ export default function SchemaSelectorModal({ isOpen, onClose, parentSchemaId }:
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
-      // If parentSchemaId is present, fetch children; otherwise, fetch root schemas.
-      const endpoint = parentSchemaId
-        ? `/admin/schemas/${parentSchemaId}/children`
-        : '/admin/schemas/root';
-
-      fetch(endpoint)
-        .then(res => res.json())
-        .then((data: Schema[]) => {
-          setSchemas(data);
-          setLoading(false);
+      getSchemas(parentSchemaId)
+        .then(response => {
+            setSchemas(response.data);
         })
-        .catch(err => {
-          console.error("Failed to fetch schemas:", err);
-          setLoading(false);
+        .catch(error => {
+            console.error("Failed to fetch schemas:", error);
+        })
+        .finally(() => {
+            setLoading(false);
         });
     }
   }, [isOpen, parentSchemaId]);

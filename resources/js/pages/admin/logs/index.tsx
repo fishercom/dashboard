@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+
+import { Link, usePage } from '@inertiajs/react';
+import { getLogs, deleteLog } from '@/services/logs';
+
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Log, Pagination } from '@/types';
@@ -17,7 +20,7 @@ export default function Index() {
 
     const { items } = usePage<{ items: LogPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    const { delete : destroy } = useForm();
+    
     //console.log(items);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -29,30 +32,17 @@ export default function Index() {
 
     useEffect(() => {
         if(query.s){
-            router.get(route('logs.index'), query, {
-                preserveState: true,
-                replace: true,
-            });
+            getLogs(query);
         }
     }, [query]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {value} = e.target;
-        console.log(value, 'handleSearch');
         setQuery({s: value});
     }
 
-    const deleteLog = (id: number) => {
-        console.log(id);
-        destroy(route('logs.destroy', id), {
-            preserveScroll: true,
-            onBefore: () => {
-                return window.confirm('Esta seguro que desea eliminar este registro?');
-            },
-            onError: () => {
-                alert('Ocurrió un error al eliminar el registro.');
-            },
-        });
+    const deleteLogHandler = (id: number) => {
+        deleteLog(id);
     }
 
     return (
@@ -102,7 +92,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteLog(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteLogHandler(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>

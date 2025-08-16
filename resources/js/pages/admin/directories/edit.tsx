@@ -2,14 +2,15 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Profile, ProfileForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { updateDirectory } from '@/services/directories';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,24 +22,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Create() {
 
     const { item } = usePage<{ item: Profile }>().props;
-    const { data, setData, errors, put, reset, processing } = useForm<Required<ProfileForm>>(item);
+    const [data, setData] = useState<Required<ProfileForm>>(item);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
 
-    console.log(data);
-
-    const updateProfile: FormEventHandler = (e) => {
+    const updateDirectoryHandler: FormEventHandler = (e) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
 
-        put('/admin/directories/'+data.id, {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.name) {
-                    reset('name');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
+        updateDirectory(data.id, data, {
+            onSuccess: () => {
+                setProcessing(false);
+            },
+            onError: (err: Record<string, string>) => {
+                setErrors(err);
+                setProcessing(false);
             },
         });
     };
@@ -46,7 +45,7 @@ export default function Create() {
     return (
         <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Directorio" description="Administrar los directorios del sistema">
             <FormLayout>
-            <form onSubmit={updateProfile} className="space-y-6">
+            <form onSubmit={updateDirectoryHandler} className="space-y-6">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nombre</Label>
 
@@ -58,7 +57,7 @@ export default function Create() {
                         tabIndex={1}
                         autoComplete="name"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData({ ...data, name: e.target.value })}
                         disabled={processing}
                     />
 
@@ -71,7 +70,7 @@ export default function Create() {
                         id="active"
                         name="active"
                         checked={Boolean(data.active)}
-                        onClick={() => setData('active', !data.active)}
+                        onClick={() => setData({ ...data, active: !data.active })}
                         tabIndex={3}
                     />
                     <Label htmlFor="active">Activo</Label>

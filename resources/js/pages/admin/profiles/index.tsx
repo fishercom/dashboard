@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+
+import { Link, usePage } from '@inertiajs/react';
+import { getProfiles, deleteProfile } from '@/services/profiles';
+
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Profile, Pagination } from '@/types';
@@ -17,7 +20,7 @@ export default function Index() {
 
     const { items } = usePage<{ items: ProfilePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    const { delete : destroy } = useForm();
+    
     //console.log(items);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -29,30 +32,17 @@ export default function Index() {
 
     useEffect(() => {
         if(query.s){
-            router.get(route('profiles.index'), query, {
-                preserveState: true,
-                replace: true,
-            });
+            getProfiles(query);
         }
     }, [query]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {value} = e.target;
-        console.log(value, 'handleSearch');
         setQuery({s: value});
     }
 
-    const deleteProfile = (id: number) => {
-        console.log(id);
-        destroy(route('profiles.destroy', id), {
-            preserveScroll: true,
-            onBefore: () => {
-                return window.confirm('Esta seguro que desea eliminar este registro?');
-            },
-            onError: () => {
-                alert('Ocurrió un error al eliminar el registro.');
-            },
-        });
+    const deleteProfileHandler = (id: number) => {
+        deleteProfile(id);
     }
 
     return (
@@ -111,7 +101,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteProfile(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteProfileHandler(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>

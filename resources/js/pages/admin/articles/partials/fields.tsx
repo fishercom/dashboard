@@ -1,6 +1,6 @@
 import InputError from '@/components/input-error';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Article, ArticleForm, Schema } from '@/types';
 import CustomFieldRenderer from '@/components/custom-field-renderer';
@@ -8,6 +8,7 @@ import CustomFieldRenderer from '@/components/custom-field-renderer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { createArticle, updateArticle } from '@/services/articles';
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
 interface JsonObject { [key: string]: JsonValue }
@@ -31,51 +32,39 @@ export default function ArticleFields() {
         slug: String(item?.slug || ''),
         active: Boolean(item?.active ?? true),
     };
-    const form = useForm<ArticleFormData>(initial);
-    const {data, setData, errors, processing} = form;
-    data.schema_id = data?.schema_id || 1;
-    data.lang_id = data?.lang_id || 1;
+    const [data, setData] = useState<ArticleFormData>(initial);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
 
-    const createArticle: FormEventHandler = (e) => {
+    const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        const { post, reset } = form;
+        setProcessing(true);
+        setErrors({});
 
-        post('/admin/articles', {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.title) {
-                    reset('title');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
-            },
-        });
-    };
-
-    const updateArticle: FormEventHandler = (e) => {
-        e.preventDefault();
-        const { put, reset } = form;
-
-        put('/admin/articles/'+data.id, {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.title) {
-                    reset('title');
-                }
-
-                if (errors.active) {
-                    reset('active');
-                }
-            },
-        });
+        if (data.id) {
+            updateArticle(data.id, data, {
+                onSuccess: () => setProcessing(false),
+                onError: (err: Record<string, string>) => {
+                    setErrors(err);
+                    setProcessing(false);
+                },
+            });
+        } else {
+            createArticle(data, {
+                onSuccess: () => {
+                    setProcessing(false);
+                    setData(initial);
+                },
+                onError: (err: Record<string, string>) => {
+                    setErrors(err);
+                    setProcessing(false);
+                },
+            });
+        }
     };
 
     return (
-        <form onSubmit={data.id? updateArticle: createArticle} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid gap-2">
                 <Label htmlFor="title">Nombre</Label>
                 <Input
@@ -86,7 +75,7 @@ export default function ArticleFields() {
                     tabIndex={1}
                     autoComplete="title"
                     value={data.title}
-                    onChange={(e) => setData('title', e.target.value)}
+                    onChange={(e) => setData({ ...data, title: e.target.value })}
                     disabled={processing}
                 />
 
@@ -101,7 +90,7 @@ export default function ArticleFields() {
                         values={data.metadata as Record<string, JsonValue>}
                         onChange={(key: string, value: JsonValue) => {
                             const next = { ...data.metadata, [key]: value };
-                            setData('metadata', next as ArticleFormData['metadata']);
+                            setData({ ...data, metadata: next as ArticleFormData['metadata'] });
                         }}
                     />
                 </div>
@@ -112,7 +101,7 @@ export default function ArticleFields() {
                     id="active"
                     name="active"
                     checked={data.active}
-                    onClick={() => setData('active', !data.active)}
+                    onClick={() => setData({ ...data, active: !data.active })}
                     tabIndex={3}
                 />
                 <Label htmlFor="active">Activo</Label>

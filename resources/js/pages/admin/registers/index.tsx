@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { Profile, Pagination } from '@/types';
+import { CmsRegister, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
+import { getRegisters, deleteRegister } from '@/services/registers';
 
 export default function Index() {
 
-    interface ProfilePagination extends Omit<Pagination, 'data'> {data: Profile[]};
+    interface RegisterPagination extends Omit<Pagination, 'data'> {data: CmsRegister[]};
 
-    const { items } = usePage<{ items: ProfilePagination }>().props;
+    const { items } = usePage<{ items: RegisterPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    const { delete : destroy } = useForm();
-    //console.log(items);
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard / Mensajes Recibidos',
@@ -28,30 +28,17 @@ export default function Index() {
 
     useEffect(() => {
         if(query.s){
-            router.get(route('registers.index'), query, {
-                preserveState: true,
-                replace: true,
-            });
+            getRegisters(query);
         }
     }, [query]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {value} = e.target;
-        console.log(value, 'handleSearch');
         setQuery({s: value});
     }
 
-    const deleteProfile = (id: number) => {
-        console.log(id);
-        destroy(route('registers.destroy', id), {
-            preserveScroll: true,
-            onBefore: () => {
-                return window.confirm('Esta seguro que desea eliminar este registro?');
-            },
-            onError: () => {
-                alert('Ocurrió un error al eliminar el registro.');
-            },
-        });
+    const deleteRegisterHandler = (id: number) => {
+        deleteRegister(id);
     }
 
     return (
@@ -84,7 +71,7 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: Profile)=>{
+                        {items.data.map((item: CmsRegister)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
@@ -106,7 +93,7 @@ export default function Index() {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
-                                                <Link className="block w-full" href='#' onClick={()=>deleteProfile(item.id)} as="button" prefetch>
+                                                <Link className="block w-full" href='#' onClick={()=>deleteRegisterHandler(item.id)} as="button" prefetch>
                                                     Delete
                                                 </Link>
                                             </DropdownMenuItem>
