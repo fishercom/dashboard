@@ -2,6 +2,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,12 +15,7 @@ import { createDirectory } from '@/services/directories';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Directorios / Crear',
-            href: '/admin/directories/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Directorios', 'Crear', route('directories.index'));
 
     const item: ProfileForm = {
         id: 0,

@@ -2,6 +2,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -13,19 +14,9 @@ import { Label } from '@/components/ui/label';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Idiomas / Crear',
-            href: '/admin/langs/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Logs', 'Crear', route('logs.index'));
 
-    const item: LangForm = {
-        id: 0,
-        name: '',
-        iso: '',
-        active: false,
-    }
+    
     const item: LogForm = {
         id: 0,
         name: '',

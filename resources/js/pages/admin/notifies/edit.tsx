@@ -2,6 +2,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -19,12 +20,7 @@ export default function Create() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Cuentas de Correo / Editar',
-            href: '/admin/notifies/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Cuentas de Correo', 'Editar', route('notifies.index'));
 
     const updateNotifyHandler: FormEventHandler = (e) => {
         e.preventDefault();

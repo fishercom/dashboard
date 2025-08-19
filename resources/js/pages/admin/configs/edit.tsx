@@ -11,20 +11,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateConfig } from '@/services/configs';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 export default function Create() {
+
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Configuración', 'Editar', route('configs.index')); // Updated to use generateBreadcrumb function
 
     const { item } = usePage<{ item: Lang }>().props;
     const [data, setData] = useState<Required<LangForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Configuración / Editar',
-            href: '/admin/configs/index',
-        },
-    ];
 
     const updateConfigHandler: FormEventHandler = (e) => {
         e.preventDefault();

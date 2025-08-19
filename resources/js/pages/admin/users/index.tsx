@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
@@ -19,12 +20,7 @@ export default function Index() {
     const { items } = usePage<{ items: UserPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Usuarios',
-            href: '/admin/users/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Usuarios', '', route('users.index'));
 
     useEffect(() => {
         if(query.s){

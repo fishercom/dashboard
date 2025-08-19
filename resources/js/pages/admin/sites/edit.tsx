@@ -2,6 +2,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -19,12 +20,7 @@ export default function Create() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Sitios Web / Editar',
-            href: '/admin/sites/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Sitios Web', 'Editar', route('sites.index'));
 
     const updateSiteHandler: FormEventHandler = (e) => {
         e.preventDefault();

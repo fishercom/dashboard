@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getArticles, deleteArticle } from '@/services/articles';
@@ -24,12 +25,7 @@ export default function Index() {
     const [isModalOpen, setModalOpen] = useState(false);
 
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Artículos',
-            href: '/admin/articles/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Artículos', '', route('articles.index'));
 
     useEffect(() => {
         if(query.s){

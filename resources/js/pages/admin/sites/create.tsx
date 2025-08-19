@@ -3,6 +3,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -15,12 +16,7 @@ import { createSite } from '@/services/sites';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Sitios Web / Crear',
-            href: '/admin/sites/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Sitios Web', 'Crear', route('sites.index'));
 
     const item: SiteForm = {
         id: 0,

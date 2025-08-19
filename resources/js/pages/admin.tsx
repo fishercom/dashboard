@@ -1,14 +1,10 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Head } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'admin',
-        href: '/admin',
-    },
-];
+const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Dashboard', '', route('dashboard'));
 
 export default function Dashboard() {
     return (

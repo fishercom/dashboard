@@ -11,15 +11,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createConfig } from '@/services/configs';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Configuración / Crear',
-            href: '/admin/configs/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Configuración', 'Crear', route('configs.index')); // Updated to use generateBreadcrumb function
 
     const item: LangForm = {
         id: 0,

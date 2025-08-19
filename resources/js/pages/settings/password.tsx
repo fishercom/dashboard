@@ -2,6 +2,7 @@ import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Transition } from '@headlessui/react';
 import { Head } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
@@ -12,12 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updatePassword } from '@/services/auth';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: '/settings/password',
-    },
-];
+const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Password settings', '', route('settings.password'));
 
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);

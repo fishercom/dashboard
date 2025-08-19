@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getProfiles, deleteProfile } from '@/services/profiles';
@@ -23,12 +24,7 @@ export default function Index() {
     
     //console.log(items);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Perfiles',
-            href: '/admin/profiles/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Perfiles', '', route('profiles.index'));
 
     useEffect(() => {
         if(query.s){

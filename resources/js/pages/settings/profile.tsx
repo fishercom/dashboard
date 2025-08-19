@@ -1,4 +1,5 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -12,12 +13,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: '/settings/profile',
-    },
-];
+const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Profile settings', '', route('settings.profile'));
 
 interface ProfileForm {
     name: string;

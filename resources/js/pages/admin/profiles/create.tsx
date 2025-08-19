@@ -2,6 +2,7 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -15,12 +16,7 @@ import { createProfile } from '@/services/profiles';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Perfiles / Crear',
-            href: '/admin/profiles/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Perfiles', 'Crear', route('profiles.index'));
 
     const item: ProfileForm = {
         id: 0,

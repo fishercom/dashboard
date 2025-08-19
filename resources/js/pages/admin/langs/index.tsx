@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getLangs, deleteLang } from '@/services/langs';
@@ -23,12 +24,7 @@ export default function Index() {
     
     //console.log(items);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Idiomas',
-            href: '/admin/langs/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Idiomas', '', route('langs.index'));
 
     useEffect(() => {
         if(query.s){

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, router, usePage } from '@inertiajs/react';
 import { deleteSchema } from '@/services/schemas';
@@ -22,12 +23,7 @@ export default function Index() {
     const [ query, setQuery ] = useState({s: ''});
     
     //console.log(items);
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Esquemas',
-            href: '/admin/schemas/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Esquemas', '', route('schemas.index'));
 
     useEffect(() => {
         if(query.s){

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getSites, deleteSite } from '@/services/sites';
@@ -23,12 +24,7 @@ export default function Index() {
     
     //console.log(items);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Sitios Web',
-            href: '/admin/sites/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Sitios Web', '', route('sites.index'));
 
     useEffect(() => {
         if(query.s){

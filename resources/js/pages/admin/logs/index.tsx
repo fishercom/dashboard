@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type BreadcrumbItem} from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getLogs, deleteLog } from '@/services/logs';
@@ -23,12 +24,7 @@ export default function Index() {
     
     //console.log(items);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Logs',
-            href: '/admin/logs/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Logs', '', route('logs.index'));
 
     useEffect(() => {
         if(query.s){

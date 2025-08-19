@@ -2,10 +2,12 @@ import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { type BreadcrumbItem } from '@/types';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Profile, ProfileForm } from '@/types';
+import { updateProfile } from '@/services/profiles';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,12 +20,7 @@ export default function Create() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Perfiles / Editar',
-            href: '/admin/profiles/index',
-        },
-    ];
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Perfiles', 'Editar', route('profiles.index'));
 
     const updateProfileHandler: FormEventHandler = (e) => {
         e.preventDefault();
@@ -56,7 +53,7 @@ export default function Create() {
                         tabIndex={1}
                         autoComplete="name"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData({ ...data, name: e.target.value })}
                         disabled={processing}
                     />
 
@@ -69,7 +66,7 @@ export default function Create() {
                         id="active"
                         name="active"
                         checked={Boolean(data.active)}
-                        onClick={() => setData('active', !data.active)}
+                        onClick={() => setData({ ...data, active: !data.active })}
                         tabIndex={3}
                     />
                     <Label htmlFor="active">Activo</Label>

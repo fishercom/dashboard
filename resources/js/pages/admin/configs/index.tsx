@@ -13,22 +13,16 @@ import { ChevronDown, Search } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 export default function Index() {
+
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Configuración', '', route('configs.index')); // Updated to use generateBreadcrumb function
 
     interface ConfigPagination extends Omit<Pagination, 'data'> {data: Config[]};
 
     const { items } = usePage<{ items: ConfigPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    
-    //console.log(items);
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Dashboard / Configuración',
-            href: '/admin/configs/index',
-        },
-    ];
 
     useEffect(() => {
         if(query.s){
