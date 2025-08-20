@@ -1,10 +1,11 @@
-export interface Site {
+export interface Parameter {
     id: number,
+    group_id: number,
+    parent_id: number,
     name: string,
-    segment: string,
-    site_url: string,
-    schema_group_id: number,
+    value: string,
     metadata: [],
+    position: number,
     active: boolean,
     updated_at: Date,
     created_at: Date

@@ -37,3 +37,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::resource('articles', ArticleController::class);
 
 });
+
+Route::get('dashboard', function () {
+    return Inertia::render('dashboard');
+})->name('dashboard');

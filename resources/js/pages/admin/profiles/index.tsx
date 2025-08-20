@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getProfiles, deleteProfile } from '@/services/profiles';
@@ -21,10 +19,6 @@ export default function Index() {
 
     const { items } = usePage<{ items: ProfilePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    
-    //console.log(items);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Perfiles', '', route('profiles.index'));
 
     useEffect(() => {
         if(query.s){
@@ -42,7 +36,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Perfiles" description="Administrar los perfiles del sistema">
+        <ModuleLayout route={route('profiles.index')} module="Perfiles" description="Administrar los perfiles del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">

@@ -3,9 +3,12 @@ import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
 import { type PropsWithChildren } from 'react';
+import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
-export default function ModuleLayout({ children, breadcrumbs, title, description }: PropsWithChildren<{breadcrumbs: BreadcrumbItem[], title: string, description: string}>) {
+export default function ModuleLayout({ children, route, module='', action='', description }: PropsWithChildren<{route: string, module: string, action?:string, description: string}>) {
 
+    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb(module, action, route);
+    const title = action ? `${action} ${module}` : module;
 
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {

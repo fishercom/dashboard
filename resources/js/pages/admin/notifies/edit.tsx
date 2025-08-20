@@ -1,8 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,6 +8,7 @@ import { Notify, NotifyForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { updateNotify } from '@/services/notifies';
 
@@ -19,8 +18,6 @@ export default function Create() {
     const [data, setData] = useState<Required<NotifyForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Cuentas de Correo', 'Editar', route('notifies.index'));
 
     const updateNotifyHandler: FormEventHandler = (e) => {
         e.preventDefault();
@@ -39,27 +36,59 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Cuenta" description="Administrar los esquemas del sistema">
+        <ModuleLayout route={route('notifies.index')} module="Cuentas de Correo" action="Editar" description="Administrar las notificaciones del sistema">
             <FormLayout>
             <form onSubmit={updateNotifyHandler} className="space-y-6">
                 <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
+                    <Label htmlFor="form_id">Form</Label>
 
                     <Input
-                        id="name"
+                        id="form_id"
                         type="text"
                         required
                         autoFocus
                         tabIndex={1}
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
+                        autoComplete="form_id"
+                        value={data.form_id}
+                        onChange={(e) => setData({ ...data, form_id: parseInt(e.target.value) })}
                         disabled={processing}
                     />
 
-                    <InputError message={errors.name} />
+                    <InputError message={errors.form_id} />
                 </div>
 
+                <div className="grid gap-2">
+                    <Label htmlFor="user_id">User</Label>
+
+                    <Input
+                        id="user_id"
+                        type="text"
+                        required
+                        autoFocus
+                        tabIndex={2}
+                        autoComplete="user_id"
+                        value={data.user_id}
+                        onChange={(e) => setData({ ...data, user_id: parseInt(e.target.value) })}
+                        disabled={processing}
+                    />
+
+                    <InputError message={errors.user_id} />
+                </div>
+
+                <div className="grid gap-2">
+                    <Label htmlFor="recipients">Recipients</Label>
+                    <Textarea
+                        id="recipients"
+                        required
+                        autoFocus
+                        tabIndex={3}
+                        autoComplete="recipients"
+                        value={data.recipients}
+                        onChange={(e) => setData({ ...data, recipients: e.target.value })}
+                        disabled={processing}
+                    />
+                    <InputError message={errors.recipients} />
+                </div>
 
                 <div className="flex items-center space-x-3">
                     <Checkbox

@@ -4,7 +4,7 @@ import { type BreadcrumbItem } from '@/types';
 import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Head } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Dashboard', '', route('dashboard'));
+const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('', '', route('dashboard'));
 
 export default function Dashboard() {
     return (

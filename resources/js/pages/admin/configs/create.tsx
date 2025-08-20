@@ -1,7 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,11 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createConfig } from '@/services/configs';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 export default function Create() {
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Configuración', 'Crear', route('configs.index')); // Updated to use generateBreadcrumb function
 
     const item: LangForm = {
         id: 0,
@@ -45,7 +41,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Configuración" description="Revisar la configuración del sistema">
+        <ModuleLayout route={route('configs.index')} module="Configuración" action="Crear" description="Revisar la configuración del sistema">
             <FormLayout>
             <form onSubmit={createConfigHandler} className="space-y-6">
                 <div className="grid gap-2">

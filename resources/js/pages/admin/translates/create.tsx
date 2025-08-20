@@ -2,11 +2,8 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
 import { TranslateForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
@@ -16,13 +13,11 @@ import { createTranslate } from '@/services/translates';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Traducciones', 'Crear', route('translates.index'));
-
     const item: TranslateForm = {
         id: 0,
-        name: '',
-        iso: '',
-        active: false,
+        alias: '',
+        input_type: 0,
+        metadata: [{ iso: 'EN', value: '' }],
     }
     const [data, setData] = useState<Required<TranslateForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -46,48 +41,38 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Traducción" description="Administrar las traducciones del site">
+        <ModuleLayout route={route('translates.index')} module="Traducciones" action="Crear" description="Administrar las traducciones del site">
             <FormLayout>
             <form onSubmit={createTranslateHandler} className="space-y-6">
                 <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
+                    <Label htmlFor="alias">Alias</Label>
                     <Input
-                        id="name"
+                        id="alias"
                         type="text"
                         required
                         autoFocus
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
+                        tabIndex={1}
+                        autoComplete="alias"
+                        value={data.alias}
+                        onChange={(e) => setData({ ...data, alias: e.target.value })}
                         disabled={processing}
                     />
-                    <InputError message={errors.name} />
+                    <InputError message={errors.alias} />
                 </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="iso">ISO</Label>
+                    <Label htmlFor="metadata">Traducción</Label>
                     <Input
-                        id="iso"
+                        id="metadata"
                         type="text"
                         required
                         autoFocus
-                        autoComplete="iso"
-                        value={data.iso}
-                        onChange={(e) => setData({ ...data, iso: e.target.value })}
+                        autoComplete="metadata"
+                        value={data.metadata[0]?.value || ''}
+                        onChange={(e) => setData({ ...data, metadata: [{iso: '', value: e.target.value}] })}
                         disabled={processing}
                     />
                     <InputError message={errors.name} />
-                </div>
-
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={data.active}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
-                    />
-                    <Label htmlFor="active">Activo</Label>
                 </div>
 
                 <div className="flex items-center gap-4">

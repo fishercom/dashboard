@@ -1,7 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
-
 import { Link, router, usePage } from '@inertiajs/react';
 import { deleteSchema } from '@/services/schemas';
 
@@ -21,9 +18,6 @@ export default function Index() {
 
     const { items, groups, parent, group_id, parent_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], parent: Schema, group_id: number, parent_id: number }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    
-    //console.log(items);
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Esquemas', '', route('schemas.index'));
 
     useEffect(() => {
         if(query.s){
@@ -44,7 +38,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Esquemas" description="Administrar los esquemas del sistema">
+        <ModuleLayout route={route('schemas.index')} module="Esquemas" description="Administrar los esquemas del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">

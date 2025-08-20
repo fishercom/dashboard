@@ -19,7 +19,9 @@ class CreateAdmModulesTable extends Migration {
 			$table->integer('menu_id')->unsigned();
 			$table->string('name');
 			$table->string('title')->nullable();
+            $table->string('description', 1024)->nullable();
 			$table->string('url', 50);
+            $table->string('route', 50);
 			$table->string('params')->nullable();
 			$table->string('icon', 50)->nullable();
 			$table->integer('position')->unsigned();

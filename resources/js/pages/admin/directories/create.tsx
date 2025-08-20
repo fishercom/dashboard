@@ -1,8 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,8 +12,6 @@ import { Label } from '@/components/ui/label';
 import { createDirectory } from '@/services/directories';
 
 export default function Create() {
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Directorios', 'Crear', route('directories.index'));
 
     const item: ProfileForm = {
         id: 0,
@@ -44,7 +40,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Directorio" description="Administrar los directorios del sistema">
+        <ModuleLayout route={route('directories.index')} module="Directorios" action="Crear" description="Administrar los directorios del sistema">
             <FormLayout>
             <form onSubmit={createDirectoryHandler} className="space-y-6">
                 <div className="grid gap-2">

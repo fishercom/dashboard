@@ -1,7 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
-
 import { Link, usePage } from '@inertiajs/react';
 import { getSites, deleteSite } from '@/services/sites';
 
@@ -21,10 +18,6 @@ export default function Index() {
 
     const { items } = usePage<{ items: SitePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    
-    //console.log(items);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Sitios Web', '', route('sites.index'));
 
     useEffect(() => {
         if(query.s){
@@ -42,7 +35,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Sitios Web" description="Administrar los sitios web del sistema">
+        <ModuleLayout route={route('sites.index')} module="Sitios Web" description="Administrar los sitios web del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full">

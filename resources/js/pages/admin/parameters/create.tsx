@@ -1,8 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -15,11 +13,14 @@ import { createParameter } from '@/services/parameters';
 
 export default function Create() {
 
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Parámetros', 'Crear', route('parameters.index'));
-
     const item: ParameterForm = {
         id: 0,
+        group_id: 0,
+        parent_id: 0,
         name: '',
+        value: '',
+        metadata: [],
+        position: 0,
         active: false,
     }
     const [data, setData] = useState<Required<ParameterForm>>(item);
@@ -44,7 +45,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Crear Parámetro" description="Administrar los parámetros del sistema">
+        <ModuleLayout route={route('parameters.index')} module="Parámetros" action="Crear" description="Administrar los parámetros del sistema">
             <FormLayout>
             <form onSubmit={createParameterHandler} className="space-y-6">
                 <div className="grid gap-2">

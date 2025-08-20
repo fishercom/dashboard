@@ -1,7 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,11 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateConfig } from '@/services/configs';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 export default function Create() {
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Configuración', 'Editar', route('configs.index')); // Updated to use generateBreadcrumb function
 
     const { item } = usePage<{ item: Lang }>().props;
     const [data, setData] = useState<Required<LangForm>>(item);
@@ -39,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Configuración" description="Revisar la configuración del sistema">
+        <ModuleLayout route={route('configs.index')} module="Configuración" action="Editar" description="Revisar la configuración del sistema">
             <FormLayout>
             <form onSubmit={updateConfigHandler} className="space-y-6">
                 <div className="grid gap-2">

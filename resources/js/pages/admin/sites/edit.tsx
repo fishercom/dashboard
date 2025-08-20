@@ -1,8 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -19,8 +17,6 @@ export default function Create() {
     const [data, setData] = useState<Required<SiteForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Sitios Web', 'Editar', route('sites.index'));
 
     const updateSiteHandler: FormEventHandler = (e) => {
         e.preventDefault();
@@ -39,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Sitios Web" description="Administrar los sitios web del sistema">
+        <ModuleLayout route={route('sites.index')} module="Sitios Web" action="Editar" description="Administrar los sitios web del sistema">
             <FormLayout>
             <form onSubmit={updateSiteHandler} className="space-y-6">
                 <div className="grid gap-2">
@@ -59,18 +55,33 @@ export default function Create() {
                 </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="iso">ISO</Label>
+                    <Label htmlFor="segment">Segment</Label>
                     <Input
-                        id="iso"
+                        id="segment"
                         type="text"
                         required
                         autoFocus
-                        autoComplete="iso"
-                        value={data.iso}
-                        onChange={(e) => setData({ ...data, iso: e.target.value })}
+                        autoComplete="segment"
+                        value={data.segment}
+                        onChange={(e) => setData({ ...data, segment: e.target.value })}
                         disabled={processing}
                     />
-                    <InputError message={errors.name} />
+                    <InputError message={errors.segment} />
+                </div>
+
+                <div className="grid gap-2">
+                    <Label htmlFor="site_url">Site URL</Label>
+                    <Input
+                        id="site_url"
+                        type="text"
+                        required
+                        autoFocus
+                        autoComplete="site_url"
+                        value={data.site_url}
+                        onChange={(e) => setData({ ...data, site_url: e.target.value })}
+                        disabled={processing}
+                    />
+                    <InputError message={errors.site_url} />
                 </div>
 
                 <div className="flex items-center space-x-3">

@@ -1,8 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -19,8 +17,6 @@ export default function Create() {
     const [data, setData] = useState<Required<ProfileForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Perfiles', 'Editar', route('profiles.index'));
 
     const updateProfileHandler: FormEventHandler = (e) => {
         e.preventDefault();
@@ -39,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Perfil" description="Administrar los perfiles del sistema">
+        <ModuleLayout route={route('profiles.index')} module="Perfiles" action="Editar" description="Administrar los perfiles del sistema">
             <FormLayout>
             <form onSubmit={updateProfileHandler} className="space-y-6">
                 <div className="grid gap-2">

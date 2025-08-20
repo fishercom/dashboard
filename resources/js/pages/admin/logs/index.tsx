@@ -1,7 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
-
 import { Link, usePage } from '@inertiajs/react';
 import { getLogs, deleteLog } from '@/services/logs';
 
@@ -21,10 +18,6 @@ export default function Index() {
 
     const { items } = usePage<{ items: LogPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    
-    //console.log(items);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Logs', '', route('logs.index'));
 
     useEffect(() => {
         if(query.s){
@@ -42,7 +35,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Logs" description="Revisar los logs del sistema">
+        <ModuleLayout route={route('langs.index')} module="Logs" description="Revisar los logs del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full">

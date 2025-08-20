@@ -1,12 +1,10 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CmsParameter, ParameterForm } from '@/types';
+import { Parameter, ParameterForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,12 +13,10 @@ import { updateParameter } from '@/services/parameters';
 
 export default function Create() {
 
-    const { item } = usePage<{ item: CmsParameter }>().props;
+    const { item } = usePage<{ item: Parameter }>().props;
     const [data, setData] = useState<Required<ParameterForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Parámetros', 'Editar', route('parameters.index'));
 
     const updateParameterHandler: FormEventHandler = (e) => {
         e.preventDefault();
@@ -39,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Parámetro" description="Administrar los parámetros del sistema">
+        <ModuleLayout route={route('parameters.index')} module="Parámetros" action="Editar" description="Administrar los parámetros del sistema">
             <FormLayout>
             <form onSubmit={updateParameterHandler} className="space-y-6">
                 <div className="grid gap-2">

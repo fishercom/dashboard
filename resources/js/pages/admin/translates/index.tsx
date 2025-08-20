@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { CmsTranslate, Pagination } from '@/types';
+import { Translate, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Check, Search } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
@@ -15,12 +13,10 @@ import { getTranslates, deleteTranslate } from '@/services/translates';
 
 export default function Index() {
 
-    interface TranslatePagination extends Omit<Pagination, 'data'> {data: CmsTranslate[]};
+    interface TranslatePagination extends Omit<Pagination, 'data'> {data: Translate[]};
 
     const { items } = usePage<{ items: TranslatePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Traducciones', '', route('translates.index'));
 
     useEffect(() => {
         if(query.s){
@@ -38,7 +34,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Traducciones" description="Administrar las traducciones del site">
+        <ModuleLayout route={route('translates.index')} module="Traducciones" description="Administrar las traducciones del site">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full">
@@ -56,19 +52,19 @@ export default function Index() {
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-4 py-3 rounded-l-md">Name</th>
-                                <th scope="col" className="px-4 py-3">Active</th>
+                                <th scope="col" className="px-4 py-3 rounded-l-md">Alias</th>
+                                <th scope="col" className="px-4 py-3">Values</th>
                                 <th scope="col" className="px-4 py-3">Created Date</th>
                                 <th scope="col" className="px-4 py-3">Updated Date</th>
                                 <th scope="col" className="px-4 py-3 rounded-r-md"></th>
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: CmsTranslate)=>{
+                        {items.data.map((item: Translate)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
-                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
-                                <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.alias }</th>
+                                <td className="px-4 py-3">{ item.metadata }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3 flex items-center justify-end">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getConfigs, deleteConfig } from '@/services/configs';
@@ -13,11 +12,8 @@ import { ChevronDown, Search } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 export default function Index() {
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Configuración', '', route('configs.index')); // Updated to use generateBreadcrumb function
 
     interface ConfigPagination extends Omit<Pagination, 'data'> {data: Config[]};
 
@@ -40,7 +36,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Configuración" description="Revisar la configuración del sistema">
+        <ModuleLayout route={route('configs.index')} module="Configuración" description="Revisar la configuración del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full">

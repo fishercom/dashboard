@@ -1,7 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
-
 import { Link, usePage } from '@inertiajs/react';
 import { getLangs, deleteLang } from '@/services/langs';
 
@@ -21,10 +18,6 @@ export default function Index() {
 
     const { items } = usePage<{ items: LangPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-    
-    //console.log(items);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Idiomas', '', route('langs.index'));
 
     useEffect(() => {
         if(query.s){
@@ -42,7 +35,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Idiomas" description="Administrar los idiomas del site">
+        <ModuleLayout route={route('langs.index')} module="Idiomas" description="Administrar los idiomas del site">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">

@@ -1,8 +1,6 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { usePage, Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -21,8 +19,6 @@ export default function Create() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Usuarios', 'Editar', route('users.index'));
-
     const updateUserHandler: FormEventHandler = (e) => {
         e.preventDefault();
         setProcessing(true);
@@ -40,7 +36,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Usuario" description="Administrar los usuarios del sistema">
+        <ModuleLayout route={route('users.index')} module="Usuarios" action="Editar" description="Administrar los Usuarios del sistema">
             <FormLayout>
             <form onSubmit={updateUserHandler} className="space-y-6">
                 <div className="grid gap-2">

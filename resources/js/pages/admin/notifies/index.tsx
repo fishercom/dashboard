@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
+import { getNotifies, deleteNotify } from '@/services/notifies';
+
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
 import { Notify, Pagination } from '@/types';
@@ -11,7 +11,6 @@ import { ChevronDown, Check, Search, Plus } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
-import { getNotifies, deleteNotify } from '@/services/notifies';
 
 export default function Index() {
 
@@ -19,8 +18,6 @@ export default function Index() {
 
     const { items } = usePage<{ items: NotifyPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Cuentas de Correo', '', route('notifies.index'));
 
     useEffect(() => {
         if(query.s){
@@ -38,7 +35,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Cuentas de Correo" description="Administrar las notificaciones del sistema">
+        <ModuleLayout route={route('notifies.index')} module="Cuentas de Correo" description="Administrar las notificaciones del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
@@ -74,7 +71,7 @@ export default function Index() {
                         {items.data.map((item: Notify)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
-                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
+                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.user_id }</th>
                                 <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>

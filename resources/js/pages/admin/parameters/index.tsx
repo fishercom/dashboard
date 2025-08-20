@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { CmsParameter, Pagination } from '@/types';
+import { Parameter, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Check, Search, Plus } from 'lucide-react';
@@ -15,12 +13,10 @@ import { getParameters, deleteParameter } from '@/services/parameters';
 
 export default function Index() {
 
-    interface ParameterPagination extends Omit<Pagination, 'data'> {data: CmsParameter[]};
+    interface ParameterPagination extends Omit<Pagination, 'data'> {data: Parameter[]};
 
     const { items } = usePage<{ items: ParameterPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Parámetros', '', route('parameters.index'));
 
     useEffect(() => {
         if(query.s){
@@ -38,7 +34,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Parámetros" description="Administrar los parámetros del sistema">
+        <ModuleLayout route={route('parameters.index')} module="Parámetros" description="Administrar los parámetros del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
@@ -71,7 +67,7 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: CmsParameter)=>{
+                        {items.data.map((item: Parameter)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>

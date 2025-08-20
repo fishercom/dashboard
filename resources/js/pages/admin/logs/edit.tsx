@@ -1,11 +1,8 @@
 import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { type BreadcrumbItem } from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Log, LogForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
@@ -19,8 +16,6 @@ export default function Create() {
     const [data, setData] = useState<Required<LogForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Logs', 'Editar', route('logs.index'));
 
     const updateLogHandler: FormEventHandler = (e) => {
         e.preventDefault();
@@ -39,49 +34,49 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Editar Log" description="Administrar los logs del sistema">
+        <ModuleLayout route={route('logs.index')} module="Logs" action="Editar" description="Administrar los logs del sistema">
             <FormLayout>
             <form onSubmit={updateLogHandler} className="space-y-6">
                 <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
+                    <Label htmlFor="name">Evento</Label>
                     <Input
-                        id="name"
+                        id="event_id"
                         type="text"
                         required
                         autoFocus
-                        tabIndex={1}
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
+                        value={data.event_id}
+                        onChange={(e) => setData({ ...data, event_id: parseInt(e.target.value) })}
                         disabled={processing}
                     />
-                    <InputError message={errors.name} />
+                    <InputError message={errors.event_id} />
                 </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="iso">ISO</Label>
+                    <Label htmlFor="name">Usuario</Label>
                     <Input
-                        id="iso"
+                        id="user_id"
                         type="text"
                         required
                         autoFocus
-                        autoComplete="iso"
-                        value={data.iso}
-                        onChange={(e) => setData({ ...data, iso: e.target.value })}
+                        value={data.user_id}
+                        onChange={(e) => setData({ ...data, user_id: parseInt(e.target.value) })}
                         disabled={processing}
                     />
-                    <InputError message={errors.name} />
+                    <InputError message={errors.user_id} />
                 </div>
 
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={Boolean(data.active)}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
+                <div className="grid gap-2">
+                    <Label htmlFor="name">Comentario</Label>
+                    <Input
+                        id="comment"
+                        type="text"
+                        required
+                        autoFocus
+                        value={data.comment}
+                        onChange={(e) => setData({ ...data, comment: e.target.value })}
+                        disabled={processing}
                     />
-                    <Label htmlFor="active">Activo</Label>
+                    <InputError message={errors.comment} />
                 </div>
 
                 <div className="flex items-center gap-4">

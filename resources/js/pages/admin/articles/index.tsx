@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 
 import { Link, usePage } from '@inertiajs/react';
 import { getArticles, deleteArticle } from '@/services/articles';
@@ -24,9 +22,6 @@ export default function Index() {
     const [ query, setQuery ] = useState({s: ''});
     const [isModalOpen, setModalOpen] = useState(false);
 
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Artículos', '', route('articles.index'));
-
     useEffect(() => {
         if(query.s){
             getArticles(query);
@@ -49,7 +44,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Artículos" description="Administrar los artículos del sistema">
+        <ModuleLayout route={route('articles.index')} module="Artículos" description="Administrar los artículos del sistema">
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
