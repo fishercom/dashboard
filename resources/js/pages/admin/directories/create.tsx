@@ -40,7 +40,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('directories.index')} module="Directorios" action="Crear" description="Administrar los directorios del sistema">
+        <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createDirectoryHandler} className="space-y-6">
                 <div className="grid gap-2">

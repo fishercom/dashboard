@@ -5,7 +5,7 @@ import ArticleFields from './partials/fields';
 export default function Create() {
 
     return (
-        <ModuleLayout route={route('articles.index')} module="Artículos" action='Editar' description="Administrar los artículos del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
                 <ArticleFields/>
             </FormLayout>

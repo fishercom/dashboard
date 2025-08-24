@@ -36,7 +36,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout route={route('profiles.index')} module="Perfiles" description="Administrar los perfiles del sistema">
+        <ModuleLayout>
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">

@@ -18,7 +18,9 @@ import { DynamicIcon } from 'lucide-react/dynamic';
 
 const mainNavItems: NavItem[] = [
     {
+        id: 1,
         title: 'admin',
+        description: 'Welcome to the admin dashboard',
         url: '/admin',
         icon: 'LayoutGrid',
     },
@@ -26,12 +28,16 @@ const mainNavItems: NavItem[] = [
 
 const rightNavItems: NavItem[] = [
     {
+        id: 2,
         title: 'Repository',
+        description: 'GitHub Repository',
         url: 'https://github.com/laravel/react-starter-kit',
         icon: 'Folder',
     },
     {
+        id: 3,
         title: 'Documentation',
+        description: 'Laravel Documentation',
         url: 'https://laravel.com/docs/starter-kits',
         icon: 'BookOpen',
     },

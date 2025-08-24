@@ -35,7 +35,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout route={route('sites.index')} module="Sitios Web" description="Administrar los sitios web del sistema">
+        <ModuleLayout>
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full">

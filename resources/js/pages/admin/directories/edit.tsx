@@ -35,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('directories.index')} module="Directorios" action="Editar" description="Administrar los directorios del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateDirectoryHandler} className="space-y-6">
                 <div className="grid gap-2">

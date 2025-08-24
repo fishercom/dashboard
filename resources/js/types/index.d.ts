@@ -18,6 +18,8 @@ export * from './models/parameter-form';
 export * from './models/parameter';
 export * from './models/profile-form';
 export * from './models/profile';
+export * from './models/register-form';
+export * from './models/register';
 export * from './models/schema-form';
 export * from './models/schema-group';
 export * from './models/schema';

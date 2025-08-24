@@ -35,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('sites.index')} module="Sitios Web" action="Editar" description="Administrar los sitios web del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateSiteHandler} className="space-y-6">
                 <div className="grid gap-2">

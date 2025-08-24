@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
-import { type BreadcrumbItem} from '@/types';
-import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import { Link, usePage } from '@inertiajs/react';
 import ModuleLayout from '@/layouts/module/layout';
 import { format } from 'date-fns'
-import { CmsRegister, Pagination } from '@/types';
+import { Register, Pagination } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Check, Search } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
@@ -15,12 +13,10 @@ import { getRegisters, deleteRegister } from '@/services/registers';
 
 export default function Index() {
 
-    interface RegisterPagination extends Omit<Pagination, 'data'> {data: CmsRegister[]};
+    interface RegisterPagination extends Omit<Pagination, 'data'> {data: Register[]};
 
     const { items } = usePage<{ items: RegisterPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});
-
-    const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Mensajes Recibidos', '', route('registers.index'));
 
     useEffect(() => {
         if(query.s){
@@ -38,7 +34,7 @@ export default function Index() {
     }
 
     return (
-        <ModuleLayout breadcrumbs={breadcrumbs} title="Mensajes Recibidos" description="Visualizar los mensajes del sistema">
+        <ModuleLayout>
             <div className="relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
@@ -60,18 +56,18 @@ export default function Index() {
                         <thead className="text-sm text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="px-4 py-3 rounded-l-md">Name</th>
-                                <th scope="col" className="px-4 py-3">Active</th>
+                                <th scope="col" className="px-4 py-3">Message</th>
                                 <th scope="col" className="px-4 py-3">Created Date</th>
                                 <th scope="col" className="px-4 py-3">Updated Date</th>
                                 <th scope="col" className="px-4 py-3 rounded-r-md"></th>
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: CmsRegister)=>{
+                        {items.data.map((item: Register)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.name }</th>
-                                <td className="px-4 py-3">{ item.active? <Check/>: <></> }</td>
+                                <td className="px-4 py-3">{ item.message }</td>
                                 <td className="px-4 py-3">{ format(item.created_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3">{ format(item.updated_at, 'dd/MM/yyyy HH:mm') }</td>
                                 <td className="px-4 py-3 flex items-center justify-end">

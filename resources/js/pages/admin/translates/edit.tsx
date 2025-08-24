@@ -34,7 +34,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('translates.index')} module="Traducciones" action="Editar" description="Administrar las traducciones del site">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateTranslateHandler} className="space-y-6">
                 <div className="grid gap-2">

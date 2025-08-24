@@ -35,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('configs.index')} module="Configuración" action="Editar" description="Revisar la configuración del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateConfigHandler} className="space-y-6">
                 <div className="grid gap-2">

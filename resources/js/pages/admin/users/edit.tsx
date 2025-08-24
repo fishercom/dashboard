@@ -36,7 +36,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('users.index')} module="Usuarios" action="Editar" description="Administrar los Usuarios del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateUserHandler} className="space-y-6">
                 <div className="grid gap-2">

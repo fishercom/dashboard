@@ -41,7 +41,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('profiles.index')} module="Perfiles" action="Crear" description="Administrar los perfiles del sistema">
+        <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createProfileHandler} className="space-y-6">
                 <div className="grid gap-2">

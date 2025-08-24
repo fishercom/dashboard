@@ -52,9 +52,9 @@ class HandleInertiaRequests extends Middleware
 
             $items = [];
             foreach($modules as $module){
-                $items[] = ['title'=>$module->name, 'url'=>$module->url, 'icon'=>$module->icon];
+                $items[] = ['id'=>$module->id, 'title'=>$module->name, 'description'=>$module->description, 'url'=>$module->url, 'icon'=>$module->icon];
             }
-            $adm_menu[] = ['title' => $group->name, 'items'=>$items];
+            $adm_menu[] = ['id'=>$group->id, 'title' => $group->name, 'items'=>$items];
         }
 
         return [

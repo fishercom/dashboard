@@ -36,7 +36,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('notifies.index')} module="Cuentas de Correo" action="Editar" description="Administrar las notificaciones del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateNotifyHandler} className="space-y-6">
                 <div className="grid gap-2">

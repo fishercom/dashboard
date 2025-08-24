@@ -8,8 +8,7 @@ import AppLogo from './app-logo';
 
 export function AppSidebar() {
 
-    const { adm_menu } = usePage<{ adm_menu: NavGroup}>().props
-    //console.log(adm_menu);
+    const { adm_menu } = usePage<{ adm_menu: NavGroup[]}>().props
 
     return (
         <Sidebar collapsible="icon" variant="inset">

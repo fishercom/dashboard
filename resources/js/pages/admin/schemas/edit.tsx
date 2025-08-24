@@ -5,7 +5,7 @@ import SchemaFields from './partials/fields';
 export default function Create() {
 
     return (
-        <ModuleLayout route={route('schemas.index')} module="Esquemas" action="Editar" description="Administrar los esquemas del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
                 <SchemaFields />
             </FormLayout>

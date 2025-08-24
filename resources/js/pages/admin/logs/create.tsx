@@ -40,7 +40,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('logs.index')} module="Logs" action="Crear" description="Administrar los logs del sistema">
+        <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createLogHandler} className="space-y-6">
                 <div className="grid gap-2">

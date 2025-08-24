@@ -35,7 +35,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('langs.index')} module="Idiomas" action="Editar" description="Administrar los idiomas del site">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateLangHandler} className="space-y-6">
                 <div className="grid gap-2">

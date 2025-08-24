@@ -45,7 +45,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('parameters.index')} module="Parámetros" action="Crear" description="Administrar los parámetros del sistema">
+        <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createParameterHandler} className="space-y-6">
                 <div className="grid gap-2">

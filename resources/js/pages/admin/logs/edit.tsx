@@ -34,7 +34,7 @@ export default function Create() {
     };
 
     return (
-        <ModuleLayout route={route('logs.index')} module="Logs" action="Editar" description="Administrar los logs del sistema">
+        <ModuleLayout view="Editar">
             <FormLayout>
             <form onSubmit={updateLogHandler} className="space-y-6">
                 <div className="grid gap-2">
