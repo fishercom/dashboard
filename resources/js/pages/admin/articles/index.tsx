@@ -25,6 +25,11 @@ export default function Index() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isSortableModalOpen, setSortableModalOpen] = useState(false);
 
+    const handleCloseSortableModal = () => {
+        setSortableModalOpen(false);
+        getArticles(query);
+    }
+
     useEffect(() => {
         if(query.s){
             getArticles(query);
@@ -131,7 +136,7 @@ export default function Index() {
             />
             <SortableArticlesModal
                 isOpen={isSortableModalOpen}
-                onClose={() => setSortableModalOpen(false)}
+                onClose={handleCloseSortableModal}
                 articles={items}
             />
         </ModuleLayout>
