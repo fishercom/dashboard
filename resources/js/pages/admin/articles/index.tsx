@@ -57,7 +57,7 @@ export default function Index() {
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 pb-4">
                     <div className="w-full md:w-3/4">
                         <form className="flex items-center">
-                            <label htmlFor="simple-search" className="sr-only">Search</label>
+                            <label htmlFor="simple-search" className="sr-only">Buscar</label>
                             <div className="relative w-full">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
                                     <Search/>
@@ -69,7 +69,7 @@ export default function Index() {
                     <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <button type="button" onClick={() => setSortableModalOpen(true)} className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
                             <ListOrdered className="mr-2"/>
-                            Sort Articles
+                            Ordenar Artículos
                         </button>
                         <button type="button" onClick={handleCreateClick} className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
                             <Plus className="mr-2"/>
@@ -81,10 +81,10 @@ export default function Index() {
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-4 py-3 rounded-l-md">Name</th>
-                                <th scope="col" className="px-4 py-3">Active</th>
-                                <th scope="col" className="px-4 py-3">Created Date</th>
-                                <th scope="col" className="px-4 py-3">Updated Date</th>
+                                <th scope="col" className="px-4 py-3 rounded-l-md">Nombre</th>
+                                <th scope="col" className="px-4 py-3">Activo</th>
+                                <th scope="col" className="px-4 py-3">Fecha de Creación</th>
+                                <th scope="col" className="px-4 py-3">Fecha de Actualización</th>
                                 <th scope="col" className="px-4 py-3 rounded-r-md"></th>
                             </tr>
                         </thead>
@@ -100,19 +100,19 @@ export default function Index() {
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button variant="ghost" className="p-3">
-                                                Actions
+                                                Acciones
                                                 <Icon iconNode={ChevronDown} className="h-5 w-5" />
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className="w-56" align="end">
                                             <DropdownMenuItem asChild>
                                                 <Link className="block w-full" href={route('articles.edit', item.id)} as="button" prefetch>
-                                                    Edit
+                                                    Editar
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
                                                 <Link className="block w-full" href='#' onClick={()=>deleteArticleHandler(item.id)} as="button" prefetch>
-                                                    Delete
+                                                    Eliminar
                                                 </Link>
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>

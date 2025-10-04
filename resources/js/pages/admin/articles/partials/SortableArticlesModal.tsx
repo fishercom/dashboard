@@ -44,9 +44,9 @@ export default function SortableArticlesModal({ isOpen, onClose, articles }: Sor
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Sort Articles</DialogTitle>
+                    <DialogTitle>Ordenar Artículos</DialogTitle>
                     <DialogDescription>
-                        Drag and drop the articles to change their order.
+                        Arrastra y suelta los artículos para cambiar su orden.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="p-4">
@@ -59,8 +59,8 @@ export default function SortableArticlesModal({ isOpen, onClose, articles }: Sor
                     </ReactSortable>
                 </div>
                 <DialogFooter>
-                    <Button onClick={onClose} variant="outline">Cancel</Button>
-                    <Button onClick={handleSave}>Save</Button>
+                    <Button onClick={onClose} variant="outline">Cancelar</Button>
+                    <Button onClick={handleSave}>Guardar</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
