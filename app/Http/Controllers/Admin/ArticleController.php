@@ -50,7 +50,8 @@ class ArticleController extends Controller
             }
         })
         ->where('lang_id', $lang_id)
-        ->where('parent_id', $parent_id);
+        ->where('parent_id', $parent_id)
+        ->orderBy('position');
 
         $parent = CmsSchema::find($parent_id);
 
@@ -134,5 +135,15 @@ class ArticleController extends Controller
 		$item->delete();
 
         return redirect('admin/articles');
+    }
+
+    public function sort(Request $request)
+    {
+        $articles = $request->get('articles');
+        foreach ($articles as $index => $article) {
+            CmsArticle::where('id', $article['id'])->update(['position' => $index]);
+        }
+
+        return response()->json(['status' => 'success']);
     }
 }

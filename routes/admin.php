@@ -35,6 +35,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::resource('registers', RegisterController::class);
     Route::resource('notifies', NotifyController::class);
     Route::resource('articles', ArticleController::class);
+    Route::post('articles/sort', [ArticleController::class, 'sort'])->name('articles.sort');
 
 });
 

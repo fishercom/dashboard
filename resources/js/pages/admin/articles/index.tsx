@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 import { Link, usePage } from '@inertiajs/react';
@@ -8,11 +9,12 @@ import { format } from 'date-fns'
 import { Article, Pagination, Schema } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Check, Search, Plus } from 'lucide-react';
+import { ChevronDown, Check, Search, Plus, ListOrdered } from 'lucide-react';
 import { Icon } from '@/components/icon';
 import { Input } from '@headlessui/react';
 import { PaginationNav } from '@/components/ui/pagination-nav';
 import SchemaSelectorModal from './partials/SchemaSelectorModal';
+import SortableArticlesModal from './partials/SortableArticlesModal';
 
 export default function Index() {
 
@@ -21,6 +23,7 @@ export default function Index() {
     const { items, paging, parent } = usePage<{ items: Article[], paging: ArticlePagination, parent: Schema | null }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isSortableModalOpen, setSortableModalOpen] = useState(false);
 
     useEffect(() => {
         if(query.s){
@@ -59,6 +62,10 @@ export default function Index() {
                         </form>
                     </div>
                     <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                        <button type="button" onClick={() => setSortableModalOpen(true)} className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
+                            <ListOrdered className="mr-2"/>
+                            Sort Articles
+                        </button>
                         <button type="button" onClick={handleCreateClick} className="flex items-center justify-center bg-primary-700 font-medium text-sm px-4 py-2">
                             <Plus className="mr-2"/>
                             Crear Artículo
@@ -121,6 +128,11 @@ export default function Index() {
                 onClose={() => setModalOpen(false)}
                 parentSchemaId={parent?.id}
                 data={items}
+            />
+            <SortableArticlesModal
+                isOpen={isSortableModalOpen}
+                onClose={() => setSortableModalOpen(false)}
+                articles={items}
             />
         </ModuleLayout>
     );
