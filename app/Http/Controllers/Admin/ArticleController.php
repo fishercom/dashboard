@@ -50,13 +50,13 @@ class ArticleController extends Controller
             }
         })
         ->where('lang_id', $lang_id)
-        ->where('parent_id', $parent_id)
-        ->paginate(15);
+        ->where('parent_id', $parent_id);
 
         $parent = CmsSchema::find($parent_id);
 
         return Inertia::render('admin/articles/index', [
-            'items' => $items,
+            'items' => $items->get(),
+            'paging' => $items->paginate(15),
             'parent' => $parent,
         ]);
     }

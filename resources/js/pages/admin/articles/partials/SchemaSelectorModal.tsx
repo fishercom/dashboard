@@ -2,21 +2,19 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { getSchemas } from '@/services/schemas';
-
-interface Schema {
-  id: number;
-  name: string;
-}
+import { Article, Schema } from '@/types';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   parentSchemaId: number | undefined;
+  data: Article[]
 }
 
-export default function SchemaSelectorModal({ isOpen, onClose, parentSchemaId }: Props) {
+export default function SchemaSelectorModal({ isOpen, onClose, parentSchemaId, data }: Props) {
   const [schemas, setSchemas] = useState<Schema[]>([]);
   const [loading, setLoading] = useState(false);
+  const items = data;
 
   useEffect(() => {
     if (isOpen) {
@@ -50,7 +48,7 @@ export default function SchemaSelectorModal({ isOpen, onClose, parentSchemaId }:
             <p className="text-gray-600 dark:text-gray-300">Cargando...</p>
           ) : schemas.length > 0 ? (
             <ul className="space-y-2">
-              {schemas.map(schema => (
+              {schemas.filter(e=>e.iterations==0 || e.iterations>items.filter(a=>a.schema_id==e.id).length).map(schema => (
                 <li key={schema.id}>
                   <Link
                     href={`/admin/articles/create?schema_id=${schema.id}`}

@@ -18,7 +18,7 @@ export default function Index() {
 
     interface ArticlePagination extends Omit<Pagination, 'data'> {data: Article[]};
 
-    const { items, parent } = usePage<{ items: ArticlePagination, parent: Schema | null }>().props;
+    const { items, paging, parent } = usePage<{ items: Article[], paging: ArticlePagination, parent: Schema | null }>().props;
     const [ query, setQuery ] = useState({s: ''});
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -77,7 +77,7 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                        {items.data.map((item: Article)=>{
+                        {paging.data.map((item: Article)=>{
                             return(
                             <tr key={ item.id } className="border-b dark:border-gray-700">
                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{ item.title }</th>
@@ -112,14 +112,15 @@ export default function Index() {
                         </tbody>
                     </table>
                 </div>
-                {items.links &&
-                <PaginationNav data={items}/>
+                {paging.links &&
+                <PaginationNav data={paging}/>
                 }
             </div>
             <SchemaSelectorModal
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 parentSchemaId={parent?.id}
+                data={items}
             />
         </ModuleLayout>
     );
