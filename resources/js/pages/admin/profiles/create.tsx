@@ -12,12 +12,18 @@ import { Label } from '@/components/ui/label';
 import { createProfile } from '@/services/profiles';
 
 
+import ProfileFormFields from './partials/Fields';
+import { usePage } from '@inertiajs/react';
+import { AdmModule } from '@/types/models/adm-module';
+
 export default function Create() {
+    const { modules } = usePage<{ modules: AdmModule[] }>().props;
 
     const item: ProfileForm = {
         id: 0,
         name: '',
         active: false,
+        permissions: [],
     }
     const [data, setData] = useState<Required<ProfileForm>>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -44,35 +50,13 @@ export default function Create() {
         <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createProfileHandler} className="space-y-6">
-                <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
-
-                    <Input
-                        id="name"
-                        type="text"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
-                        disabled={processing}
-                    />
-
-                    <InputError message={errors.name} />
-                </div>
-
-
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={data.active}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
-                    />
-                    <Label htmlFor="active">Activo</Label>
-                </div>
+                <ProfileFormFields
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    processing={processing}
+                    modules={modules}
+                />
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>

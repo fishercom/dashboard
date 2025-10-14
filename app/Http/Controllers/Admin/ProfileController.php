@@ -36,13 +36,26 @@ class ProfileController extends Controller
 
     public function create()
     {
-      return Inertia::render('admin/profiles/create');
+        $modules = \App\Models\AdmModule::with('events.action')->where('visible', true)->orderBy('name')->get();
+        return Inertia::render('admin/profiles/create', [
+            'modules' => $modules,
+        ]);
     }
 
     public function store(Request $request)
     {
         $profile = new Profile($request->all());
         $profile->save();
+
+        if ($request->has('permissions')) {
+            foreach ($request->input('permissions') as $event_id) {
+                AdmPermission::create([
+                    'profile_id' => $profile->id,
+                    'event_id' => $event_id,
+                ]);
+            }
+        }
+
         return redirect('admin/profiles');
     }
 
@@ -52,8 +65,12 @@ class ProfileController extends Controller
     public function edit($id, Request $request): Response
     {
         $item = Profile::find($id);
+        $modules = \App\Models\AdmModule::with('events.action')->where('visible', true)->orderBy('name')->get();
+        $item->permissions = AdmPermission::where('profile_id', $id)->pluck('event_id')->toArray();
+
         return Inertia::render('admin/profiles/edit', [
             'item' => $item,
+            'modules' => $modules,
         ]);
     }
 
@@ -65,6 +82,17 @@ class ProfileController extends Controller
         $item = Profile::find($id);
 		$item->fill($request->all());
 		$item->save();
+
+        AdmPermission::where('profile_id', $id)->delete();
+
+        if ($request->has('permissions')) {
+            foreach ($request->input('permissions') as $event_id) {
+                AdmPermission::create([
+                    'profile_id' => $id,
+                    'event_id' => $event_id,
+                ]);
+            }
+        }
 
         return redirect('admin/profiles');
     }

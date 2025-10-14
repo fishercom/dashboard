@@ -15,7 +15,7 @@ class AdmModule extends Model {
 
     public function events()
     {
-        return $this->hasMany('App\Models\AdmEvent', 'module_id', 'id');
+        return $this->hasMany(AdmEvent::class, 'module_id', 'id');
     }
 
 }
