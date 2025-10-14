@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Profile }>().props;
     const [data, setData] = useState<Required<ProfileForm>>(item);

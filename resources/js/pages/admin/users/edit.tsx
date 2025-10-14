@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { updateUser } from '@/services/users';
 
 
-export default function Create() {
+export default function Edit() {
 
     const { item, profiles } = usePage<{ item: UserForm, profiles: Profile[] }>().props;
     const [data, setData] = useState<Required<UserForm>>(item);

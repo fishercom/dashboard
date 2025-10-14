@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateParameter } from '@/services/parameters';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Parameter }>().props;
     const [data, setData] = useState<Required<ParameterForm>>(item);

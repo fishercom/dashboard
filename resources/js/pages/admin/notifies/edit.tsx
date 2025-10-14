@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { updateNotify } from '@/services/notifies';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Notify }>().props;
     const [data, setData] = useState<Required<NotifyForm>>(item);

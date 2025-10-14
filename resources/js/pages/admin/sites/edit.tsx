@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateSite } from '@/services/sites';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Site }>().props;
     const [data, setData] = useState<Required<SiteForm>>(item);

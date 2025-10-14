@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateDirectory } from '@/services/directories';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Directory }>().props;
     const [data, setData] = useState<Required<DirectoryForm>>(item);

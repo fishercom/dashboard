@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateTranslate } from '@/services/translates';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Translate }>().props;
     const [data, setData] = useState<Required<TranslateForm>>(item);

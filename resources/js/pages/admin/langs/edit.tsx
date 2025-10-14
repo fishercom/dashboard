@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updateLang } from '@/services/langs';
 
-export default function Create() {
+export default function Edit() {
 
     const { item } = usePage<{ item: Lang }>().props;
     const [data, setData] = useState<Required<LangForm>>(item);
