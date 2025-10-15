@@ -37,8 +37,8 @@ jobs:
       - name: Install Node Dependencies
         run: npm ci
 
-      - name: Set permissions for profiles partials
-        run: chmod -R u+rwX,go+rX resources/js/pages/admin/profiles/partials
+      - name: Set permissions for resources/js
+        run: chmod -R u+rwX,go+rX resources/js
 
       - name: Build Assets
         run: npm run build
