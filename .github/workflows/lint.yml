@@ -32,6 +32,9 @@ jobs:
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm install
 
+      - name: Set permissions for profiles partials
+        run: chmod -R u+rwX,go+rX resources/js/pages/admin/profiles/partials
+
       - name: Check Types
         run: npx tsc --noEmit
 
