@@ -8,7 +8,7 @@ import { generateBreadcrumb } from '@/lib/breadcrumbs';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Appearance settings', '', route('settings.appearance'));
+const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Appearance settings', '', route('appearance'));
 
 export default function Appearance() {
     return (

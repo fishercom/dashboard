@@ -51,8 +51,8 @@ export default function ProfileFormFields({ data, setData, errors, processing, m
             <div className="grid gap-4">
                 <h3 className="text-lg font-medium">Permisos</h3>
                 {modules.map((module) => (
-                    <div key={module.id}>
-                        <h4 className="font-medium">{module.name}</h4>
+                    <div key={module.id} className="p-2 border rounded-md">
+                        <h4 className="font-medium mb-2">{module.name}</h4>
                         <div className="flex items-center space-x-4 mt-2">
                             {module.events.map((event: AdmEvent) => (
                                 <div key={event.id} className="flex items-center space-x-2">

@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { updatePassword } from '@/services/auth';
 
-const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Password settings', '', route('settings.password'));
+const breadcrumbs: BreadcrumbItem[] = generateBreadcrumb('Password settings', '', route('password.edit'));
 
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
