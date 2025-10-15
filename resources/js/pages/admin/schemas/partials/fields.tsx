@@ -1,70 +1,39 @@
 import InputError from '@/components/input-error';
-import { Link, usePage } from '@inertiajs/react';
-import { FormEventHandler, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Schema, SchemaForm, CustomField } from '@/types';
+import { CmsSchemaForm, CmsSchema } from '@/types/models/cms-schema';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CustomFieldManager from '@/components/custom-field-manager';
-import { createSchema, updateSchema } from '@/services/schemas';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CmsSchemaGroup } from '@/types/models/cms-schema-group';
 
-export default function SchemaFields() {
+interface Props {
+    data: CmsSchemaForm;
+    setData: (data: CmsSchemaForm) => void;
+    errors: Record<string, string>;
+    processing: boolean;
+    groups: CmsSchemaGroup[];
+    parents: CmsSchema[];
+}
 
-    type SchemaFormData = Required<Omit<SchemaForm, 'fields'>> & { fields: CustomField[] };
-
-    const { item } = usePage<{ item: Schema }>().props;
-    const initial: SchemaFormData = {
-        id: item?.id || null,
-        parent_id: item?.parent_id || null,
-        group_id: Number(item?.group_id || 1),
-        name: String(item?.name || ''),
-        fields: item?.fields || [],
-        iterations: Number(item?.iterations || 1),
-        type: String(item?.type || ''),
-        active: Boolean(item?.active ?? true),
-    };
-    const [data, setData] = useState<SchemaFormData>(initial);
-    const [errors, setErrors] = useState<Record<string, string>>({});
-    const [processing, setProcessing] = useState(false);
-
-    const handleSubmit: FormEventHandler = (e) => {
-        e.preventDefault();
-        setProcessing(true);
-        setErrors({});
-
-        if (data.id) {
-            updateSchema(data.id, data, {
-                onSuccess: () => setProcessing(false),
-                onError: (err: Record<string, string>) => {
-                    setErrors(err);
-                    setProcessing(false);
-                },
-            });
-        } else {
-            createSchema(data, {
-                onSuccess: () => {
-                    setProcessing(false);
-                    setData(initial);
-                },
-                onError: (err: Record<string, string>) => {
-                    setErrors(err);
-                    setProcessing(false);
-                },
-            });
-        }
-    };
+export default function SchemaFields({ data, setData, errors, processing, groups, parents }: Props) {
+    const schemaTypes = [
+        { value: 'PAGE', label: 'Page' },
+        { value: 'HOME', label: 'Home' },
+        { value: 'OPTIONS', label: 'Options' },
+    ];
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <>
             <div className="grid gap-2">
-                <Label htmlFor="name">Nombre</Label>
+                <Label htmlFor="name">Name</Label>
                 <Input
                     id="name"
                     type="text"
                     required
                     autoFocus
+                    tabIndex={1}
                     autoComplete="name"
                     value={data.name}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
@@ -73,16 +42,79 @@ export default function SchemaFields() {
                 <InputError message={errors.name} />
             </div>
 
+            <div className="grid gap-2">
+                <Label htmlFor="group_id">Group</Label>
+                <Select
+                    value={data.group_id.toString()}
+                    onValueChange={(value) => setData({ ...data, group_id: Number(value) })}
+                    disabled={processing}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select a group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {groups.map((group) => (
+                            <SelectItem key={group.id} value={group.id.toString()}>
+                                {group.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <InputError message={errors.group_id} />
+            </div>
+
+            <div className="grid gap-2">
+                <Label htmlFor="parent_id">Parent</Label>
+                <Select
+                    value={data.parent_id?.toString() || ''}
+                    onValueChange={(value) => setData({ ...data, parent_id: Number(value) })}
+                    disabled={processing}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select a parent" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {parents.map((parent) => (
+                            <SelectItem key={parent.id} value={parent.id.toString()}>
+                                {parent.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <InputError message={errors.parent_id} />
+            </div>
+
+            <div className="grid gap-2">
+                <Label htmlFor="type">Type</Label>
+                <Select
+                    value={data.type}
+                    onValueChange={(value) => setData({ ...data, type: value as 'PAGE' | 'HOME' | 'OPTIONS' })}
+                    disabled={processing}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select a type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {schemaTypes.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                                {type.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <InputError message={errors.type} />
+            </div>
+
             <CustomFieldManager
                 fields={data.fields || []}
                 setFields={(newFields) => setData({ ...data, fields: newFields })}
             />
 
             <div className="grid gap-2">
-                <Label htmlFor="iterations">Iteraciones</Label>
+                <Label htmlFor="iterations">Iterations</Label>
                 <Input
                     id="iterations"
-                    type="numeric"
+                    type="number"
                     autoComplete="iterations"
                     value={data.iterations}
                     onChange={(e) => setData({ ...data, iterations: parseInt(e.target.value) })}
@@ -97,14 +129,10 @@ export default function SchemaFields() {
                     name="active"
                     checked={Boolean(data.active)}
                     onClick={() => setData({ ...data, active: !data.active })}
+                    tabIndex={3}
                 />
-                <Label htmlFor="active">Activo</Label>
+                <Label htmlFor="active">Active</Label>
             </div>
-
-            <div className="flex items-center gap-4">
-                <Button disabled={processing}>Guardar</Button>
-                <Link href='/admin/schemas'>Cancelar</Link>
-            </div>
-        </form>
+        </>
     )
 }

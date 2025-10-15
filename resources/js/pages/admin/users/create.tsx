@@ -1,29 +1,28 @@
-import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { usePage, Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Profile, UserForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { createUser } from '@/services/users';
+import UserFormFields, { UserForm } from './partials/fields';
+import { Profile } from '@/types/models/profile';
 
 export default function Create() {
+    const { profiles } = usePage<{ profiles: Profile[] }>().props;
 
     const item: UserForm = {
-        id: 0,
-        name: '',
+        username: '',
         email: '',
         password: '',
-        avatar: '',
-        profile_id: 0,
+        name: '',
+        lastname: '',
+        profile_id: profiles[0]?.id || 0,
+        metadata: {},
         active: false,
+        default: false,
     }
-    const { profiles } = usePage<{ profiles: Profile[] }>().props;
-    const [data, setData] = useState<Required<UserForm>>(item);
+    const [data, setData] = useState<UserForm>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
@@ -48,85 +47,13 @@ export default function Create() {
         <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createUserHandler} className="space-y-6">
-                <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
-                    <Input
-                        id="name"
-                        type="text"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
-                        disabled={processing}
-                    />
-                    <InputError message={errors.name} />
-                </div>
-
-                <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="email"
-                        value={data.email}
-                        onChange={(e) => setData({ ...data, email: e.target.value })}
-                        disabled={processing}
-                    />
-                    <InputError message={errors.name} />
-                </div>
-
-                <div className="grid gap-2">
-                    <Label htmlFor="password">Contraseña</Label>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="password"
-                        value={data.password}
-                        onChange={(e) => setData({ ...data, password: e.target.value })}
-                        disabled={processing}
-                    />
-                    <InputError message={errors.name} />
-                </div>
-
-                <div className="grid gap-2">
-                    <Label htmlFor="profile">Perfil</Label>
-                    <select
-                        id="profile_id"
-                        name="profile_id"
-                        value={data.profile_id} //added
-                        required={true}
-                        disabled={processing}
-                        onChange={(e) => setData({ ...data, profile_id: parseInt(e.target.value) })}>
-                        <option></option>
-                        {profiles.map((option, index) => {
-                            return (
-                                <option key={index} value={option.id}>
-                                    {option.name}
-                                </option>
-                            );
-                        })}
-                    </select>
-                    <InputError message={errors.name} />
-                </div>
-
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={data.active}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
-                    />
-                    <Label htmlFor="active">Activo</Label>
-                </div>
+                <UserFormFields
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    processing={processing}
+                    profiles={profiles}
+                />
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>

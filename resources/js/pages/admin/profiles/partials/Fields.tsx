@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import InputError from "@/components/input-error";
 import { ProfileForm } from "@/types";
 import { AdmModule } from "@/types/models/adm-module";
+import { AdmEvent } from "@/types/models/adm-event";
 
 interface Props {
     data: ProfileForm;
@@ -53,7 +54,7 @@ export default function ProfileFormFields({ data, setData, errors, processing, m
                     <div key={module.id}>
                         <h4 className="font-medium">{module.name}</h4>
                         <div className="flex items-center space-x-4 mt-2">
-                            {module.events.map((event) => (
+                            {module.events.map((event: AdmEvent) => (
                                 <div key={event.id} className="flex items-center space-x-2">
                                     <Checkbox
                                         id={`event-${event.id}`}

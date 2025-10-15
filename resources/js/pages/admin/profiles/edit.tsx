@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import ProfileFormFields from './partials/Fields';
+import ProfileFormFields from './partials/fields';
 import { AdmModule } from '@/types/models/adm-module';
 
 export default function Edit() {

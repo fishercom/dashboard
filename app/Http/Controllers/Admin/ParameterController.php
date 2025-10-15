@@ -14,6 +14,7 @@ use App\Models\CmsLang;
 use App\Models\CmsParameter;
 use App\Models\CmsParameterLang;
 use App\Models\CmsParameterGroup;
+use App\Models\CmsParameter as CmsParameterAlias; // For parents
 
 class ParameterController extends Controller
 {
@@ -38,7 +39,12 @@ class ParameterController extends Controller
 
     public function create()
     {
-      return Inertia::render('admin/parameters/create');
+        $groups = CmsParameterGroup::all();
+        $parents = CmsParameter::whereNull('parent_id')->get(); // Only top-level parameters can be parents
+        return Inertia::render('admin/parameters/create', [
+            'groups' => $groups,
+            'parents' => $parents,
+        ]);
     }
 
     public function store(Request $request)
@@ -54,8 +60,12 @@ class ParameterController extends Controller
     public function edit($id, Request $request): Response
     {
         $item = CmsParameter::find($id);
+        $groups = CmsParameterGroup::all();
+        $parents = CmsParameter::whereNull('parent_id')->get(); // Only top-level parameters can be parents
         return Inertia::render('admin/parameters/edit', [
             'item' => $item,
+            'groups' => $groups,
+            'parents' => $parents,
         ]);
     }
 

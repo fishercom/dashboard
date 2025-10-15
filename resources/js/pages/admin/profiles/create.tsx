@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { createProfile } from '@/services/profiles';
 
 
-import ProfileFormFields from './partials/Fields';
+import ProfileFormFields from './partials/fields';
 import { usePage } from '@inertiajs/react';
 import { AdmModule } from '@/types/models/adm-module';
 

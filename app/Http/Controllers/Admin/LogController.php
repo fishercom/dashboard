@@ -11,6 +11,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 use App\Models\AdmLog;
+use App\Models\AdmEvent;
+use App\Models\User;
 
 class LogController extends Controller
 {
@@ -33,14 +35,35 @@ class LogController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        $events = AdmEvent::with('action')->get();
+        $users = User::all();
+        return Inertia::render('admin/logs/create', [
+            'events' => $events,
+            'users' => $users,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $log = new AdmLog($request->all());
+        $log->save();
+        return redirect('admin/logs');
+    }
+
     /**
      * Show the user's log settings page.
      */
     public function edit($id, Request $request): Response
     {
         $item = AdmLog::find($id);
+        $events = AdmEvent::with('action')->get();
+        $users = User::all();
         return Inertia::render('admin/logs/edit', [
             'item' => $item,
+            'events' => $events,
+            'users' => $users,
         ]);
     }
 

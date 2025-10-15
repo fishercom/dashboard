@@ -1,11 +1,16 @@
 export interface User {
     id: number;
-    name: string;
+    profile_id?: number;
     email: string;
-    avatar: string;
-    profile_id: number;
-    email_verified_at: string | null;
+    email_verified_at?: string;
+    username?: string;
+    password?: string; // Password should not be sent to frontend
+    name: string;
+    lastname?: string;
+    metadata?: Record<string, unknown>;
+    active?: boolean;
+    default?: boolean;
+    remember_token?: string;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
 }

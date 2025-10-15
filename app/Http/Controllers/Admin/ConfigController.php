@@ -33,6 +33,18 @@ class ConfigController extends Controller
         ]);
     }
 
+    public function create()
+    {
+      return Inertia::render('admin/configs/create');
+    }
+
+    public function store(Request $request)
+    {
+        $config = new CmsConfig($request->all());
+        $config->save();
+        return redirect('admin/configs');
+    }
+
     /**
      * Show the user's log settings page.
      */

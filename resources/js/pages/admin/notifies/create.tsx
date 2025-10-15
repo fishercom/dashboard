@@ -1,27 +1,25 @@
-import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { NotifyForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { createNotify } from '@/services/notifies';
+import NotifyFormFields from './partials/fields';
+import { CmsNotifyForm } from '@/types/models/cms-notify';
+import { CmsForm } from '@/types/models/cms-form';
+import { User } from '@/types/models/user';
 
 export default function Create() {
+    const { forms, users } = usePage<{ forms: CmsForm[], users: User[] }>().props;
 
-    const item: NotifyForm = {
-        id: 0,
-        form_id: 0,
-        user_id: 0,
+    const item: CmsNotifyForm = {
+        form_id: forms[0]?.id || 0,
+        user_id: users[0]?.id || 0,
         recipients: '',
         active: false,
     }
-    const [data, setData] = useState<Required<NotifyForm>>(item);
+    const [data, setData] = useState<CmsNotifyForm>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
@@ -46,67 +44,14 @@ export default function Create() {
         <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createNotifyHandler} className="space-y-6">
-                <div className="grid gap-2">
-                    <Label htmlFor="form_id">Form</Label>
-
-                    <Input
-                        id="form_id"
-                        type="text"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="form_id"
-                        value={data.form_id}
-                        onChange={(e) => setData({ ...data, form_id: parseInt(e.target.value) })}
-                        disabled={processing}
-                    />
-
-                    <InputError message={errors.form_id} />
-                </div>
-
-                <div className="grid gap-2">
-                    <Label htmlFor="user_id">User</Label>
-
-                    <Input
-                        id="user_id"
-                        type="text"
-                        required
-                        autoFocus
-                        tabIndex={2}
-                        autoComplete="user_id"
-                        value={data.user_id}
-                        onChange={(e) => setData({ ...data, user_id: parseInt(e.target.value) })}
-                        disabled={processing}
-                    />
-
-                    <InputError message={errors.user_id} />
-                </div>
-
-                <div className="grid gap-2">
-                    <Label htmlFor="recipients">Recipients</Label>
-                    <Textarea
-                        id="recipients"
-                        required
-                        autoFocus
-                        tabIndex={3}
-                        autoComplete="recipients"
-                        value={data.recipients}
-                        onChange={(e) => setData({ ...data, recipients: e.target.value })}
-                        disabled={processing}
-                    />
-                    <InputError message={errors.recipients} />
-                </div>
-
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={Boolean(data.active)}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
-                    />
-                    <Label htmlFor="active">Activo</Label>
-                </div>
+                <NotifyFormFields
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    processing={processing}
+                    forms={forms}
+                    users={users}
+                />
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>

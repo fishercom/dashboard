@@ -1,29 +1,26 @@
-import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ParameterForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { createParameter } from '@/services/parameters';
+import ParameterFormFields from './partials/fields';
+import { CmsParameterForm, CmsParameter } from '@/types/models/cms-parameter';
+import { CmsParameterGroup } from '@/types/models/cms-parameter-group';
 
 export default function Create() {
+    const { groups, parents } = usePage<{ groups: CmsParameterGroup[], parents: CmsParameter[] }>().props;
 
-    const item: ParameterForm = {
-        id: 0,
-        group_id: 0,
-        parent_id: 0,
+    const item: CmsParameterForm = {
+        group_id: groups[0]?.id || 0,
+        parent_id: undefined,
         name: '',
         value: '',
-        metadata: [],
-        position: 0,
+        metadata: {},
         active: false,
     }
-    const [data, setData] = useState<Required<ParameterForm>>(item);
+    const [data, setData] = useState<CmsParameterForm>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
@@ -48,35 +45,14 @@ export default function Create() {
         <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createParameterHandler} className="space-y-6">
-                <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
-
-                    <Input
-                        id="name"
-                        type="text"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
-                        disabled={processing}
-                    />
-
-                    <InputError message={errors.name} />
-                </div>
-
-
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={data.active}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
-                    />
-                    <Label htmlFor="active">Activo</Label>
-                </div>
+                <ParameterFormFields
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    processing={processing}
+                    groups={groups}
+                    parents={parents}
+                />
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>

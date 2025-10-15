@@ -1,24 +1,25 @@
-import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ProfileForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { createDirectory } from '@/services/directories';
+import DirectoryFormFields from './partials/fields';
+import { CmsDirectoryForm } from '@/types/models/cms-directory';
+import { CmsFileType } from '@/types/models/cms-filetype';
 
 export default function Create() {
+    const { fileTypes } = usePage<{ fileTypes: CmsFileType[] }>().props;
 
-    const item: ProfileForm = {
-        id: 0,
+    const item: CmsDirectoryForm = {
         name: '',
+        type_id: fileTypes[0]?.id || 0,
+        alias: '',
+        path: '',
         active: false,
     }
-    const [data, setData] = useState<Required<ProfileForm>>(item);
+    const [data, setData] = useState<CmsDirectoryForm>(item);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
@@ -43,35 +44,13 @@ export default function Create() {
         <ModuleLayout view="Crear">
             <FormLayout>
             <form onSubmit={createDirectoryHandler} className="space-y-6">
-                <div className="grid gap-2">
-                    <Label htmlFor="name">Nombre</Label>
-
-                    <Input
-                        id="name"
-                        type="text"
-                        required
-                        autoFocus
-                        tabIndex={1}
-                        autoComplete="name"
-                        value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
-                        disabled={processing}
-                    />
-
-                    <InputError message={errors.name} />
-                </div>
-
-
-                <div className="flex items-center space-x-3">
-                    <Checkbox
-                        id="active"
-                        name="active"
-                        checked={data.active}
-                        onClick={() => setData({ ...data, active: !data.active })}
-                        tabIndex={3}
-                    />
-                    <Label htmlFor="active">Activo</Label>
-                </div>
+                <DirectoryFormFields
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    processing={processing}
+                    fileTypes={fileTypes}
+                />
 
                 <div className="flex items-center gap-4">
                     <Button disabled={processing}>Guardar</Button>

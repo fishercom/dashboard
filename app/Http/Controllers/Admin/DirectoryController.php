@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 use App\Models\CmsDirectory;
+use App\Models\CmsFileType;
 
 class DirectoryController extends Controller
 {
@@ -35,7 +36,10 @@ class DirectoryController extends Controller
 
     public function create()
     {
-      return Inertia::render('admin/directories/create');
+        $fileTypes = CmsFileType::all();
+        return Inertia::render('admin/directories/create', [
+            'fileTypes' => $fileTypes,
+        ]);
     }
 
     public function store(Request $request)
@@ -51,8 +55,10 @@ class DirectoryController extends Controller
     public function edit($id, Request $request): Response
     {
         $item = CmsDirectory::find($id);
+        $fileTypes = CmsFileType::all();
         return Inertia::render('admin/directories/edit', [
             'item' => $item,
+            'fileTypes' => $fileTypes,
         ]);
     }
 

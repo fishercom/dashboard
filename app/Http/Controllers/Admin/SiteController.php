@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 use App\Models\CmsSite;
+use App\Models\CmsSchemaGroup;
 
 class SiteController extends Controller
 {
@@ -33,14 +34,31 @@ class SiteController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        $schemaGroups = CmsSchemaGroup::all();
+        return Inertia::render('admin/sites/create', [
+            'schemaGroups' => $schemaGroups,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $site = new CmsSite($request->all());
+        $site->save();
+        return redirect('admin/sites');
+    }
+
     /**
      * Show the user's log settings page.
      */
     public function edit($id, Request $request): Response
     {
         $item = CmsSite::find($id);
+        $schemaGroups = CmsSchemaGroup::all();
         return Inertia::render('admin/sites/edit', [
             'item' => $item,
+            'schemaGroups' => $schemaGroups,
         ]);
     }
 

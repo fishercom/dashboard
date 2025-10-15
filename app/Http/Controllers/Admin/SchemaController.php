@@ -79,13 +79,17 @@ class SchemaController extends Controller
 
     public function create()
     {
-      $args = [
-        'group_id' => $this->group_id,
-        'parent_id' => $this->parent_id
-      ];
-      return Inertia::render('admin/schemas/create', [
-        'item' => $args,
-      ]);
+        $groups = CmsSchemaGroup::all();
+        $parents = CmsSchema::whereNull('parent_id')->get();
+        $args = [
+            'group_id' => $this->group_id,
+            'parent_id' => $this->parent_id
+        ];
+        return Inertia::render('admin/schemas/create', [
+            'item' => $args,
+            'groups' => $groups,
+            'parents' => $parents,
+        ]);
     }
 
     public function store(Request $request)
@@ -105,8 +109,12 @@ class SchemaController extends Controller
     public function edit($id, Request $request): Response
     {
         $item = CmsSchema::find($id);
+        $groups = CmsSchemaGroup::all();
+        $parents = CmsSchema::whereNull('parent_id')->get();
         return Inertia::render('admin/schemas/edit', [
             'item' => $item,
+            'groups' => $groups,
+            'parents' => $parents,
         ]);
     }
 

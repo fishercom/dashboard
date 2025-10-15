@@ -12,6 +12,7 @@ use Inertia\Response;
 
 use App\Models\CmsForm;
 use App\Models\CmsNotify;
+use App\Models\User;
 
 class NotifyController extends Controller
 {
@@ -36,7 +37,12 @@ class NotifyController extends Controller
 
     public function create()
     {
-      return Inertia::render('admin/notifies/create');
+        $forms = CmsForm::all();
+        $users = User::all();
+        return Inertia::render('admin/notifies/create', [
+            'forms' => $forms,
+            'users' => $users,
+        ]);
     }
 
     public function store(Request $request)
@@ -52,8 +58,12 @@ class NotifyController extends Controller
     public function edit($id, Request $request): Response
     {
         $item = CmsNotify::find($id);
+        $forms = CmsForm::all();
+        $users = User::all();
         return Inertia::render('admin/notifies/edit', [
             'item' => $item,
+            'forms' => $forms,
+            'users' => $users,
         ]);
     }
 
