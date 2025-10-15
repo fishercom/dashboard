@@ -13,9 +13,7 @@ import { getDirectories, deleteDirectory } from '@/services/directories';
 
 export default function Index() {
 
-    interface DirectoryPagination extends Pagination<Directory> {};
-
-    const { items } = usePage<{ items: DirectoryPagination }>().props;
+    const { items } = usePage<{ items: Pagination<Directory> }>().props;
     const [ query, setQuery ] = useState({s: ''});
 
     useEffect(() => {

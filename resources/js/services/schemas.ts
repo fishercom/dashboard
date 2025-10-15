@@ -1,6 +1,14 @@
 
 import apiClient from './api';
 import { router } from '@inertiajs/react';
+import { Page } from '@inertiajs/core';
+
+interface Callbacks {
+    onSuccess?: (page: Page) => void;
+    onError?: (errors: Record<string, string>) => void;
+    onBefore?: () => boolean;
+    onFinish?: () => void;
+}
 
 export const getSchemas = (parentSchemaId: number | null = null) => {
     const endpoint = parentSchemaId
@@ -21,10 +29,10 @@ export const deleteSchema = (id: number) => {
     });
 };
 
-export const createSchema = (data: Record<string, any>, callbacks: object) => {
+export const createSchema = (data: Record<string, unknown>, callbacks: Callbacks) => {
     router.post(route('schemas.store'), data, callbacks);
 };
 
-export const updateSchema = (id: number, data: Record<string, any>, callbacks: object) => {
+export const updateSchema = (id: number, data: Record<string, unknown>, callbacks: Callbacks) => {
     router.put(route('schemas.update', id), data, callbacks);
 };

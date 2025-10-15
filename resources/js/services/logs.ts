@@ -1,7 +1,15 @@
 
 import { router } from '@inertiajs/react';
+import { Page } from '@inertiajs/core';
 
-export const getLogs = (query: Record<string, any>) => {
+interface Callbacks {
+    onSuccess?: (page: Page) => void;
+    onError?: (errors: Record<string, string>) => void;
+    onBefore?: () => boolean;
+    onFinish?: () => void;
+}
+
+export const getLogs = (query: Record<string, unknown>) => {
     router.get(route('logs.index'), query, {
         preserveState: true,
         replace: true,
@@ -20,10 +28,10 @@ export const deleteLog = (id: number) => {
     });
 };
 
-export const createLog = (data: Record<string, any>, callbacks: object) => {
+export const createLog = (data: Record<string, unknown>, callbacks: Callbacks) => {
     router.post(route('logs.store'), data, callbacks);
 };
 
-export const updateLog = (id: number, data: Record<string, any>, callbacks: object) => {
+export const updateLog = (id: number, data: Record<string, unknown>, callbacks: Callbacks) => {
     router.put(route('logs.update', id), data, callbacks);
 };

@@ -13,9 +13,7 @@ import { getUsers, deleteUser } from '@/services/users';
 
 export default function Index() {
 
-    interface UserPagination extends Pagination<User> {};
-
-    const { items } = usePage<{ items: UserPagination }>().props;
+    const { items } = usePage<{ items: Pagination<User> }>().props;
     const [ query, setQuery ] = useState({s: ''});
 
     useEffect(() => {

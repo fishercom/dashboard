@@ -14,9 +14,7 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface LangPagination extends Pagination<Lang> {};
-
-    const { items } = usePage<{ items: LangPagination }>().props;
+    const { items } = usePage<{ items: Pagination<Lang> }>().props;
     const [ query, setQuery ] = useState({s: ''});
 
     useEffect(() => {

@@ -1,7 +1,15 @@
 
 import { router } from '@inertiajs/react';
+import { Page } from '@inertiajs/core';
 
-export const getArticles = (query: Record<string, any>) => {
+interface Callbacks {
+    onSuccess?: (page: Page) => void;
+    onError?: (errors: Record<string, string>) => void;
+    onBefore?: () => boolean;
+    onFinish?: () => void;
+}
+
+export const getArticles = (query: Record<string, unknown>) => {
     router.get(route('articles.index'), query, {
         preserveState: true,
         replace: true,
@@ -20,10 +28,10 @@ export const deleteArticle = (id: number) => {
     });
 };
 
-export const createArticle = (data: Record<string, any>, callbacks: object) => {
+export const createArticle = (data: Record<string, unknown>, callbacks: Callbacks) => {
     router.post(route('articles.store'), data, callbacks);
 };
 
-export const updateArticle = (id: number, data: Record<string, any>, callbacks: object) => {
+export const updateArticle = (id: number, data: Record<string, unknown>, callbacks: Callbacks) => {
     router.put(route('articles.update', id), data, callbacks);
 };

@@ -14,9 +14,7 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface SitePagination extends Pagination<Site> {};
-
-    const { items } = usePage<{ items: SitePagination }>().props;
+    const { items } = usePage<{ items: Pagination<Site> }>().props;
     const [ query, setQuery ] = useState({s: ''});
 
     useEffect(() => {

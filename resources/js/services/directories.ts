@@ -1,7 +1,15 @@
 
 import { router } from '@inertiajs/react';
+import { Page } from '@inertiajs/core';
 
-export const getDirectories = (query: Record<string, any>) => {
+interface Callbacks {
+    onSuccess?: (page: Page) => void;
+    onError?: (errors: Record<string, string>) => void;
+    onBefore?: () => boolean;
+    onFinish?: () => void;
+}
+
+export const getDirectories = (query: Record<string, unknown>) => {
     router.get(route('directories.index'), query, {
         preserveState: true,
         replace: true,
@@ -20,10 +28,10 @@ export const deleteDirectory = (id: number) => {
     });
 };
 
-export const createDirectory = (data: Record<string, any>, callbacks: object) => {
+export const createDirectory = (data: Record<string, unknown>, callbacks: Callbacks) => {
     router.post(route('directories.store'), data, callbacks);
 };
 
-export const updateDirectory = (id: number, data: Record<string, any>, callbacks: object) => {
+export const updateDirectory = (id: number, data: Record<string, unknown>, callbacks: Callbacks) => {
     router.put(route('directories.update', id), data, callbacks);
 };

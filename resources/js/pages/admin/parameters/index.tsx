@@ -13,9 +13,7 @@ import { getParameters, deleteParameter } from '@/services/parameters';
 
 export default function Index() {
 
-    interface ParameterPagination extends Pagination<Parameter> {};
-
-    const { items } = usePage<{ items: ParameterPagination }>().props;
+    const { items } = usePage<{ items: Pagination<Parameter> }>().props;
     const [ query, setQuery ] = useState({s: ''});
 
     useEffect(() => {
