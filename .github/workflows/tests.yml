@@ -40,6 +40,12 @@ jobs:
       - name: Set permissions for resources/js
         run: chmod -R u+rwX,go+rX resources/js
 
+      - name: Debug profiles partials directory in CI
+        run: |
+          ls -R resources/js/pages/admin/profiles/
+          ls -R resources/js/pages/admin/profiles/partials/
+          cat resources/js/pages/admin/profiles/create.tsx
+
       - name: Build Assets
         run: npm run build
 
