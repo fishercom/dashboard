@@ -7,7 +7,7 @@ import { updateProfile } from '@/services/profiles';
 
 import { Button } from '@/components/ui/button';
 
-import ProfileFormFields from './Partials/fields';
+import ProfileFormFields from './partials/fields';
 import { AdmModule } from '@/types/models/adm-module';
 
 export default function Edit() {

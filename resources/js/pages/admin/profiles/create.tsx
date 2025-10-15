@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { createProfile } from '@/services/profiles';
 
 
-import ProfileFormFields from './Partials/fields';
+import ProfileFormFields from './partials/fields';
 import { usePage } from '@inertiajs/react';
 import { AdmModule } from '@/types/models/adm-module';
 
