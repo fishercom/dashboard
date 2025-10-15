@@ -111,8 +111,7 @@
             "@/*": ["./resources/js/*"],
             "ziggy-js": ["./vendor/tightenco/ziggy"]
         },
-        "jsx": "react-jsx",
-        "ignoreDeprecations": "6.0"
+        "jsx": "react-jsx"
     },
     "include": [
         "resources/js/**/*.ts",
