@@ -8,17 +8,23 @@ import { type PropsWithChildren } from 'react';
 
 const sidebarNavItems: NavItem[] = [
     {
+        id: 1,
         title: 'Profile',
+        description: 'Edit your profile information',
         url: route('profile.edit'),
         icon: null,
     },
     {
+        id: 2,
         title: 'Password',
+        description: 'Change your password',
         url: route('password.edit'),
         icon: null,
     },
     {
+        id: 3,
         title: 'Appearance',
+        description: 'Customize the appearance',
         url: route('appearance'),
         icon: null,
     },
