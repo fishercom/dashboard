@@ -30,7 +30,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateSite(data.id, data, {
+        updateSite(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

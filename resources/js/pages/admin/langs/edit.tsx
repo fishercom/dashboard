@@ -25,7 +25,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateLang(data.id, data, {
+        updateLang(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

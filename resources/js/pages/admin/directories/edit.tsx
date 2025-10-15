@@ -26,7 +26,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateDirectory(item.id, data, {
+        updateDirectory(item.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

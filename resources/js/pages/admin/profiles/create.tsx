@@ -1,14 +1,10 @@
-import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { Link } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
 import { ProfileForm } from '@/types';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { createProfile } from '@/services/profiles';
 
 

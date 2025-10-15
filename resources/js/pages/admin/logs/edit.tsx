@@ -27,7 +27,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateLog(data.id, data, {
+        updateLog(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

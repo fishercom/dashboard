@@ -32,7 +32,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateUser(item.id, data, {
+        updateUser(item.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

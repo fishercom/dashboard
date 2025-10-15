@@ -1,15 +1,11 @@
-import InputError from '@/components/input-error';
 import ModuleLayout from '@/layouts/module/layout';
 import FormLayout from '@/layouts/module/Form';
 import { Link, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Profile, ProfileForm } from '@/types';
 import { updateProfile } from '@/services/profiles';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import ProfileFormFields from './partials/fields';
 import { AdmModule } from '@/types/models/adm-module';
@@ -17,7 +13,12 @@ import { AdmModule } from '@/types/models/adm-module';
 export default function Edit() {
 
     const { item, modules } = usePage<{ item: Profile, modules: AdmModule[] }>().props;
-    const [data, setData] = useState<Required<ProfileForm>>(item);
+    const [data, setData] = useState<Required<ProfileForm>>({
+        id: item.id,
+        name: item.name,
+        active: item.active ?? false,
+        permissions: item.permissions ?? [],
+    });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
@@ -26,7 +27,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateProfile(data.id, data, {
+        updateProfile(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

@@ -25,7 +25,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateTranslate(data.id, data, {
+        updateTranslate(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

@@ -3,6 +3,7 @@ export interface Profile {
     name: string;
     active?: boolean;
     sa?: boolean;
+    permissions?: [];
     created_at: string;
     updated_at: string;
 }

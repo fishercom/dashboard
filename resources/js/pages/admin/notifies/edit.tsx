@@ -28,7 +28,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateNotify(data.id, data, {
+        updateNotify(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },

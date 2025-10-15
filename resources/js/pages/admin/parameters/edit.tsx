@@ -29,7 +29,7 @@ export default function Edit() {
         setProcessing(true);
         setErrors({});
 
-        updateParameter(data.id, data, {
+        updateParameter(data.id!, data, {
             onSuccess: () => {
                 setProcessing(false);
             },
