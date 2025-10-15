@@ -13,7 +13,7 @@ import { getParameters, deleteParameter } from '@/services/parameters';
 
 export default function Index() {
 
-    interface ParameterPagination extends Omit<Pagination, 'data'> {data: Parameter[]};
+    interface ParameterPagination extends Pagination<Parameter> {};
 
     const { items } = usePage<{ items: ParameterPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

@@ -13,4 +13,5 @@ export interface User {
     remember_token?: string;
     created_at: string;
     updated_at: string;
+    avatar?: string;
 }

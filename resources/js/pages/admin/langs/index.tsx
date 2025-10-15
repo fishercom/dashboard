@@ -14,7 +14,7 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface LangPagination extends Omit<Pagination, 'data'> {data: Lang[]};
+    interface LangPagination extends Pagination<Lang> {};
 
     const { items } = usePage<{ items: LangPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

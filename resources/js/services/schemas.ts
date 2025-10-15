@@ -21,10 +21,10 @@ export const deleteSchema = (id: number) => {
     });
 };
 
-export const createSchema = (data: object, callbacks: object) => {
+export const createSchema = (data: Record<string, any>, callbacks: object) => {
     router.post(route('schemas.store'), data, callbacks);
 };
 
-export const updateSchema = (id: number, data: object, callbacks: object) => {
+export const updateSchema = (id: number, data: Record<string, any>, callbacks: object) => {
     router.put(route('schemas.update', id), data, callbacks);
 };

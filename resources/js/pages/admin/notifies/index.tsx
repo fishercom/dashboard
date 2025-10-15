@@ -14,7 +14,7 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface NotifyPagination extends Omit<Pagination, 'data'> {data: Notify[]};
+    interface NotifyPagination extends Pagination<Notify> {};
 
     const { items } = usePage<{ items: NotifyPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

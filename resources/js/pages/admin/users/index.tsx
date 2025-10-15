@@ -13,7 +13,7 @@ import { getUsers, deleteUser } from '@/services/users';
 
 export default function Index() {
 
-    interface UserPagination extends Omit<Pagination, 'data'> {data: User[]};
+    interface UserPagination extends Pagination<User> {};
 
     const { items } = usePage<{ items: UserPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

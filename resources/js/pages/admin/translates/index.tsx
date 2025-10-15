@@ -13,7 +13,7 @@ import { getTranslates, deleteTranslate } from '@/services/translates';
 
 export default function Index() {
 
-    interface TranslatePagination extends Omit<Pagination, 'data'> {data: Translate[]};
+    interface TranslatePagination extends Pagination<Translate> {};
 
     const { items } = usePage<{ items: TranslatePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

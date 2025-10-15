@@ -1,6 +1,6 @@
-export interface Pagination {
+export interface Pagination<T> {
     current_page: number,
-    data: [],
+    data: T[],
     first_page_url: string,
     from: number,
     last_page: number,

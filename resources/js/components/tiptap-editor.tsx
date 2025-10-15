@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { 
     Bold, Italic, Strikethrough, 
@@ -13,7 +13,11 @@ interface TiptapProps {
   onChange: (value: string) => void;
 }
 
-const MenuBar = ({ editor }) => {
+interface MenuBarProps {
+  editor: Editor | null;
+}
+
+const MenuBar = ({ editor }: MenuBarProps) => {
   if (!editor) {
     return null;
   }
@@ -21,7 +25,7 @@ const MenuBar = ({ editor }) => {
   const menuItems = [
     {
       icon: Bold,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleBold().run(), 50); // Added setTimeout
@@ -30,7 +34,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Italic,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleItalic().run(), 50); // Added setTimeout
@@ -39,7 +43,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Strikethrough,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleStrike().run(), 50); // Added setTimeout
@@ -48,7 +52,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Heading1,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleHeading({ level: 1 }).run(), 50); // Added setTimeout
@@ -57,7 +61,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Heading2,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleHeading({ level: 2 }).run(), 50); // Added setTimeout
@@ -66,7 +70,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Heading3,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleHeading({ level: 3 }).run(), 50); // Added setTimeout
@@ -75,7 +79,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: List,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleBulletList().run(), 50); // Added setTimeout
@@ -84,7 +88,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: ListOrdered,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleOrderedList().run(), 50); // Added setTimeout
@@ -93,7 +97,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Quote,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleBlockquote().run(), 50); // Added setTimeout
@@ -102,7 +106,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Code,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().toggleCodeBlock().run(), 50); // Added setTimeout
@@ -111,7 +115,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Undo,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().undo().run(), 50); // Added setTimeout
@@ -120,7 +124,7 @@ const MenuBar = ({ editor }) => {
     },
     {
       icon: Redo,
-      onClick: (e) => { 
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => { 
         e.preventDefault(); 
         editor.commands.focus(); 
         setTimeout(() => editor.chain().redo().run(), 50); // Added setTimeout

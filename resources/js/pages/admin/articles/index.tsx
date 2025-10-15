@@ -18,7 +18,7 @@ import SortableArticlesModal from './partials/SortableArticlesModal';
 
 export default function Index() {
 
-    interface ArticlePagination extends Omit<Pagination, 'data'> {data: Article[]};
+    interface ArticlePagination extends Pagination<Article> {};
 
     const { items, paging, parent } = usePage<{ items: Article[], paging: ArticlePagination, parent: Schema | null }>().props;
     const [ query, setQuery ] = useState({s: ''});

@@ -1,7 +1,7 @@
 
 import { router } from '@inertiajs/react';
 
-export const getDirectories = (query: object) => {
+export const getDirectories = (query: Record<string, any>) => {
     router.get(route('directories.index'), query, {
         preserveState: true,
         replace: true,
@@ -20,10 +20,10 @@ export const deleteDirectory = (id: number) => {
     });
 };
 
-export const createDirectory = (data: object, callbacks: object) => {
+export const createDirectory = (data: Record<string, any>, callbacks: object) => {
     router.post(route('directories.store'), data, callbacks);
 };
 
-export const updateDirectory = (id: number, data: object, callbacks: object) => {
+export const updateDirectory = (id: number, data: Record<string, any>, callbacks: object) => {
     router.put(route('directories.update', id), data, callbacks);
 };

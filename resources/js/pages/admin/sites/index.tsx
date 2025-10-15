@@ -14,7 +14,7 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface SitePagination extends Omit<Pagination, 'data'> {data: Site[]};
+    interface SitePagination extends Pagination<Site> {};
 
     const { items } = usePage<{ items: SitePagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

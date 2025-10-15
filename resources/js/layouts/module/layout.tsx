@@ -12,7 +12,7 @@ export default function ModuleLayout({ children, view=''}: PropsWithChildren<{vi
     const { adm_menu } = usePage<{ adm_menu: NavGroup[] }>().props
     const page = usePage();
     const url = page.url;
-    const module: NavItem = { id: 0, title: '', description: '', url: '', icon: '' };
+    const module: NavItem = { id: 0, title: '', description: '', url: '', icon: null };
     adm_menu.map((group) => {
         group.items.map((item) => {
             console.log(item.url, url, 'check');

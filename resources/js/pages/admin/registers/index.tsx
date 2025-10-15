@@ -13,7 +13,7 @@ import { getRegisters, deleteRegister } from '@/services/registers';
 
 export default function Index() {
 
-    interface RegisterPagination extends Omit<Pagination, 'data'> {data: Register[]};
+    interface RegisterPagination extends Pagination<Register> {};
 
     const { items } = usePage<{ items: RegisterPagination }>().props;
     const [ query, setQuery ] = useState({s: ''});

@@ -14,7 +14,7 @@ import { PaginationNav } from '@/components/ui/pagination-nav';
 
 export default function Index() {
 
-    interface SchemaPagination extends Omit<Pagination, 'data'> {data: Schema[]};
+    interface SchemaPagination extends Pagination<Schema> {};
 
     const { items, groups, parent, group_id, parent_id } = usePage<{ items: SchemaPagination, groups: SchemaGroup[], parent: Schema, group_id: number, parent_id: number }>().props;
     const [ query, setQuery ] = useState({s: ''});

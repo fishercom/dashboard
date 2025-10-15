@@ -22,7 +22,7 @@ const mainNavItems: NavItem[] = [
         title: 'admin',
         description: 'Welcome to the admin dashboard',
         url: '/admin',
-        icon: 'LayoutGrid',
+        icon: 'layout-grid',
     },
 ];
 
@@ -32,14 +32,14 @@ const rightNavItems: NavItem[] = [
         title: 'Repository',
         description: 'GitHub Repository',
         url: 'https://github.com/laravel/react-starter-kit',
-        icon: 'Folder',
+        icon: 'folder',
     },
     {
         id: 3,
         title: 'Documentation',
         description: 'Laravel Documentation',
         url: 'https://laravel.com/docs/starter-kits',
-        icon: 'BookOpen',
+        icon: 'book-open',
     },
 ];
 

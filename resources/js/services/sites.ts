@@ -1,7 +1,7 @@
 
 import { router } from '@inertiajs/react';
 
-export const getSites = (query: object) => {
+export const getSites = (query: Record<string, any>) => {
     router.get(route('sites.index'), query, {
         preserveState: true,
         replace: true,
@@ -20,10 +20,10 @@ export const deleteSite = (id: number) => {
     });
 };
 
-export const createSite = (data: object, callbacks: object) => {
+export const createSite = (data: Record<string, any>, callbacks: object) => {
     router.post(route('sites.store'), data, callbacks);
 };
 
-export const updateSite = (id: number, data: object, callbacks: object) => {
+export const updateSite = (id: number, data: Record<string, any>, callbacks: object) => {
     router.put(route('sites.update', id), data, callbacks);
 };
